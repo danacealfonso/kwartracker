@@ -10,6 +10,23 @@ AppBar headerNav({
   if (titleSpacing == null) titleSpacing = 40;
   if (centerTitle == null) centerTitle = true;
 
+  if (leading == null) leading = Builder(
+    builder: (BuildContext context) {
+      return IconButton(
+        padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+        icon: Image.asset(
+            'images/icons/ic_back.png',
+            width: 50,
+            height: 50,
+            fit:BoxFit.fill
+        ),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      );
+    },
+  );
+
   return AppBar(
     title: title,
     actions: action,
