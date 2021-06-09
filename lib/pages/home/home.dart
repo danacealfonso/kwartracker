@@ -5,6 +5,7 @@ import 'package:kwartracker/pages/settings/settings.dart';
 import 'package:kwartracker/pages/signIn/signIn.dart';
 import 'package:kwartracker/pages/transactions/transactions.dart';
 import 'package:kwartracker/pages/wallets/wallets.dart';
+import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
 import '../../appBar.dart';
 
@@ -214,9 +215,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
 
     Widget content() {
-      return SlideTransition(
-          position: _animation,
-          child: Container(
+      return Container(
           decoration: BoxDecoration(
             color: Color(0xFFF1F3F6),
             borderRadius: BorderRadius.only(
@@ -230,7 +229,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 child: Text("Home")
             ),
           )
-      ));
+      );
     }
 
     return Row(
@@ -246,7 +245,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 leading: leading(),
                 toolBarHeight: 90
             ),
-            body: content(),
+            body: SlideTransition(
+                position: _animation,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(30, 30, 20, 30),
+                  decoration: BoxDecoration(
+                    color: ColorConstants.gray,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(50),
+                      topLeft: Radius.circular(50),
+                    ),
+                  ),
+                  child: content(),
+                )
+            ),
           ),
         ),
       ],
