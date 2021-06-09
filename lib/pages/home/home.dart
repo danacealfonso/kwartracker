@@ -165,7 +165,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             leading: Icon(Icons.bookmark),
             title: Text('Logout'),
             onTap: () => {
-              navPush(SignInPage())
+              Navigator.pushAndRemoveUntil(context, MyRoute(
+                builder: (context) => SignInPage()
+              ), (route) => false)
             },
           ),
         ],

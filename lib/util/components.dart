@@ -5,7 +5,21 @@ Column customTextField({
   String? text,
   String? hintText,
 }){ return Column(children: [
-    Text(label),
+    Padding(
+      padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
+      child: Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            child: Text(
+              label,
+              style: TextStyle(
+                color: Color(0xFFBBC3C9),
+                fontSize: 12
+              ),
+            ),
+          )
+      ),
+    ),
     Container(
       child: TextField(
         decoration: new InputDecoration(
