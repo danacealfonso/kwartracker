@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'colorConstants.dart';
 
 Column customTextField({
   required String label,
@@ -28,7 +29,7 @@ Column customTextField({
             borderSide: BorderSide(
               color: Colors.white,
               style: BorderStyle.solid,
-              width: 1
+              width: 0
             )
           ),
           focusedBorder: OutlineInputBorder(
@@ -49,13 +50,50 @@ Column customTextField({
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-          color: Colors.black38,
+          color: Colors.black26,
           blurRadius: 14,
-          offset: const Offset(6, 6),
+          offset: const Offset(4, 4),
+          ),
+          BoxShadow(
+            color: Colors.white,
+            blurRadius: 14,
+            offset: const Offset(-6, -6),
           ),
         ],
       ),
+    ),
+    SizedBox(
+      height: 10,
     )
     ],
   );
+}
+
+Padding customButton({
+  required String text,
+  required VoidCallback onPressed,
+  Color? textColor,
+  Color? backgroundColor,
+
+}){
+  if (textColor == null) textColor = Colors.white;
+  if (backgroundColor == null) backgroundColor = Colors.cyan;
+
+  return Padding(
+    padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+    child: MaterialButton(
+      height: 48,
+      shape: RoundedRectangleBorder(
+      borderRadius: new BorderRadius.circular(15)),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 18,
+          color: textColor,
+        ),
+      ),
+      color: backgroundColor,
+    )
+);
 }

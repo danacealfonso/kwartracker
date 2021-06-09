@@ -1,4 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:kwartracker/pages/home/home.dart';
+import 'package:kwartracker/pages/signUp/signUp.dart';
+import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/components.dart';
 import 'package:kwartracker/util/myRoute.dart';
 import '../../appBar.dart';
@@ -74,16 +78,119 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text("Welcome\nBack"),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 29, 0, 4),
+                child: Text("Welcome\nBack",
+                  style: TextStyle(
+                      color: Color(0xFF414141),
+                      fontSize: 42,
+                      fontWeight: FontWeight.w500
+                  ),
+                ),
+              ),
               customTextField(hintText: "Enter email address", label: "Email"),
-              customTextField(hintText: "Enter password", label: "Password")
+              customTextField(hintText: "Enter password", label: "Password"),
+              customButton(
+                text: "Sign In",
+                onPressed: (){
+                  Navigator.pushAndRemoveUntil(context, MyRoute(
+                      builder: (context) => HomePage()
+                  ), (route) => false);
+                }
+              ),
+              Align(
+                alignment: Alignment.center,
+                child:Text("or",
+                  style: TextStyle(
+                      color: Color(0xFF414141),
+                      fontSize: 14
+                  ),
+                ),
+              ),
+              customButton(text:
+                "Sign in with Google",
+                onPressed: (){},
+                backgroundColor: ColorConstants.blue
+              ),
+              customButton(text:
+                "Sign in with Apple",
+                onPressed: (){},
+                backgroundColor: Colors.black
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: () { },
+                        child: Text(
+                          "Recover Password",
+                          style: TextStyle(
+                            color: ColorConstants.gray6,
+                            decoration: TextDecoration.underline,
+                            fontSize: 12
+                          )
+                        ),
+                      )
+                    )
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () { },
+                        child: Text(
+                          "Sign in as guest",
+                          style: TextStyle(
+                            color: ColorConstants.gray6,
+                            decoration: TextDecoration.underline,
+                            fontSize: 12
+                          )
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Expanded(
+                child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: RichText(
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'No account yet?',
+                          style: TextStyle(
+                            color: ColorConstants.black,
+                            fontSize: 14
+                          )
+                        ),
+                        TextSpan(text: ' Sign Up',
+                          style: TextStyle(
+                            color: ColorConstants.cyan,
+                            fontSize: 14,
+                          ),
+                          recognizer: TapGestureRecognizer()..onTap = () {
+                            Navigator.push(context,
+                                MyRoute(
+                                    builder: (context) => SignUpPage()
+                                )
+                            );
+                          }
+                        ),
+                      ],
+                    ),
+                  )
+                ),
+              ),
             ]
         ),
         );
     }
 
     return Scaffold(
-      backgroundColor: Color(0xFF03BED6),
+      backgroundColor: ColorConstants.cyan,
       appBar: headerNav(
         title: title(),
         leading: leading(),
@@ -93,9 +200,9 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
       body: SlideTransition(
         position: _animation,
         child: Container(
-          padding: EdgeInsets.fromLTRB(20, 45, 20, 20),
+          padding: EdgeInsets.fromLTRB(30, 30, 20, 30),
           decoration: BoxDecoration(
-            color: Color(0xFFF1F3F6),
+            color: ColorConstants.gray,
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(50),
               topLeft: Radius.circular(50),

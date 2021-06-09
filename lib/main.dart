@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kwartracker/pages/home/home.dart';
 import 'package:flutter/rendering.dart';
+import 'package:kwartracker/util/colorConstants.dart';
 
 var homeNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -16,7 +17,7 @@ class KwartrackerApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: HomePage(),
       theme:  ThemeData(
-        primaryColor: Color(0xFF03BED6),
+        primaryColor: ColorConstants.cyan,
         accentColor: Color(0xFF03BED6),
         primaryTextTheme: TextTheme(
             headline6: TextStyle(
