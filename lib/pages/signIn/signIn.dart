@@ -169,6 +169,7 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                         TextSpan(text: ' Sign Up',
                           style: TextStyle(
                             color: ColorConstants.cyan,
+                            decoration: TextDecoration.underline,
                             fontSize: 14,
                           ),
                           recognizer: TapGestureRecognizer()..onTap = () {
