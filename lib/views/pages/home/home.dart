@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:kwartracker/pages/profile/profile.dart';
-import 'package:kwartracker/pages/reports/reports.dart';
-import 'package:kwartracker/pages/settings/settings.dart';
-import 'package:kwartracker/pages/signIn/signIn.dart';
-import 'package:kwartracker/pages/transactions/transactions.dart';
-import 'package:kwartracker/pages/wallets/wallets.dart';
+import 'package:kwartracker/views/pages/profile/profile.dart';
+import 'package:kwartracker/views/pages/reports/reports.dart';
+import 'package:kwartracker/views/pages/settings/settings.dart';
+import 'package:kwartracker/views/pages/signIn/signIn.dart';
+import 'package:kwartracker/views/pages/transactions/transactions.dart';
+import 'package:kwartracker/views/pages/wallets/wallets.dart';
 import 'package:kwartracker/util/myRoute.dart';
-import '../../appBar.dart';
+import '../../widgets/appBar.dart';
 
 class HomePage extends StatefulWidget {
   @override

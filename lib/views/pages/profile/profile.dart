@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../appBar.dart';
+import '../../widgets/appBar.dart';
 
-class TransactionsPage extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
   @override
-  _TransactionsPageState createState() => _TransactionsPageState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _TransactionsPageState extends State<TransactionsPage>
-    with TickerProviderStateMixin {
+class _ProfilePageState extends State<ProfilePage> {
   var actionButtons = [
     TextButton(
         onPressed: null,
@@ -19,26 +18,6 @@ class _TransactionsPageState extends State<TransactionsPage>
         )
     )
   ];
-
-  late AnimationController _controller;
-  late Animation<Offset> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    )..forward();
-    _animation = Tween<Offset>(
-      begin: const Offset(0.0, 1.0),
-      end: const Offset(0.0, 0.0),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInCubic,
-    ));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,19 +35,17 @@ class _TransactionsPageState extends State<TransactionsPage>
     ];
 
     Widget title() {
-      return Transform(
-        // you can forcefully translate values left side using Transform
-        transform:  Matrix4.translationValues(-20.0, 0.0, 0.0),
-        child: Text(
-          "Transactions",
+      return Column(children: [
+        Text(
+          "Hello",
         ),
-      );
+        Text(
+          "Samantha",
+        ),
+      ]);
     }
-
     Widget content() {
-      return SlideTransition(
-          position: _animation,
-          child: Container(
+      return Container(
           decoration: BoxDecoration(
             color: Color(0xFFF1F3F6),
             borderRadius: BorderRadius.only(
@@ -79,10 +56,9 @@ class _TransactionsPageState extends State<TransactionsPage>
           child: Container(
             padding: const EdgeInsets.all(10.0),
             child: Center(
-                child: Text("Transactions")
+                child: Text("Profile")
             ),
           )
-      )
       );
     }
 

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import '../../widgets/appBar.dart';
 
-import '../../appBar.dart';
-
-class SignUpPage extends StatefulWidget {
+class TransactionsPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _TransactionsPageState createState() => _TransactionsPageState();
 }
 
-class _LoginPageState extends State<SignUpPage> {
+class _TransactionsPageState extends State<TransactionsPage>
+    with TickerProviderStateMixin {
   var actionButtons = [
     TextButton(
         onPressed: null,
@@ -19,6 +19,26 @@ class _LoginPageState extends State<SignUpPage> {
         )
     )
   ];
+
+  late AnimationController _controller;
+  late Animation<Offset> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    )..forward();
+    _animation = Tween<Offset>(
+      begin: const Offset(0.0, 1.0),
+      end: const Offset(0.0, 0.0),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInCubic,
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,17 +56,19 @@ class _LoginPageState extends State<SignUpPage> {
     ];
 
     Widget title() {
-      return Column(children: [
-        Text(
-          "Hello",
+      return Transform(
+        // you can forcefully translate values left side using Transform
+        transform:  Matrix4.translationValues(-20.0, 0.0, 0.0),
+        child: Text(
+          "Transactions",
         ),
-        Text(
-          "Samantha",
-        ),
-      ]);
+      );
     }
+
     Widget content() {
-      return Container(
+      return SlideTransition(
+          position: _animation,
+          child: Container(
           decoration: BoxDecoration(
             color: Color(0xFFF1F3F6),
             borderRadius: BorderRadius.only(
@@ -60,6 +82,7 @@ class _LoginPageState extends State<SignUpPage> {
                 child: Text("Transactions")
             ),
           )
+      )
       );
     }
 

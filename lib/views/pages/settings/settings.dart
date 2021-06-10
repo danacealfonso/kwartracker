@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../appBar.dart';
+import '../../widgets/appBar.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
