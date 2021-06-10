@@ -121,7 +121,7 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                           style: TextStyle(
                             color: ColorConstants.gray6,
                             decoration: TextDecoration.underline,
-                            fontSize: 12
+                            fontSize: 14
                           )
                         ),
                       )
@@ -137,7 +137,7 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                           style: TextStyle(
                             color: ColorConstants.gray6,
                             decoration: TextDecoration.underline,
-                            fontSize: 12
+                            fontSize: 14
                           )
                         ),
                       ),

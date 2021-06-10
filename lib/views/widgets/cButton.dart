@@ -19,7 +19,7 @@ class CButton extends StatelessWidget {
     return Padding(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: MaterialButton(
-          height: 48,
+          height: 55,
           shape: RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(15)),
           onPressed: onPressed,
