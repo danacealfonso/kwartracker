@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:kwartracker/views/pages/home/home.dart';
 import 'package:kwartracker/views/pages/signUp/signUp.dart';
 import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/views/widgets/customButton.dart';
-import 'package:kwartracker/views/widgets/customTextField.dart';
+import 'package:kwartracker/views/widgets/cButton.dart';
+import 'package:kwartracker/views/widgets/cTextField.dart';
 import 'package:kwartracker/util/myRoute.dart';
 import '../../widgets/appBar.dart';
 
@@ -60,15 +60,6 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-    void navPush(page) {
-      Navigator.push(context,
-          MyRoute(
-              builder: (context) => page
-          )
-      );
-    }
     Widget? leading() {
       return Center();
     }
@@ -89,9 +80,9 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                   ),
                 ),
               ),
-              customTextField(hintText: "Enter email address", label: "Email"),
-              customTextField(hintText: "Enter password", label: "Password"),
-              customButton(
+              CTextField(hintText: "Enter email address", label: "Email"),
+              CTextField(hintText: "Enter password", label: "Password"),
+              CButton(
                 text: "Sign In",
                 onPressed: (){
                   Navigator.pushAndRemoveUntil(context, MyRoute(
@@ -108,12 +99,12 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                   ),
                 ),
               ),
-              customButton(text:
+              CButton(text:
                 "Sign in with Google",
                 onPressed: (){},
                 backgroundColor: ColorConstants.blue
               ),
-              customButton(text:
+              CButton(text:
                 "Sign in with Apple",
                 onPressed: (){},
                 backgroundColor: Colors.black

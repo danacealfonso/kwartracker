@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/views/pages/profile/profile.dart';
 import 'package:kwartracker/views/pages/reports/reports.dart';
 import 'package:kwartracker/views/pages/settings/settings.dart';
@@ -6,6 +7,7 @@ import 'package:kwartracker/views/pages/signIn/signIn.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
 import 'package:kwartracker/views/pages/wallets/wallets.dart';
 import 'package:kwartracker/util/myRoute.dart';
+import 'package:kwartracker/views/widgets/cDrawerListItem.dart';
 import '../../widgets/appBar.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,17 +19,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool _drawerWidget = false;
   late AnimationController _controller;
   late Animation<Offset> _animation;
-  var actionButtons = [
-    TextButton(
-        onPressed: null,
-        child: Image.asset(
-            'images/users/profile_pic.png',
-            width: 70,
-            height: 85,
-            fit:BoxFit.fill
-        )
-    )
-  ];
 
   @override
   void initState() {
@@ -59,7 +50,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
     var actionButtons = [
       TextButton(
           onPressed: null,
@@ -83,11 +73,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       );
     }
     Widget drawerList() {
-      return ListView(
-        padding: EdgeInsets.zero,
+      return Column(
+        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.fromLTRB(0,100,20,0),
+            padding: const EdgeInsets.fromLTRB(0,58,0,0),
             child: Row(
               children: [
                 IconButton(
@@ -97,78 +87,103 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       'images/users/profile_pic.png'
                   ),
                   onPressed: () {},
-
                 ),
                 Text(
                   'Samantha Tagli',
-                  style: textTheme.headline5,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500
+                  ),
                 ),
               ],
             ),
           ),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text('Home'),
-            onTap: () => {
+          GestureDetector(
+            onTap: () {
               setState(() {
                 _drawerWidget = false;
-              })
+              });
             },
+            child: Card(
+              color: ColorConstants.gray5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              child: CDrawerListItem(
+                  title: "Home",
+                  leadingIconPath: 'images/icons/ic_home.png',
+                  textStyle: TextStyle(
+                      color: ColorConstants.cyan,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500
+                  )
+              )
+            )
           ),
-          ListTile(
-            leading: Icon(Icons.delete),
-            title: Text('Transactions'),
-            onTap: () => {
-              navPush(TransactionsPage())
+          GestureDetector(
+            onTap: () {
+              navPush(TransactionsPage());
             },
-          ),
-          ListTile(
-            leading: Icon(Icons.label),
-            title: Text('Wallets'),
-            onTap: () => {
-              navPush(WalletsPage())
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.bookmark),
-            title: Text('Reports'),
-            onTap: () => {
-              navPush(ReportsPage())
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.bookmark),
-            title: Text('My Profile'),
-            onTap: () => {
-              navPush(ProfilePage())
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.bookmark),
-            title: Text('Settings'),
-            onTap: () => {
-              navPush(SettingsPage())
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              '',
-              style: textTheme.headline6,
+            child: CDrawerListItem(
+              title: "Transactions",
+              leadingIconPath: 'images/icons/ic_transaction.png',
             ),
           ),
-          ListTile(
-            leading: Icon(Icons.bookmark),
-            title: Text('Logout'),
-            onTap: () => {
-              Navigator.pushAndRemoveUntil(context, MyRoute(
-                builder: (context) => SignInPage()
-              ), (route) => false)
+          GestureDetector(
+            onTap: () {
+              navPush(WalletsPage());
             },
+            child: CDrawerListItem(
+              title: "Wallets",
+              leadingIconPath: 'images/icons/ic_wallet.png',
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              navPush(ReportsPage());
+            },
+            child: CDrawerListItem(
+              title: "Reports",
+              leadingIconPath: 'images/icons/ic_report.png',
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              navPush(ProfilePage());
+            },
+            child: CDrawerListItem(
+              title: "My Profile",
+              leadingIconPath: 'images/icons/ic_profile.png',
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              navPush(SettingsPage());
+            },
+            child: CDrawerListItem(
+              title: "Settings",
+              leadingIconPath: 'images/icons/ic_settings.png',
+            ),
+          ),
+          Expanded(
+            child: Align(
+              alignment: FractionalOffset.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0,0,0,40),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(context, MyRoute(
+                    builder: (context) => SignInPage()
+                    ), (route) => false);
+                  },
+                  child: CDrawerListItem(
+                    title: "Logout",
+                    leadingIconPath: 'images/icons/ic_logout.png',
+                  ),
+                )
+              )
+            ),
           ),
         ],
       );
@@ -178,17 +193,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       if (_drawerWidget == true) drawerWidth = 300;
 
       return AnimatedContainer(
-          width: drawerWidth,
-          duration: Duration(seconds: 1),
-          curve: Curves.fastOutSlowIn,
-          child: Drawer(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              color: theme.primaryColor,
-              child: drawerList(),
+        width: drawerWidth,
+        duration: Duration(seconds: 1),
+        curve: Curves.fastOutSlowIn,
+        child: Drawer(
+          child: Container(
+            padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+            width: MediaQuery.of(context).size.width,
+            color: theme.primaryColor,
+            child: drawerList()
             ),
-          )
-      );
+          ),
+        );
     }
     Widget leading() {
       return Builder(
