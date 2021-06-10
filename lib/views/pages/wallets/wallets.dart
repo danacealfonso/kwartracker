@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
 
-import '../../widgets/appBar.dart';
+import '../../widgets/headerNav.dart';
 
 class WalletsPage extends StatefulWidget {
   @override
