@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../appBar.dart';
+import '../../widgets/appBar.dart';
 
-class WalletsPage extends StatefulWidget {
+class ReportsPage extends StatefulWidget {
   @override
-  _WalletsPageState createState() => _WalletsPageState();
+  _ReportsPageState createState() => _ReportsPageState();
 }
 
-class _WalletsPageState extends State<WalletsPage> {
+class _ReportsPageState extends State<ReportsPage> {
   var actionButtons = [
     TextButton(
         onPressed: null,
@@ -45,7 +45,6 @@ class _WalletsPageState extends State<WalletsPage> {
         ),
       ]);
     }
-
     Widget content() {
       return Container(
           decoration: BoxDecoration(
@@ -58,7 +57,7 @@ class _WalletsPageState extends State<WalletsPage> {
           child: Container(
             padding: const EdgeInsets.all(10.0),
             child: Center(
-                child: Text("Wallets")
+                child: Text("Reports")
             ),
           )
       );

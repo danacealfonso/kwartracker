@@ -5,7 +5,21 @@ Column customTextField({
   String? text,
   String? hintText,
 }){ return Column(children: [
-    Text(label),
+    Padding(
+      padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
+      child: Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            child: Text(
+              label,
+              style: TextStyle(
+                color: Color(0xFFBBC3C9),
+                fontSize: 12
+              ),
+            ),
+          )
+      ),
+    ),
     Container(
       child: TextField(
         decoration: new InputDecoration(
@@ -14,7 +28,7 @@ Column customTextField({
             borderSide: BorderSide(
               color: Colors.white,
               style: BorderStyle.solid,
-              width: 1
+              width: 0
             )
           ),
           focusedBorder: OutlineInputBorder(
@@ -35,12 +49,20 @@ Column customTextField({
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-          color: Colors.black38,
+          color: Colors.black26,
           blurRadius: 14,
-          offset: const Offset(6, 6),
+          offset: const Offset(4, 4),
+          ),
+          BoxShadow(
+            color: Colors.white,
+            blurRadius: 14,
+            offset: const Offset(-6, -6),
           ),
         ],
       ),
+    ),
+    SizedBox(
+      height: 10,
     )
     ],
   );
