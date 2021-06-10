@@ -31,28 +31,32 @@ class CTextField extends StatelessWidget {
       ),
       Container(
         child: TextField(
-            decoration: new InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
-                      color: Colors.white,
-                      style: BorderStyle.solid,
-                      width: 0
-                  )
-              ),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
-                      color: Colors.white,
-                      style: BorderStyle.solid,
-                      width: 1
-                  )
-              ),
-              filled: true,
-              hintStyle: new TextStyle(color: Color(0xFFBBC3C9)),
-              hintText: hintText,
-              fillColor: Color(0xFFF1F3F6),
-            )
+          decoration: new InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide(
+                color: Colors.white,
+                style: BorderStyle.solid,
+                width: 0
+              )
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide(
+                color: Colors.white,
+                style: BorderStyle.solid,
+                width: 1
+              )
+            ),
+            filled: true,
+            hintStyle: new TextStyle(
+              color: Color(0xFFBBC3C9),
+              fontSize: 14,
+              fontStyle: FontStyle.italic
+            ),
+            hintText: hintText,
+            fillColor: Color(0xFFF1F3F6),
+          )
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
