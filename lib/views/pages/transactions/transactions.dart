@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kwartracker/views/widgets/cBody.dart';
 import '../../widgets/appBar.dart';
 
 class TransactionsPage extends StatefulWidget {
@@ -66,23 +67,11 @@ class _TransactionsPageState extends State<TransactionsPage>
     }
 
     Widget content() {
-      return SlideTransition(
-          position: _animation,
-          child: Container(
-          decoration: BoxDecoration(
-            color: Color(0xFFF1F3F6),
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(50),
-              topLeft: Radius.circular(50),
-            ),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(10.0),
-            child: Center(
-                child: Text("Transactions")
-            ),
-          )
-      )
+      return Container(
+        padding: const EdgeInsets.all(10.0),
+        child: Center(
+            child: Text("Transactions")
+        ),
       );
     }
 
@@ -94,7 +83,7 @@ class _TransactionsPageState extends State<TransactionsPage>
               title: title(),
               action: actionButtons
           ),
-          body: content()
+          body: CBody(child: content())
       ),
     );
   }

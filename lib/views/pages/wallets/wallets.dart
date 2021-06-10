@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kwartracker/views/widgets/cBody.dart';
 
 import '../../widgets/appBar.dart';
 
@@ -72,7 +73,7 @@ class _WalletsPageState extends State<WalletsPage> {
               title: title(),
               action: actionButtons
           ),
-          body: content()
+          body: CBody(child: content())
       ),
     );
   }

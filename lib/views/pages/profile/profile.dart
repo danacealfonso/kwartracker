@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kwartracker/views/widgets/cBody.dart';
 import '../../widgets/appBar.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -70,7 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
               title: title(),
               action: actionButtons
           ),
-          body: content()
+          body: CBody(child: content())
       ),
     );
   }

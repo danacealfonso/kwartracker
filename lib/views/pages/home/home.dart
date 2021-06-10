@@ -7,6 +7,7 @@ import 'package:kwartracker/views/pages/signIn/signIn.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
 import 'package:kwartracker/views/pages/wallets/wallets.dart';
 import 'package:kwartracker/util/myRoute.dart';
+import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:kwartracker/views/widgets/cDrawerListItem.dart';
 import '../../widgets/appBar.dart';
 
@@ -15,27 +16,9 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class _HomePageState extends State<HomePage> {
   bool _drawerWidget = false;
-  late AnimationController _controller;
-  late Animation<Offset> _animation;
 
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    )..forward();
-    _animation = Tween<Offset>(
-      begin: const Offset(0.0, 1.0),
-      end: const Offset(0.0, 0.0),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInCubic,
-    ));
-  }
   Widget title() {
     return Column(children: [
       Text(
@@ -260,20 +243,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 leading: leading(),
                 toolBarHeight: 90
             ),
-            body: SlideTransition(
-                position: _animation,
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(30, 30, 20, 30),
-                  decoration: BoxDecoration(
-                    color: ColorConstants.gray,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(50),
-                      topLeft: Radius.circular(50),
-                    ),
-                  ),
-                  child: content(),
-                )
-            ),
+            body: CBody(child: content()),
           ),
         ),
       ],
