@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kwartracker/pages/home/home.dart';
+import 'package:kwartracker/views/pages/home/home.dart';
 import 'package:flutter/rendering.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 
@@ -16,7 +16,7 @@ class KwartrackerApp extends StatelessWidget {
       title: 'Kwartracker App',
       debugShowCheckedModeBanner: false,
       home: HomePage(),
-      theme:  ThemeData(
+      theme: ThemeData(
         primaryColor: ColorConstants.cyan,
         accentColor: Color(0xFF03BED6),
         primaryTextTheme: TextTheme(

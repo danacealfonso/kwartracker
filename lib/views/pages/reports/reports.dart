@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import '../../appBar.dart';
 
-class ProfilePage extends StatefulWidget {
+import '../../widgets/appBar.dart';
+
+class ReportsPage extends StatefulWidget {
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ReportsPageState createState() => _ReportsPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ReportsPageState extends State<ReportsPage> {
   var actionButtons = [
     TextButton(
         onPressed: null,
@@ -56,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Container(
             padding: const EdgeInsets.all(10.0),
             child: Center(
-                child: Text("Profile")
+                child: Text("Reports")
             ),
           )
       );
