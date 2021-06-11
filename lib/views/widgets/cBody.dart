@@ -36,7 +36,7 @@ class _CBodyState extends State<CBody> with TickerProviderStateMixin {
       child: Container(
         padding: EdgeInsets.fromLTRB(30, 30, 20, 30),
         decoration: BoxDecoration(
-          color: ColorConstants.gray,
+          color: ColorConstants.grey,
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(50),
             topLeft: Radius.circular(50),

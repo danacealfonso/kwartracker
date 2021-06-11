@@ -90,7 +90,7 @@ class _LoginPageState extends State<SignUpPage>  with TickerProviderStateMixin {
                         child: Text(
                           "Sign in as guest",
                           style: TextStyle(
-                            color: ColorConstants.gray6,
+                            color: ColorConstants.grey6,
                             decoration: TextDecoration.underline,
                             fontSize: 14
                           )

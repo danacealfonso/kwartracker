@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
               });
             },
             child: Card(
-              color: ColorConstants.gray5,
+              color: ColorConstants.grey5,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.0),
               ),
@@ -211,6 +211,24 @@ class _HomePageState extends State<HomePage> {
         },
       );
     }
+    Widget button(String iconPath,VoidCallback onPressed) {
+      return Container(
+        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+        width: 36,
+        height: 26,
+        child: MaterialButton(
+          padding: EdgeInsets.all(0),
+          minWidth: 0,
+          shape: RoundedRectangleBorder(
+              side: BorderSide(color: Color(0xFFE4EAEF), width: 1),
+              borderRadius: new BorderRadius.circular(8)),
+          onPressed: onPressed,
+          child: ImageIcon(AssetImage(iconPath),
+              size: 8, color: ColorConstants.cyan),
+          color: Color(0xFFF2F4F6),
+        ),
+      );
+    }
 
     Widget content() {
       return Container(
@@ -223,8 +241,116 @@ class _HomePageState extends State<HomePage> {
           ),
           child: Container(
             padding: const EdgeInsets.all(10.0),
-            child: Center(
-                child: Text("Home")
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(30, 30, 20, 20),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF2F4F6),
+                      border: Border.all(
+                        color: Color(0x00000029),
+                        width: 1,
+                      ),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(30),
+                      topLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+                      bottomLeft: Radius.circular(30),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 8,
+                        offset: const Offset(6, 6),
+                      ),
+                      BoxShadow(
+                        color: Color(0xA8FFFFFF),
+                        blurRadius: 10,
+                        offset: const Offset(-6, -6),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                                "March 01 - March 30, 2020",
+                                style: TextStyle(
+                                    color: ColorConstants.black,
+                                    fontSize: 12
+                                )
+                            ),
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              button("images/icons/ic_date_cyan.png", (){}),
+                              button("images/icons/ic_graph_cyan.png", (){}),
+                            ],
+                          ),
+                        ]
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0,10,0,8),
+                        child: Row(
+                          children: [
+                            Expanded(child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Total Balance"),
+                                Text(
+                                  "40,000",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: ColorConstants.cyan6
+                                  ),
+                                ),
+                              ],
+                            )),
+                            Container(
+                              height: 40,
+                              child: VerticalDivider(
+                                color: Colors.grey
+                              )
+                            ),
+                            Expanded(child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Total Expenses"),
+                                Text(
+                                  "5,000",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: ColorConstants.red
+                                  )
+                                ),
+                              ],
+                            )
+                            ),
+                          ],
+                        ),
+                      ),
+                      ProgressBar(max: 100, current: 90),
+                    ]
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 24, 0, 0),
+                  child: Text(
+                    "Wallet",
+                    style: TextStyle(
+                      color: ColorConstants.black1,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500
+                    ),
+                  )
+                )
+              ]
             ),
           )
       );
@@ -247,6 +373,46 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class ProgressBar extends StatelessWidget {
+  ProgressBar({
+    required this.max,
+    required this.current
+  });
+  final double max;
+  final double current;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (_, boxConstraints) {
+        var x = boxConstraints.maxWidth;
+        var percent = (current / max) * x;
+        return Stack(
+          children: [
+            Container(
+              width: x,
+              height: 10,
+              decoration: BoxDecoration(
+                color: ColorConstants.red,
+                borderRadius: BorderRadius.circular(35),
+              ),
+            ),
+            AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              width: percent,
+              height: 10,
+              decoration: BoxDecoration(
+                color: ColorConstants.cyan6,
+                borderRadius: BorderRadius.circular(35),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -36,7 +36,7 @@ AppBar headerNav({
             BoxShadow(
               color: Color(0x82FFFFFF),
               blurRadius: 8,
-              offset: const Offset(-2, -2),
+              offset: const Offset(-4, -2),
             ),
           ],
         )

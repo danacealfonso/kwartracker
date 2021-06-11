@@ -90,7 +90,7 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                         child: Text(
                           "Recover Password",
                           style: TextStyle(
-                            color: ColorConstants.gray6,
+                            color: ColorConstants.grey6,
                             decoration: TextDecoration.underline,
                             fontSize: 14
                           )
@@ -106,7 +106,7 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                         child: Text(
                           "Sign in as guest",
                           style: TextStyle(
-                            color: ColorConstants.gray6,
+                            color: ColorConstants.grey6,
                             decoration: TextDecoration.underline,
                             fontSize: 14
                           )
