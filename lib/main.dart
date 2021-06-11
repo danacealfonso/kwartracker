@@ -16,6 +16,7 @@ class KwartrackerApp extends StatelessWidget {
       title: 'Kwartracker App',
       debugShowCheckedModeBanner: false,
       home: HomePage(),
+      //TODO: Flutter Themes
       theme: ThemeData(
         primaryColor: ColorConstants.cyan,
         accentColor: Color(0xFF03BED6),

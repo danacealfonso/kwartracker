@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 
 class CBody extends StatefulWidget {
+  //TODO: Final vs Const
   final Widget child;
   CBody({Key? key, required this.child}) : super(key: key);
 
