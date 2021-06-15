@@ -8,13 +8,15 @@ class ColorConstants {
   //cyan
   static const cyan = Color(0xFF03BED6);
   static const cyan6 = Color(0xFF0EBCA7);
-
+  static const cyan1 = Color(0x6E1C8D9D);
   //blue
   static const blue = Color(0xFF518EF8);
   //black
   static const black = Color(0xFF414141);
   static const black1 = Color(0xFF333333);
-
   //red
   static const red = Color(0xFFE26767);
+  static const red1 = Color(0x6EE26767);
+  //green
+  static const green = Color(0x6E41A99D);
 }

@@ -213,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Container(
-                  height: 104,
+                  height: 130,
                   child: ListView(
                     padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
                     scrollDirection: Axis.horizontal,
@@ -253,7 +253,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-                  padding: EdgeInsets.fromLTRB(0, 24, 0, 0),
+                  padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
                   child: Row(
                       children: [
                         Expanded(
