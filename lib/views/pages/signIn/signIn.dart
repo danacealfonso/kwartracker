@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kwartracker/views/pages/home/home.dart';
 import 'package:kwartracker/views/pages/signUp/signUp.dart';
 import 'package:kwartracker/util/colorConstants.dart';
+import 'package:kwartracker/util/globals.dart' as globals;
 import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:kwartracker/views/widgets/cButton.dart';
 import 'package:kwartracker/views/widgets/cTextField.dart';
@@ -57,6 +58,7 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
               CButton(
                 text: "Sign In",
                 onPressed: (){
+                  globals.isLoggedIn = true;
                   Navigator.pushAndRemoveUntil(context, MyRoute(
                       builder: (context) => HomePage()
                   ), (route) => false);

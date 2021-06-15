@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kwartracker/views/pages/home/home.dart';
 import 'package:flutter/rendering.dart';
 import 'package:kwartracker/util/colorConstants.dart';
+import 'package:kwartracker/util/globals.dart' as globals;
+import 'package:kwartracker/views/pages/signIn/signIn.dart';
 
 var homeNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -18,7 +20,7 @@ class KwartrackerApp extends StatelessWidget {
     return MaterialApp(
       title: 'Kwartracker App',
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: (globals.isLoggedIn) ? HomePage(): SignInPage(),
       //TODO: Flutter Themes
       theme: ThemeData(
         primaryColor: ColorConstants.cyan,
