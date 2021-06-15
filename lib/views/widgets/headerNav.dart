@@ -6,6 +6,7 @@ AppBar headerNav({
   Widget? leading,
   double? toolBarHeight,
   bool? centerTitle, double? titleSpacing}){
+  //TODO: IF Conditionals
   if (toolBarHeight == null) toolBarHeight = 90;
   if (titleSpacing == null) titleSpacing = 40;
   if (centerTitle == null) centerTitle = true;
@@ -36,7 +37,7 @@ AppBar headerNav({
             BoxShadow(
               color: Color(0x82FFFFFF),
               blurRadius: 8,
-              offset: const Offset(-2, -2),
+              offset: const Offset(-4, -2),
             ),
           ],
         )
@@ -45,7 +46,7 @@ AppBar headerNav({
   );
 
   return AppBar(
-    title: title,
+    title: Hero(tag: 'AppBarTitle', child: title),
     actions: action,
     leadingWidth: 80,
     automaticallyImplyLeading: true,

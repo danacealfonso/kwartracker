@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kwartracker/views/widgets/cBody.dart';
 
-import '../../widgets/appBar.dart';
+import '../../widgets/headerNav.dart';
 
 class ReportsPage extends StatefulWidget {
   @override
@@ -71,7 +72,7 @@ class _ReportsPageState extends State<ReportsPage> {
               title: title(),
               action: actionButtons
           ),
-          body: content()
+          body: CBody(child: content())
       ),
     );
   }
