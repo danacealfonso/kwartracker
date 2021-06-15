@@ -10,6 +10,9 @@ void main() {
 }
 
 class KwartrackerApp extends StatelessWidget {
+  static final RouteObserver<PageRoute> routeObserver =
+  RouteObserver<PageRoute>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

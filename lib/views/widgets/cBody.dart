@@ -14,6 +14,7 @@ class _CBodyState extends State<CBody> with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _animation;
 
+  //TODO: Custom Flutter Animations with the Animation Controller
   @override
   void initState() {
     super.initState();
@@ -31,11 +32,17 @@ class _CBodyState extends State<CBody> with TickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SlideTransition(
       position: _animation,
       child: Container(
-        padding: EdgeInsets.fromLTRB(30, 30, 20, 30),
+        padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
         decoration: BoxDecoration(
           color: ColorConstants.grey,
           borderRadius: BorderRadius.only(
