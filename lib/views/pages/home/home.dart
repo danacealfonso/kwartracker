@@ -222,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                         txtTypeWallet: "Savings",
                         txtWallet: "BPI Savings",
                         availableBalance: 10000.00,
-                        cardColor: CardColor.green,
+                        cardColor: CardColor.cyan,
                       ),
                       CCardWallets(
                         txtTypeWallet: "Savings",
@@ -234,13 +234,13 @@ class _HomePageState extends State<HomePage> {
                         txtTypeWallet: "Savings",
                         txtWallet: "BPI Savings",
                         availableBalance: 10000.00,
-                        cardColor: CardColor.green_dark,
+                        cardColor: CardColor.green,
                       ),
                       CCardWallets(
                         txtTypeWallet: "Savings",
                         txtWallet: "BPI Savings",
                         availableBalance: 10000.00,
-                        cardColor: CardColor.green,
+                        cardColor: CardColor.cyan,
                       ),
                       CCardWallets(
                         txtTypeWallet: "Savings",
