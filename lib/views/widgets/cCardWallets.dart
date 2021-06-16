@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 
-enum CardColor { green, green_dark, red}
+enum CardColor { green, cyan, red}
+enum CardSize { large, small}
 
 class CCardWallets extends StatelessWidget {
   CCardWallets({
@@ -9,27 +10,29 @@ class CCardWallets extends StatelessWidget {
     required this.txtWallet,
     required this.availableBalance,
     required this.cardColor,
+    this.cardSize
   });
 
   final String txtTypeWallet;
   final String txtWallet;
   final double availableBalance;
   final CardColor cardColor;
+  final CardSize? cardSize;
 
   String get cardBG {
     switch (cardColor) {
-      case CardColor.green:
-        return 'green';
+      case CardColor.cyan:
+        return 'cyan';
       case CardColor.red:
         return 'red';
       default:
-        return 'green_dark';
+        return 'green';
     }
   }
 
   Color get cardShadow {
     switch (cardColor) {
-      case CardColor.green:
+      case CardColor.cyan:
         return ColorConstants.cyan1;
       case CardColor.red:
         return ColorConstants.red1;
@@ -37,6 +40,7 @@ class CCardWallets extends StatelessWidget {
         return ColorConstants.green;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -79,7 +83,7 @@ class CCardWallets extends StatelessWidget {
             ),
           ),
           Image.asset(
-            'images/cards/$cardBG.png',
+            'images/cards/$cardBG${(cardSize == CardSize.large)? "_l": "_s"}.png',
             alignment: Alignment.topCenter,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,

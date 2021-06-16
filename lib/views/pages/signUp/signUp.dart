@@ -1,12 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:kwartracker/util/globals.dart' as globals;
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
+import 'package:kwartracker/views/pages/home/home.dart';
 import 'package:kwartracker/views/pages/signIn/signIn.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:kwartracker/views/widgets/cButton.dart';
 import 'package:kwartracker/views/widgets/cTextField.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import '../../widgets/headerNav.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -14,8 +17,13 @@ class SignUpPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<SignUpPage>  with TickerProviderStateMixin {
+//TODO: Registering Users with Firebase using FirebaseAuth
+class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
+  bool showSpinner = false;
+  final _auth = FirebaseAuth.instance;
+  late String email;
+  late String password;
 
   Widget title() {
     return Transform(
@@ -51,14 +59,43 @@ class _LoginPageState extends State<SignUpPage>  with TickerProviderStateMixin {
                   ),
                 ),
               ),
-              CTextField(hintText: "Enter email address", label: "Email"),
-              CTextField(hintText: "Enter password", label: "Password"),
+              CTextField(hintText: "Enter email address", label: "Email",
+                onChanged: (value) {
+                  email = value;
+                },
+              ),
+              CTextField(hintText: "Enter password", label: "Password",
+                obscureText: true,
+                onChanged: (value) {
+                  password = value;
+                },
+              ),
               CButton(
                   text: "Sign Up",
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(context, MyRoute(
-                        builder: (context) => SignInPage()
-                    ), (route) => false);
+                  onPressed: () async {
+                    setState(() {
+                      showSpinner = true;
+                    });
+                    try {
+                      final newUser = await _auth.createUserWithEmailAndPassword(
+                          email: email,
+                          password: password
+                      );
+                      if (newUser != null) {
+                        globals.isLoggedIn = true;
+                        Navigator.pushAndRemoveUntil(context, MyRoute(
+                            builder: (context) => HomePage()
+                        ), (route) => false);
+                      }
+                      setState(() {
+                        showSpinner = false;
+                      });
+                    } catch (e) {
+                      setState(() {
+                        showSpinner = false;
+                      });
+                      print(e);
+                    }
                   }
               ),
               Align(
@@ -105,71 +142,74 @@ class _LoginPageState extends State<SignUpPage>  with TickerProviderStateMixin {
       );
     }
 
-    return Scaffold(
-      backgroundColor: ColorConstants.cyan,
-      appBar: headerNav(
-        title: title(),
-        leading: leading(),
-        titleSpacing: 0.0,
-        centerTitle: false
-      ),
-      body: CBody(child: Column(
-        children: [
-          Container(
-              padding: EdgeInsets.fromLTRB(30, 30, 20, 30),
-              child: content()
-          ),
-          Expanded(
-            child: Align(
+    return ModalProgressHUD(
+      inAsyncCall: showSpinner,
+      child: Scaffold(
+        backgroundColor: ColorConstants.cyan,
+        appBar: headerNav(
+          title: title(),
+          leading: leading(),
+          titleSpacing: 0.0,
+          centerTitle: false
+        ),
+        body: CBody(child: Column(
+          children: [
+            Container(
+                padding: EdgeInsets.fromLTRB(30, 30, 20, 30),
+                child: content()
+            ),
+            Expanded(
+              child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    child: Divider(
+                      height: 1,
+                      thickness: 1,
+                    ),
+                  )
+              ),
+            ),
+            Expanded(
+              child: Align(
                 alignment: FractionalOffset.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                  child: Divider(
-                    height: 1,
-                    thickness: 1,
-                  ),
-                )
-            ),
-          ),
-          Expanded(
-            child: Align(
-              alignment: FractionalOffset.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'Already have an account?',
-                        style: TextStyle(
-                            color: ColorConstants.black,
-                            fontSize: 14
-                        )
-                      ),
-                      TextSpan(
-                        text: ' Sign In',
-                        style: TextStyle(
-                          color: ColorConstants.cyan,
-                          decoration: TextDecoration.underline,
-                          fontSize: 14,
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: RichText(
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Already have an account?',
+                          style: TextStyle(
+                              color: ColorConstants.black,
+                              fontSize: 14
+                          )
                         ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.push(context,
-                                MyRoute(
-                                    builder: (context) => SignInPage()
-                                )
-                            );
-                          }
-                      ),
-                    ],
-                  )
+                        TextSpan(
+                          text: ' Sign In',
+                          style: TextStyle(
+                            color: ColorConstants.cyan,
+                            decoration: TextDecoration.underline,
+                            fontSize: 14,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(context,
+                                  MyRoute(
+                                      builder: (context) => SignInPage()
+                                  )
+                              );
+                            }
+                        ),
+                      ],
+                    )
+                  ),
                 ),
-              ),
-            )
-          ),
-        ],
-      ))
+              )
+            ),
+          ],
+        ))
+      ),
     );
   }
 }

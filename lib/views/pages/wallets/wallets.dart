@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
-
+import 'package:kwartracker/views/widgets/cCardWallets.dart';
+import 'package:horizontal_card_pager/horizontal_card_pager.dart';
+import 'package:horizontal_card_pager/card_item.dart';
 import '../../widgets/headerNav.dart';
 
 class WalletsPage extends StatefulWidget {
@@ -21,47 +25,50 @@ class _WalletsPageState extends State<WalletsPage> {
     )
   ];
 
+
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    var actionButtons = [
-      TextButton(
-          onPressed: null,
-          child: Image.asset(
-              'images/users/profile_pic.png',
-              width: 70,
-              height: 85,
-              fit:BoxFit.fill
-          )
-      )
+    List<CardItem> items = [
+      IconTitleCardItem(
+        text: "Alarm",
+        iconData: Icons.access_alarms,
+      ),
+      IconTitleCardItem(
+        text: "Add",
+        iconData: Icons.add,
+      ),
+      IconTitleCardItem(
+        text: "Call",
+        iconData: Icons.add_call,
+      ),
+      IconTitleCardItem(
+        text: "WiFi",
+        iconData: Icons.wifi,
+      ),
+      IconTitleCardItem(
+        text: "File",
+        iconData: Icons.attach_file,
+      ),
+      IconTitleCardItem(
+        text: "Air Play",
+        iconData: Icons.airplay,
+      ),
     ];
-
     Widget title() {
-      return Column(children: [
-        Text(
-          "Hello",
+      return Transform(
+        // you can forcefully translate values left side using Transform
+        transform:  Matrix4.translationValues(-20.0, 0.0, 0.0),
+        child: Text(
+          "My Wallet",
         ),
-        Text(
-          "Samantha",
-        ),
-      ]);
+      );
     }
-
     Widget content() {
-      return Container(
-          decoration: BoxDecoration(
-            color: Color(0xFFF1F3F6),
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(50),
-              topLeft: Radius.circular(50),
-            ),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(10.0),
-            child: Center(
-                child: Text("Wallets")
-            ),
-          )
+      return HorizontalCardPager(
+        initialPage : 2,
+        onPageChanged: (page) => print("page : $page"),
+        onSelectedItem: (page) => print("selected : $page"),
+        items: items,  // set ImageCardItem or IconTitleCardItem class
       );
     }
 
