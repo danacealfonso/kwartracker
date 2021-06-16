@@ -8,10 +8,12 @@ import 'package:kwartracker/views/pages/settings/settings.dart';
 import 'package:kwartracker/views/pages/signIn/signIn.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
 import 'package:kwartracker/views/pages/wallets/wallets.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kwartracker/util/globals.dart' as globals;
 import 'cDrawerListItem.dart';
 
 class CDrawer extends StatelessWidget {
+  final _auth = FirebaseAuth.instance;
   final DrawerState drawerState;
   CDrawer({Key? key, required this.drawerState}) : super(key: key);
 
@@ -121,6 +123,8 @@ class CDrawer extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(0,0,0,40),
                   child: GestureDetector(
                     onTap: () {
+                      _auth.signOut();
+                      globals.isLoggedIn = false;
                       Navigator.pushAndRemoveUntil(context, MyRoute(
                           builder: (context) => SignInPage()
                       ), (route) => false);

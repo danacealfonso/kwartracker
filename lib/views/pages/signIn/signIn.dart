@@ -8,6 +8,8 @@ import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:kwartracker/views/widgets/cButton.dart';
 import 'package:kwartracker/views/widgets/cTextField.dart';
 import 'package:kwartracker/util/myRoute.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import '../../widgets/headerNav.dart';
 
 class SignInPage extends StatefulWidget {
@@ -16,7 +18,10 @@ class SignInPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
-  final _formKey = GlobalKey<FormState>();
+  final _auth = FirebaseAuth.instance;
+  bool showSpinner = false;
+  late String email;
+  late String password;
 
   Widget title() {
     return Transform(
@@ -37,160 +42,187 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
     }
 
     Widget content() {
-      return Form(
-        key: _formKey,
-        //TODO: Column & Row Widgets
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 9, 0, 4),
-                child: Text("Welcome\nBack",
-                  style: TextStyle(
-                      color: Color(0xFF414141),
-                      fontSize: 42,
-                      fontWeight: FontWeight.w500
-                  ),
+      return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 9, 0, 4),
+              child: Text("Welcome\nBack",
+                style: TextStyle(
+                    color: Color(0xFF414141),
+                    fontSize: 42,
+                    fontWeight: FontWeight.w500
                 ),
               ),
-              CTextField(hintText: "Enter email address", label: "Email"),
-              CTextField(hintText: "Enter password", label: "Password"),
-              CButton(
-                text: "Sign In",
-                onPressed: (){
-                  globals.isLoggedIn = true;
-                  Navigator.pushAndRemoveUntil(context, MyRoute(
-                      builder: (context) => HomePage()
-                  ), (route) => false);
+            ),
+            CTextField(hintText: "Enter email address", label: "Email",
+              onChanged: (value) {
+                email = value;
+              },
+            ),
+            CTextField(hintText: "Enter password", label: "Password",
+              obscureText: true,
+              onChanged: (value) {
+                password = value;
+              },
+            ),
+            CButton(
+              text: "Sign In",
+              onPressed: () async {
+                setState(() {
+                  showSpinner = true;
+                });
+                try {
+                  final newUser = await _auth.signInWithEmailAndPassword(
+                      email: email,
+                      password: password
+                  );
+                  if (newUser != null) {
+                    globals.isLoggedIn = true;
+                    Navigator.pushAndRemoveUntil(context, MyRoute(
+                        builder: (context) => HomePage()
+                    ), (route) => false);
+                  }
+                  setState(() {
+                    showSpinner = false;
+                  });
+                } catch (e) {
+                  setState(() {
+                    showSpinner = false;
+                  });
+                  print(e);
                 }
-              ),
-              Align(
-                alignment: Alignment.center,
-                child:Text("or",
-                  style: TextStyle(
-                      color: Color(0xFF414141),
-                      fontSize: 14
-                  ),
+              }
+            ),
+            Align(
+              alignment: Alignment.center,
+              child:Text("or",
+                style: TextStyle(
+                    color: Color(0xFF414141),
+                    fontSize: 14
                 ),
               ),
-              CButton(text:
-                "Sign in with Google",
-                onPressed: (){},
-                backgroundColor: ColorConstants.blue
-              ),
-              CButton(text:
-                "Sign in with Apple",
-                onPressed: (){},
-                backgroundColor: Colors.black
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: TextButton(
-                        onPressed: () { },
-                        child: Text(
-                          "Recover Password",
-                          style: TextStyle(
-                            color: ColorConstants.grey6,
-                            decoration: TextDecoration.underline,
-                            fontSize: 14
-                          )
-                        ),
-                      )
+            ),
+            CButton(text:
+              "Sign in with Google",
+              onPressed: (){},
+              backgroundColor: ColorConstants.blue
+            ),
+            CButton(text:
+              "Sign in with Apple",
+              onPressed: (){},
+              backgroundColor: Colors.black
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      onPressed: () { },
+                      child: Text(
+                        "Recover Password",
+                        style: TextStyle(
+                          color: ColorConstants.grey6,
+                          decoration: TextDecoration.underline,
+                          fontSize: 14
+                        )
+                      ),
                     )
-                  ),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () { },
-                        child: Text(
-                          "Sign in as guest",
-                          style: TextStyle(
-                            color: ColorConstants.grey6,
-                            decoration: TextDecoration.underline,
-                            fontSize: 14
-                          )
-                        ),
+                  )
+                ),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () { },
+                      child: Text(
+                        "Sign in as guest",
+                        style: TextStyle(
+                          color: ColorConstants.grey6,
+                          decoration: TextDecoration.underline,
+                          fontSize: 14
+                        )
                       ),
                     ),
-                  )
-                ],
-              ),
-            ]
-        ),
-        );
+                  ),
+                )
+              ],
+            ),
+          ]
+      );
     }
 
-    return Scaffold(
-      backgroundColor: ColorConstants.cyan,
-      appBar: headerNav(
-        title: title(),
-        leading: leading(),
-        titleSpacing: 0.0,
-        centerTitle: false
-      ),
-      body: CBody(
-        child: Column(
-          children: [
-            Container(
-                padding: EdgeInsets.fromLTRB(30, 30, 20, 30),
-                child: content()
-            ),
-            Expanded(
-              child: Align(
+    return ModalProgressHUD(
+      inAsyncCall: showSpinner,
+      child: Scaffold(
+        backgroundColor: ColorConstants.cyan,
+        appBar: headerNav(
+          title: title(),
+          leading: leading(),
+          titleSpacing: 0.0,
+          centerTitle: false
+        ),
+        body: CBody(
+          child: Column(
+            children: [
+              Container(
+                  padding: EdgeInsets.fromLTRB(30, 30, 20, 30),
+                  child: content()
+              ),
+              Expanded(
+                child: Align(
+                    alignment: FractionalOffset.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                      child: Divider(
+                        height: 1,
+                        thickness: 1,
+                      ),
+                    )
+                ),
+              ),
+              Expanded(
+                child: Align(
                   alignment: FractionalOffset.bottomCenter,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                    child: Divider(
-                      height: 1,
-                      thickness: 1,
-                    ),
-                  )
-              ),
-            ),
-            Expanded(
-              child: Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: RichText(
-                    text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'No account yet?',
-                          style: TextStyle(
-                              color: ColorConstants.black,
-                              fontSize: 14
-                          )
-                        ),
-                        TextSpan(
-                          text: ' Sign Up',
-                          style: TextStyle(
-                            color: ColorConstants.cyan,
-                            decoration: TextDecoration.underline,
-                            fontSize: 14,
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'No account yet?',
+                            style: TextStyle(
+                                color: ColorConstants.black,
+                                fontSize: 14
+                            )
                           ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.push(context,
-                                MyRoute(
-                                  builder: (context) => SignUpPage()
-                                )
-                              );
-                            }
-                        ),
-                      ],
-                    )
+                          TextSpan(
+                            text: ' Sign Up',
+                            style: TextStyle(
+                              color: ColorConstants.cyan,
+                              decoration: TextDecoration.underline,
+                              fontSize: 14,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(context,
+                                  MyRoute(
+                                    builder: (context) => SignUpPage()
+                                  )
+                                );
+                              }
+                          ),
+                        ],
+                      )
+                    ),
                   ),
-                ),
-              )
-            ),
-          ],
+                )
+              ),
+            ],
+          )
         )
-      )
+      ),
     );
   }
 }
