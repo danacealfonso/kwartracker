@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kwartracker/views/pages/home/home.dart';
 import 'package:flutter/rendering.dart';
@@ -7,7 +8,9 @@ import 'package:kwartracker/views/pages/signIn/signIn.dart';
 
 var homeNavigatorKey = GlobalKey<NavigatorState>();
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(KwartrackerApp());
 }
 

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "773199867771",
+    "project_id": "kwartracker",
+    "storage_bucket": "kwartracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773199867771:android:55f12db52a505dd48217de",
+        "android_client_info": {
+          "package_name": "com.danace.kwartracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "773199867771-o6n9fobr7em3nhh4hgtj90tlckh0u9pi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBljLkasGWc3TaTzpEvkikEk6JuB14F7nw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "773199867771-o6n9fobr7em3nhh4hgtj90tlckh0u9pi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

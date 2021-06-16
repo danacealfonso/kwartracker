@@ -4,6 +4,8 @@ import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:kwartracker/views/widgets/cCardWallets.dart';
 import 'package:kwartracker/views/widgets/cDrawer.dart';
 import 'package:kwartracker/views/widgets/cTransactionListItem.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kwartracker/util/globals.dart' as globals;
 import '../../widgets/headerNav.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +15,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   DrawerState drawerState = DrawerState.close;
+  final _auth = FirebaseAuth.instance;
+
+  void getCurrentUser() async {
+    try {
+      final user = await _auth.currentUser;
+      if (user != null)
+        globals.isLoggedIn = true;
+
+    } catch (e) {
+      print(e);
+    }
+  }
 
   var actionButtons = [
     TextButton(
@@ -222,7 +236,7 @@ class _HomePageState extends State<HomePage> {
                         txtTypeWallet: "Savings",
                         txtWallet: "BPI Savings",
                         availableBalance: 10000.00,
-                        cardColor: CardColor.green,
+                        cardColor: CardColor.cyan,
                       ),
                       CCardWallets(
                         txtTypeWallet: "Savings",
@@ -234,13 +248,13 @@ class _HomePageState extends State<HomePage> {
                         txtTypeWallet: "Savings",
                         txtWallet: "BPI Savings",
                         availableBalance: 10000.00,
-                        cardColor: CardColor.green_dark,
+                        cardColor: CardColor.green,
                       ),
                       CCardWallets(
                         txtTypeWallet: "Savings",
                         txtWallet: "BPI Savings",
                         availableBalance: 10000.00,
-                        cardColor: CardColor.green,
+                        cardColor: CardColor.cyan,
                       ),
                       CCardWallets(
                         txtTypeWallet: "Savings",
