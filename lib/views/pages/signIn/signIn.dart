@@ -164,6 +164,7 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
           centerTitle: false
         ),
         body: CBody(
+          hasScrollBody: false,
           child: Column(
             children: [
               Container(
@@ -186,7 +187,7 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                     child: RichText(
                       text: TextSpan(
                         children: <TextSpan>[
