@@ -50,7 +50,14 @@ class _CBodyState extends State<CBody> with TickerProviderStateMixin {
             topLeft: Radius.circular(50),
           ),
         ),
-        child: widget.child,
+        child: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: widget.child
+            ),
+          ],
+        ),
       )
     );
   }

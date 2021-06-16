@@ -5,11 +5,15 @@ class CTextField extends StatelessWidget {
     required this.label,
     this.text,
     this.hintText,
+    this.onChanged,
+    this.obscureText
   });
 
   final String label;
   final String? text;
   final String? hintText;
+  final bool? obscureText;
+  final ValueChanged? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -17,20 +21,22 @@ class CTextField extends StatelessWidget {
       Padding(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
         child: Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              child: Text(
-                label,
-                style: TextStyle(
-                    color: Color(0xFFBBC3C9),
-                    fontSize: 12
-                ),
+          alignment: Alignment.centerLeft,
+          child: Container(
+            child: Text(
+              label,
+              style: TextStyle(
+                color: Color(0xFFBBC3C9),
+                fontSize: 12
               ),
-            )
+            ),
+          )
         ),
       ),
       Container(
         child: TextField(
+          obscureText: (obscureText==null || obscureText==false) ? false : true,
+          onChanged: onChanged,
           decoration: new InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
