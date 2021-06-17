@@ -4,14 +4,14 @@ class CButton extends StatelessWidget {
   CButton({
     required this.text,
     required this.onPressed,
-    this.textColor,
-    this.backgroundColor,
+    this.textColor = Colors.white,
+    this.backgroundColor = Colors.cyan,
   });
 
   final String text;
   final VoidCallback onPressed;
-  final Color? textColor;
-  final Color? backgroundColor;
+  final Color textColor;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +27,10 @@ class CButton extends StatelessWidget {
             text,
             style: TextStyle(
               fontSize: 14,
-              color: textColor == null ? Colors.white: textColor,
+              color: textColor,
             ),
           ),
-          color: backgroundColor == null ? Colors.cyan: backgroundColor,
+          color: backgroundColor,
         )
     );
   }

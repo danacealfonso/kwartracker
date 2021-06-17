@@ -4,9 +4,11 @@ import 'package:kwartracker/util/colorConstants.dart';
 class CBody extends StatefulWidget {
   //TODO: Final vs Const
   final Widget child;
-  final bool? hasScrollBody;
-  final double? paddingBottom;
-  CBody({Key? key, required this.child, this.hasScrollBody, this.paddingBottom}) : super(key: key);
+  final bool hasScrollBody;
+  CBody({Key? key,
+    required this.child,
+    this.hasScrollBody = false,
+  }) : super(key: key);
 
   @override
   _CBodyState createState() => _CBodyState();
@@ -55,9 +57,7 @@ class _CBodyState extends State<CBody> with TickerProviderStateMixin {
         child: CustomScrollView(
           slivers: [
             SliverFillRemaining(
-              hasScrollBody:
-                (widget.hasScrollBody==null || widget.hasScrollBody==true)
-                    ? true : false ,
+              hasScrollBody: widget.hasScrollBody,
               child: widget.child
             ),
           ],

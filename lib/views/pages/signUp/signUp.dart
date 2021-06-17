@@ -153,7 +153,6 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
           centerTitle: false
         ),
         body: CBody(
-          hasScrollBody: false,
           child: Column(
           children: [
             Container(

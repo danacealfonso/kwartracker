@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 class CTextField extends StatelessWidget {
   CTextField({
     required this.label,
-    this.text,
-    this.hintText,
+    this.text = "",
+    this.hintText = "",
     this.onChanged,
-    this.obscureText
+    this.obscureText = false
   });
 
   final String label;
-  final String? text;
-  final String? hintText;
-  final bool? obscureText;
+  final String text;
+  final String hintText;
+  final bool obscureText;
   final ValueChanged? onChanged;
 
   @override
@@ -35,7 +35,7 @@ class CTextField extends StatelessWidget {
       ),
       Container(
         child: TextField(
-          obscureText: (obscureText==null || obscureText==false) ? false : true,
+          obscureText: obscureText,
           onChanged: onChanged,
           decoration: new InputDecoration(
             enabledBorder: OutlineInputBorder(

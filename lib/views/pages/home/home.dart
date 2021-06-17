@@ -1,5 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:kwartracker/util/colorConstants.dart';
+import 'package:kwartracker/util/myRoute.dart';
+import 'package:kwartracker/views/pages/transactions/transactionAddWallet.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:kwartracker/views/widgets/cCardWallets.dart';
 import 'package:kwartracker/views/widgets/cDrawer.dart';
@@ -87,6 +91,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget bsDateRange(BuildContext context) {
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+      child: Container(
+        child: Center(child: Text("asdf"))
+      ),
+    );
+  }
+
   Widget content() {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -135,7 +148,12 @@ class _HomePageState extends State<HomePage> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          button("images/icons/ic_date_cyan.png", (){}),
+                          button("images/icons/ic_date_cyan.png", (){
+                            showModalBottomSheet(context: context,
+                            builder: bsDateRange,
+                            barrierColor: Colors.white.withOpacity(0.5),
+                            );
+                          }),
                           button("images/icons/ic_graph_cyan.png", (){}),
                         ],
                       ),
@@ -344,9 +362,15 @@ class _HomePageState extends State<HomePage> {
                     leading: leading(),
                     toolBarHeight: 90
                 ),
-                body: CBody(child: content()),
+                body: CBody(child: content(),hasScrollBody: true,),
                 floatingActionButton: FloatingActionButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context,
+                      MyRoute(
+                          builder: (context) => TransactionAddWalletPage()
+                      )
+                    );
+                  },
                   child: Icon(Icons.add, color: Colors.white, size: 29,),
                   backgroundColor: ColorConstants.cyan,
                   tooltip: 'Capture Picture',
