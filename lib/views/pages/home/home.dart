@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget content1() {
+  Widget content() {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -304,15 +304,6 @@ class _HomePageState extends State<HomePage> {
         ]
     );
   }
-  Widget content() {
-    return CBody(
-        child: Column(
-        children: [
-          Text("asdf")
-        ]
-      )
-    );
-  }
   @override
   Widget build(BuildContext context) {
     double offsetLeftDrawer = -MediaQuery.of(context).size.width * .77;
@@ -353,7 +344,7 @@ class _HomePageState extends State<HomePage> {
                     leading: leading(),
                     toolBarHeight: 90
                 ),
-                body: CBody(child: content1()),
+                body: CBody(child: content()),
                 floatingActionButton: FloatingActionButton(
                   onPressed: () {},
                   child: Icon(Icons.add, color: Colors.white, size: 29,),
