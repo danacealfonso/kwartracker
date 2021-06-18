@@ -26,6 +26,7 @@ class _WalletAddPageState extends State<WalletAddPage> {
   String fCurrencyID = "";
   bool showSpinner = false;
   bool fOverallBalance = true;
+  Color enableSaveColor = ColorConstants.grey2;
   CardColor cardColor = CardColor.cyan;
   final walletTypeList = <PopupMenuEntry>[];
   final currencyList = <PopupMenuEntry>[];
@@ -68,9 +69,22 @@ class _WalletAddPageState extends State<WalletAddPage> {
     }
   }
 
+  bool validateFields () {
+    var validate = true;
+    if (fName.isEmpty) validate = false;
+    if (fType.isEmpty) validate = false;
+    if (fCurrency.isEmpty) validate = false;
+
+    if (validate == true)
+      enableSaveColor = ColorConstants.grey;
+
+    return validate;
+  }
+
   @override
   Widget build(BuildContext context) {
     getLists();
+    validateFields();
 
     Widget title() {
       return Text(
@@ -80,7 +94,7 @@ class _WalletAddPageState extends State<WalletAddPage> {
     var actionButtons = [
       TextButton(
         onPressed: () {
-          if (fName.isNotEmpty) {
+          if (validateFields() == true) {
             setState(() => showSpinner = true);
             try{
               _fireStore.collection("wallets").add({
@@ -105,7 +119,7 @@ class _WalletAddPageState extends State<WalletAddPage> {
           child: Text("Save",
             style: TextStyle(
               fontSize: 16,
-              color: ColorConstants.grey2
+              color: enableSaveColor
             )
           ),
         ),
