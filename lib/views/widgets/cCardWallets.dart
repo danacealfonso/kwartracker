@@ -11,7 +11,7 @@ class CCardWallets extends StatelessWidget {
     this.availableBalance = 0.00,
     this.cardColor = CardColor.green,
     this.currency = "Peso",
-    this.cardSize = CardSize.large
+    this.cardSize = CardSize.small
   });
 
   final String txtTypeWallet;
@@ -92,7 +92,7 @@ class CCardWallets extends StatelessWidget {
                     height: sHeight,
                     child: Container(
                       decoration: new BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(80),
                         boxShadow: [
                           BoxShadow(
                             color: cardShadow,

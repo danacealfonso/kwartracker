@@ -58,11 +58,13 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
               ),
             ),
             CTextField(hintText: "Enter email address", label: "Email",
+              text: "test1234@gmail.com",
               onChanged: (value) {
                 email = value;
               },
             ),
             CTextField(hintText: "Enter password", label: "Password",
+              text: "test123",
               obscureText: true,
               onChanged: (value) {
                 password = value;
@@ -79,12 +81,10 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                       email: email,
                       password: password
                   );
-                  if (newUser != null) {
-                    globals.isLoggedIn = true;
-                    Navigator.pushAndRemoveUntil(context, MyRoute(
-                        builder: (context) => HomePage()
-                    ), (route) => false);
-                  }
+                  globals.isLoggedIn = true;
+                  Navigator.pushAndRemoveUntil(context, MyRoute(
+                      builder: (context) => HomePage()
+                  ), (route) => false);
                   setState(() {
                     showSpinner = false;
                   });

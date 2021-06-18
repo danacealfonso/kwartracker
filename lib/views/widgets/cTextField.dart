@@ -18,6 +18,12 @@ class CTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = TextEditingController();
+
+    if(text.isNotEmpty) {
+      onChanged!(text);
+      controller.text = text;
+    }
     return Column(children: [
       Padding(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
@@ -38,6 +44,7 @@ class CTextField extends StatelessWidget {
         child: TextField(
           obscureText: obscureText,
           onChanged: onChanged,
+          controller: controller,
           decoration: new InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),

@@ -60,7 +60,6 @@ class _WalletAddPageState extends State<WalletAddPage> {
           if (cColorLast == walletTypeListFS[fTypeID]) {
             setState(() {
               cardColor = cColor;
-              print(cardColor);
             });
             break;
           }
@@ -98,16 +97,14 @@ class _WalletAddPageState extends State<WalletAddPage> {
             setState(() => showSpinner = true);
             try{
               _fireStore.collection("wallets").add({
-                'userID': _auth.currentUser!.uid,
+                'uID': _auth.currentUser!.uid,
                 'name': fName,
                 'currency': fCurrency,
                 'type': fTypeID,
                 'overallBalance': fOverallBalance,
               }).then((value) {
-                if (value.id != null) {
-                  setState(() => showSpinner = false);
-                  Navigator.pop(context);
-                }
+                setState(() => showSpinner = false);
+                Navigator.pop(context);
               });
             } catch (e) {
               setState(() => showSpinner = false);
