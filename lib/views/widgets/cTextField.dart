@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:kwartracker/util/colorConstants.dart';
 
 class CTextField extends StatelessWidget {
   CTextField({
     required this.label,
-    this.text,
-    this.hintText,
+    this.text = "",
+    this.hintText = "",
     this.onChanged,
-    this.obscureText
+    this.obscureText = false
   });
 
   final String label;
-  final String? text;
-  final String? hintText;
-  final bool? obscureText;
+  final String text;
+  final String hintText;
+  final bool obscureText;
   final ValueChanged? onChanged;
 
   @override
@@ -26,7 +27,7 @@ class CTextField extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                color: Color(0xFFBBC3C9),
+                color: ColorConstants.grey6,
                 fontSize: 12
               ),
             ),
@@ -35,7 +36,7 @@ class CTextField extends StatelessWidget {
       ),
       Container(
         child: TextField(
-          obscureText: (obscureText==null || obscureText==false) ? false : true,
+          obscureText: obscureText,
           onChanged: onChanged,
           decoration: new InputDecoration(
             enabledBorder: OutlineInputBorder(

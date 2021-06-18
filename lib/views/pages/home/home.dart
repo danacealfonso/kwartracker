@@ -1,5 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:kwartracker/util/colorConstants.dart';
+import 'package:kwartracker/util/myRoute.dart';
+import 'package:kwartracker/views/pages/transactions/transactionAddWallet.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:kwartracker/views/widgets/cCardWallets.dart';
 import 'package:kwartracker/views/widgets/cDrawer.dart';
@@ -87,235 +91,237 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget bsDateRange(BuildContext context) {
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+      child: Container(
+        child: Center(child: Text("asdf"))
+      ),
+    );
+  }
+
   Widget content() {
-    return Container(
-        decoration: BoxDecoration(
-          color: Color(0xFFF1F3F6),
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(50),
-            topLeft: Radius.circular(50),
-          ),
-        ),
-        child: Container(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-                  padding: EdgeInsets.fromLTRB(30, 30, 20, 20),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF2F4F6),
-                    border: Border.all(
-                      color: Color(0x00000029),
-                      width: 1,
-                    ),
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(30),
-                      topLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
-                      bottomLeft: Radius.circular(30),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 8,
-                        offset: const Offset(6, 6),
-                      ),
-                      BoxShadow(
-                        color: Color(0xA8FFFFFF),
-                        blurRadius: 10,
-                        offset: const Offset(-6, -6),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                "March 01 - March 30, 2020",
-                                style: TextStyle(
-                                  color: ColorConstants.black,
-                                  fontSize: 12
-                                )
-                              ),
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                button("images/icons/ic_date_cyan.png", (){}),
-                                button("images/icons/ic_graph_cyan.png", (){}),
-                              ],
-                            ),
-                          ]
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0,10,0,8),
-                          child: Row(
-                            children: [
-                              Expanded(child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Total Balance"),
-                                  Text(
-                                    "₱ 40,000",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: ColorConstants.cyan6
-                                    ),
-                                  ),
-                                ],
-                              )),
-                              Container(
-                                  height: 40,
-                                  child: VerticalDivider(
-                                      color: Colors.grey
-                                  )
-                              ),
-                              Expanded(child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Total Expenses"),
-                                  Text(
-                                      "₱ 5,000",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: ColorConstants.red
-                                      )
-                                  ),
-                                ],
-                              )
-                              ),
-                            ],
-                          ),
-                        ),
-                        ProgressBar(max: 100, current: 90),
-                      ]
-                  ),
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(left: 30.0, right: 30.0),
+            padding: EdgeInsets.fromLTRB(30, 30, 20, 20),
+            decoration: BoxDecoration(
+              color: Color(0xFFF2F4F6),
+              border: Border.all(
+                color: Color(0x00000029),
+                width: 1,
+              ),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30),
+                topLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+                bottomLeft: Radius.circular(30),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 8,
+                  offset: const Offset(6, 6),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-                  padding: EdgeInsets.fromLTRB(0, 24, 0, 0),
-                  child: Row(
+                BoxShadow(
+                  color: Color(0xA8FFFFFF),
+                  blurRadius: 10,
+                  offset: const Offset(-6, -6),
+                ),
+              ],
+            ),
+            child: Column(
+                children: [
+                  Row(
                     children: [
                       Expanded(
                         child: Text(
-                          "Wallet",
+                          "March 01 - March 30, 2020",
                           style: TextStyle(
-                            color: ColorConstants.black1,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700
+                            color: ColorConstants.black,
+                            fontSize: 12
                           )
                         ),
                       ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [Text(
-                          "View All",
-                          style: TextStyle(
+                        children: [
+                          button("images/icons/ic_date_cyan.png", (){
+                            showModalBottomSheet(context: context,
+                            builder: bsDateRange,
+                            barrierColor: Colors.white.withOpacity(0.5),
+                            );
+                          }),
+                          button("images/icons/ic_graph_cyan.png", (){}),
+                        ],
+                      ),
+                    ]
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0,10,0,8),
+                    child: Row(
+                      children: [
+                        Expanded(child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Total Balance"),
+                            Text(
+                              "₱ 40,000",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorConstants.cyan6
+                              ),
+                            ),
+                          ],
+                        )),
+                        Container(
+                            height: 40,
+                            child: VerticalDivider(
+                                color: Colors.grey
+                            )
+                        ),
+                        Expanded(child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Total Expenses"),
+                            Text(
+                                "₱ 5,000",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: ColorConstants.red
+                                )
+                            ),
+                          ],
+                        )
+                        ),
+                      ],
+                    ),
+                  ),
+                  ProgressBar(max: 100, current: 90),
+                ]
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 30.0, right: 30.0),
+            padding: EdgeInsets.fromLTRB(0, 24, 0, 0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    "Wallet",
+                    style: TextStyle(
+                      color: ColorConstants.black1,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700
+                    )
+                  ),
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [Text(
+                    "View All",
+                    style: TextStyle(
+                      color: ColorConstants.grey6,
+                      fontSize: 12,
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.w500
+                    )
+                  )],
+                ),
+              ]
+            ),
+          ),
+          Container(
+            height: 130,
+            child: ListView(
+              padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                CCardWallets(
+                  txtTypeWallet: "Savings",
+                  txtWallet: "BPI Savings",
+                  availableBalance: 10000.00,
+                  cardColor: CardColor.cyan,
+                ),
+                CCardWallets(
+                  txtTypeWallet: "Savings",
+                  txtWallet: "BPI Savings",
+                  availableBalance: 10000.00,
+                  cardColor: CardColor.red,
+                ),
+                CCardWallets(
+                  txtTypeWallet: "Savings",
+                  txtWallet: "BPI Savings",
+                  availableBalance: 10000.00,
+                  cardColor: CardColor.green,
+                ),
+                CCardWallets(
+                  txtTypeWallet: "Savings",
+                  txtWallet: "BPI Savings",
+                  availableBalance: 10000.00,
+                  cardColor: CardColor.cyan,
+                ),
+                CCardWallets(
+                  txtTypeWallet: "Savings",
+                  txtWallet: "BPI Savings",
+                  availableBalance: 10000.00,
+                  cardColor: CardColor.red,
+                )
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 30.0, right: 30.0),
+            padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
+            child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                        "Transactions",
+                        style: TextStyle(
+                            color: ColorConstants.black1,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700
+                        )
+                    ),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [Text(
+                        "View All",
+                        style: TextStyle(
                             color: ColorConstants.grey6,
                             fontSize: 12,
                             decoration: TextDecoration.underline,
                             fontWeight: FontWeight.w500
-                          )
-                        )],
-                      ),
-                    ]
+                        )
+                    )],
                   ),
-                ),
-                Container(
-                  height: 130,
-                  child: ListView(
-                    padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      CCardWallets(
-                        txtTypeWallet: "Savings",
-                        txtWallet: "BPI Savings",
-                        availableBalance: 10000.00,
-                        cardColor: CardColor.cyan,
-                      ),
-                      CCardWallets(
-                        txtTypeWallet: "Savings",
-                        txtWallet: "BPI Savings",
-                        availableBalance: 10000.00,
-                        cardColor: CardColor.red,
-                      ),
-                      CCardWallets(
-                        txtTypeWallet: "Savings",
-                        txtWallet: "BPI Savings",
-                        availableBalance: 10000.00,
-                        cardColor: CardColor.green,
-                      ),
-                      CCardWallets(
-                        txtTypeWallet: "Savings",
-                        txtWallet: "BPI Savings",
-                        availableBalance: 10000.00,
-                        cardColor: CardColor.cyan,
-                      ),
-                      CCardWallets(
-                        txtTypeWallet: "Savings",
-                        txtWallet: "BPI Savings",
-                        availableBalance: 10000.00,
-                        cardColor: CardColor.red,
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-                  padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
-                  child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                              "Transactions",
-                              style: TextStyle(
-                                  color: ColorConstants.black1,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700
-                              )
-                          ),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [Text(
-                              "View All",
-                              style: TextStyle(
-                                  color: ColorConstants.grey6,
-                                  fontSize: 12,
-                                  decoration: TextDecoration.underline,
-                                  fontWeight: FontWeight.w500
-                              )
-                          )],
-                        ),
-                      ]
-                  ),
-                ),
-                Expanded(
-                  child: ListView(
-                    padding: EdgeInsets.fromLTRB(25, 0, 25, 90),
-                    children: <Widget>[
-                      for(int i=0; i<15; i++)
-                        CTransactionListItem(
-                          month: "Mar",
-                          day: 15,
-                          walletType: "SALARY",
-                          walletName: "March 15 Payroll",
-                          amount: 10000.00,
-                        ),
-                    ],
-                  ),
-                ),
-              ]
+                ]
+            ),
           ),
-        )
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.fromLTRB(25, 0, 25, 90),
+              children: <Widget>[
+                for(int i=0; i<15; i++)
+                  CTransactionListItem(
+                    month: "Mar",
+                    day: 15,
+                    walletType: "SALARY",
+                    walletName: "March 15 Payroll",
+                    amount: 10000.00,
+                  ),
+              ],
+            ),
+          ),
+        ]
     );
   }
-
   @override
   Widget build(BuildContext context) {
     double offsetLeftDrawer = -MediaQuery.of(context).size.width * .77;
@@ -356,9 +362,15 @@ class _HomePageState extends State<HomePage> {
                     leading: leading(),
                     toolBarHeight: 90
                 ),
-                body: CBody(child: content()),
+                body: CBody(child: content(),hasScrollBody: true,),
                 floatingActionButton: FloatingActionButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context,
+                      MyRoute(
+                          builder: (context) => TransactionAddWalletPage()
+                      )
+                    );
+                  },
                   child: Icon(Icons.add, color: Colors.white, size: 29,),
                   backgroundColor: ColorConstants.cyan,
                   tooltip: 'Capture Picture',
