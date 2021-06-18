@@ -92,30 +92,30 @@ class _WalletAddPageState extends State<WalletAddPage> {
       );
     }
     var actionButtons = [
-      TextButton(
-        onPressed: () {
-          if (validateFields() == true) {
-            setState(() => showSpinner = true);
-            try{
-              _fireStore.collection("wallets").add({
-                'userID': _auth.currentUser!.uid,
-                'name': fName,
-                'currency': fCurrency,
-                'type': fTypeID,
-                'overallBalance': fOverallBalance,
-              }).then((value) {
-                if (value.id != null) {
-                  setState(() => showSpinner = false);
-                  Navigator.pop(context);
-                }
-              });
-            } catch (e) {
-              setState(() => showSpinner = false);
+      Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: TextButton(
+          onPressed: () {
+            if (validateFields() == true) {
+              setState(() => showSpinner = true);
+              try{
+                _fireStore.collection("wallets").add({
+                  'userID': _auth.currentUser!.uid,
+                  'name': fName,
+                  'currency': fCurrency,
+                  'type': fTypeID,
+                  'overallBalance': fOverallBalance,
+                }).then((value) {
+                  if (value.id != null) {
+                    setState(() => showSpinner = false);
+                    Navigator.pop(context);
+                  }
+                });
+              } catch (e) {
+                setState(() => showSpinner = false);
+              }
             }
-          }
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(right: 20),
+          },
           child: Text("Save",
             style: TextStyle(
               fontSize: 16,
