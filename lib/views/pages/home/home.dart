@@ -182,11 +182,13 @@ class _HomePageState extends State<HomePage> {
                                                         width: 30,
                                                         child: FloatingActionButton(
                                                           backgroundColor: ColorConstants.grey,
-                                                          onPressed: () {},
+                                                          onPressed: () {
+                                                            Navigator.pop(context);
+                                                          },
                                                           child: Image.asset(
                                                               'images/icons/ic_close.png',
-                                                              width: 5.5,
-                                                              height: 5.5,
+                                                              width: 10,
+                                                              height: 10,
                                                               fit:BoxFit.fill
                                                           )
                                                         )
