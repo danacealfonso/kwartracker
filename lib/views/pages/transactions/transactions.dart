@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
 import 'package:kwartracker/views/pages/transactions/transactionAddWallet.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
@@ -22,7 +23,7 @@ class _TransactionsPageState extends State<TransactionsPage>
             height: 40,
             margin: EdgeInsets.all(20),
             child: FloatingActionButton(
-              backgroundColor: Colors.white,
+              backgroundColor: ColorConstants.grey,
               onPressed: () {
                 Navigator.push(context,
                   MyRoute(

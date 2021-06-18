@@ -15,7 +15,7 @@ class TransactionAddDetailsPage extends StatefulWidget {
 }
 
 class _TransactionAddDetailsPageState extends State<TransactionAddDetailsPage> {
-  final _firestore = FirebaseFirestore.instance;
+  final _fireStore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   late final String fName;
   late final String fType;
@@ -43,42 +43,58 @@ class _TransactionAddDetailsPageState extends State<TransactionAddDetailsPage> {
       return Container(
         padding: const EdgeInsets.fromLTRB(30,30,30,0),
         child: Padding(
-            padding: const EdgeInsets.only(bottom: 30.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Center(child: Text("Enter amount"),),
-                Center(child: TextField(
-                  textAlign: TextAlign.center,
-                  controller: txtAmount,
-                ),),
-                CTextField(
-                  hintText: "Enter transaction name",
-                  label: "Transaction name",
-                  onChanged: (value) {
-                    fName = value;
-                  },
-                ),
-                CDropdownTextField(
-                  hintText: "Select transaction type",
-                  label: "Transaction type",
-                  onChanged: (value) {
-                    fType = value;
-                  },
-                  items: [
-                    PopupMenuItem<String>(
-                        child: const Text('Salary'), value: 'Salary'),
-                    PopupMenuItem<String>(
-                        child: const Text('Bills'), value: 'Bills'),
-                    PopupMenuItem<String>(
-                        child: const Text('Shopping'), value: 'Shopping'),
-                  ]
-                ),
-                CDropdownTextField(
+          padding: const EdgeInsets.only(bottom: 30.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Center(child: Text("Enter amount"),),
+              Center(child: TextField(
+                textAlign: TextAlign.center,
+                controller: txtAmount,
+              ),),
+              CTextField(
+                hintText: "Enter transaction name",
+                label: "Transaction name",
+                onChanged: (value) {
+                  fName = value;
+                },
+              ),
+              CDropdownTextField(
+                hintText: "Select transaction type",
+                label: "Transaction type",
+                onChanged: (value) {
+                  fType = value;
+                },
+                items: [
+                  PopupMenuItem<String>(
+                    child: const Text('Salary'), value: 'Salary'),
+                  PopupMenuItem<String>(
+                    child: const Text('Bills'), value: 'Bills'),
+                  PopupMenuItem<String>(
+                    child: const Text('Shopping'), value: 'Shopping'),
+                ]
+              ),
+              CDropdownTextField(
+                hintText: "Select Category",
+                label: "Category",
+                onChanged: (value) {
+                  fCategory = value;
+                },
+                items: [
+                  PopupMenuItem<String>(
+                    child: const Text('Category1'), value: 'Salary'),
+                  PopupMenuItem<String>(
+                    child: const Text('Category2'), value: 'Bills'),
+                  PopupMenuItem<String>(
+                    child: const Text('Category3'), value: 'Shopping'),
+                ]
+              ),
+              CDatePickerTextField(
                   hintText: "Select Category",
-                  label: "Category",
+                  initialValue: "DD / MM / YYYY",
+                  label: "Select date",
                   onChanged: (value) {
-                    fCategory = value;
+                    fDate = value;
                   },
                   items: [
                     PopupMenuItem<String>(
@@ -88,71 +104,55 @@ class _TransactionAddDetailsPageState extends State<TransactionAddDetailsPage> {
                     PopupMenuItem<String>(
                         child: const Text('Category3'), value: 'Shopping'),
                   ]
-                ),
-                CDatePickerTextField(
-                    hintText: "Select Category",
-                    initialValue: "DD / MM / YYYY",
-                    label: "Select date",
-                    onChanged: (value) {
-                      fDate = value;
-                    },
-                    items: [
-                      PopupMenuItem<String>(
-                          child: const Text('Category1'), value: 'Salary'),
-                      PopupMenuItem<String>(
-                          child: const Text('Category2'), value: 'Bills'),
-                      PopupMenuItem<String>(
-                          child: const Text('Category3'), value: 'Shopping'),
-                    ]
-                ),
-                CTextField(
-                  label: "Spent with this person",
-                  hintText: "Enter name of person",
-                  onChanged: (value) {
-                    fPersonName = value;
-                  },
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        child: Text(
-                          "Upload photo",
-                          style: TextStyle(
-                              color: Color(0xFFBBC3C9),
-                              fontSize: 12
-                          ),
+              ),
+              CTextField(
+                label: "Spent with this person",
+                hintText: "Enter name of person",
+                onChanged: (value) {
+                  fPersonName = value;
+                },
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      child: Text(
+                        "Upload photo",
+                        style: TextStyle(
+                            color: Color(0xFFBBC3C9),
+                            fontSize: 12
                         ),
-                      )
-                  ),
+                      ),
+                    )
                 ),
-                CButton(
-                  text: "Browse",
-                  backgroundColor: ColorConstants.grey3,
-                  onPressed: () {}
+              ),
+              CButton(
+                text: "Browse",
+                backgroundColor: ColorConstants.grey3,
+                onPressed: () {}
+              ),
+              Container(
+                width: double.infinity,
+                child: CButton(
+                  text: "Add",
+                  onPressed: () {
+                    _fireStore.collection("transactions").add({
+                      'uID' : _auth.currentUser!.uid,
+                      'amount' : txtAmount.text,
+                      'name' : fName,
+                      'type' : "fdsaf",
+                      'category' : "asdfas",
+                      'fDate' : "asdfadsf",
+                      'spentPerson' : fPersonName
+                    });
+                  }
                 ),
-                Container(
-                  width: double.infinity,
-                  child: CButton(
-                    text: "Add",
-                    onPressed: () {
-                      _firestore.collection("transactions").add({
-                        'userID' : _auth.currentUser!.uid,
-                        'amount' : txtAmount.text,
-                        'name' : fName,
-                        'type' : "fdsaf",
-                        'category' : "asdfas",
-                        'fDate' : "asdfadsf",
-                        'spentPerson' : fPersonName
-                      });
-                    }
-                  ),
-                ),
-              ]
-            ),
+              ),
+            ]
           ),
-        );
+        ),
+      );
     }
 
     return Container(

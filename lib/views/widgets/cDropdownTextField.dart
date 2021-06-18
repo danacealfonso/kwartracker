@@ -2,29 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 
 class CDropdownTextField extends StatelessWidget {
+  final String label;
+  final String? text;
+  final String? hintText;
+  final ValueChanged? onChanged;
+  final List<PopupMenuEntry> items;
+  final TextEditingController? controller;
+  final initialValue;
+
   CDropdownTextField({
     required this.label,
     this.text,
     this.hintText,
     this.onChanged,
     required this.items,
+    this.controller,
     this.initialValue
   });
 
-  final String label;
-  final String? text;
-  final String? hintText;
-  final ValueChanged? onChanged;
-  final List<PopupMenuEntry> items;
-  final initialValue;
-
   @override
   Widget build(BuildContext context) {
-    var txt = TextEditingController();
+    var controller = TextEditingController();
     void _showPopupMenu(Offset offset) async {
       double left = offset.dx;
       double top = offset.dy;
-      String selected = await showMenu(
+      List selected = await showMenu(
         initialValue: initialValue,
         context: context,
         position: RelativeRect.fromLTRB(left, top, 0, 0),
@@ -32,9 +34,10 @@ class CDropdownTextField extends StatelessWidget {
         elevation: 8.0,
       );
       if (selected != null) {
-        txt.text = selected.toString();
+        onChanged!(selected);
       }
     }
+    if(text != null) controller.text = text!;
     return Column(children: [
       Padding(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
@@ -57,9 +60,8 @@ class CDropdownTextField extends StatelessWidget {
             _showPopupMenu(details.globalPosition);
           },
           child: TextField(
-            controller: txt,
+            controller: controller,
             enabled: false,
-            onChanged: onChanged,
             decoration: new InputDecoration(
               disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),

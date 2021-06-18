@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kwartracker/util/colorConstants.dart';
 
 class CTextField extends StatelessWidget {
   CTextField({
@@ -26,7 +27,7 @@ class CTextField extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                color: Color(0xFFBBC3C9),
+                color: ColorConstants.grey6,
                 fontSize: 12
               ),
             ),

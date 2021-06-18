@@ -1,8 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:kwartracker/util/colorConstants.dart';
+import 'package:kwartracker/util/myRoute.dart';
+import 'package:kwartracker/views/pages/wallets/walletAdd.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
-import 'package:kwartracker/views/widgets/cCardWallets.dart';
 import 'package:horizontal_card_pager/horizontal_card_pager.dart';
 import 'package:horizontal_card_pager/card_item.dart';
 import '../../widgets/headerNav.dart';
@@ -14,14 +14,45 @@ class WalletsPage extends StatefulWidget {
 
 class _WalletsPageState extends State<WalletsPage> {
   var actionButtons = [
-    TextButton(
-        onPressed: null,
-        child: Image.asset(
-            'images/users/profile_pic.png',
-            width: 70,
-            height: 85,
-            fit:BoxFit.fill
-        )
+    Builder(
+      builder: (BuildContext context) {
+        return Container(
+            width: 40,
+            height: 40,
+            margin: EdgeInsets.all(20),
+            child: FloatingActionButton(
+                backgroundColor: ColorConstants.grey,
+                onPressed: () {
+                  Navigator.push(context,
+                      MyRoute(
+                          builder: (context) => WalletAddPage()
+                      )
+                  );
+                },
+                child: Image.asset(
+                    'images/icons/ic_add.png',
+                    width: 10,
+                    height: 10,
+                    fit:BoxFit.fill
+                )
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 8,
+                  offset: const Offset(6, 6),
+                ),
+                BoxShadow(
+                  color: Color(0x82FFFFFF),
+                  blurRadius: 8,
+                  offset: const Offset(-4, -2),
+                ),
+              ],
+            )
+        );
+      },
     )
   ];
 
@@ -55,12 +86,8 @@ class _WalletsPageState extends State<WalletsPage> {
       ),
     ];
     Widget title() {
-      return Transform(
-        // you can forcefully translate values left side using Transform
-        transform:  Matrix4.translationValues(-20.0, 0.0, 0.0),
-        child: Text(
-          "My Wallet",
-        ),
+      return Text(
+        "My Wallet",
       );
     }
     Widget content() {

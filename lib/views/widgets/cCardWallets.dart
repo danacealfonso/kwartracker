@@ -6,18 +6,20 @@ enum CardSize { large, small}
 
 class CCardWallets extends StatelessWidget {
   CCardWallets({
-    required this.txtTypeWallet,
-    required this.txtWallet,
-    required this.availableBalance,
-    required this.cardColor,
-    this.cardSize
+    this.txtTypeWallet = "",
+    this.txtWallet = "",
+    this.availableBalance = 0.00,
+    this.cardColor = CardColor.green,
+    this.currency = "Peso",
+    this.cardSize = CardSize.large
   });
 
   final String txtTypeWallet;
   final String txtWallet;
+  final String currency;
   final double availableBalance;
   final CardColor cardColor;
-  final CardSize? cardSize;
+  final CardSize cardSize;
 
   String get cardBG {
     switch (cardColor) {
@@ -43,10 +45,33 @@ class CCardWallets extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double cWidth = 160;
+    double cHeight = 150;
+    double sWidth = 127;
+    double sHeight = 97;
+    double typeFont = 8;
+    double walletFont = 8;
+    double aBalanceFont = 8;
+    double amountFont = 8;
+    String currencySign = (currency=='Dollar')? "\$ ": "₱ ";
+    EdgeInsets cPadding = EdgeInsets.fromLTRB(15, 17, 15, 0);
+
+    if (cardSize == CardSize.large) {
+      cWidth = 234;
+      cHeight = 170;
+      sWidth = 189;
+      sHeight = 152;
+      typeFont = 12;
+      aBalanceFont = 12;
+      walletFont = 20;
+      amountFont = 20;
+      cPadding = EdgeInsets.fromLTRB(26, 27, 26, 0);
+    }
+
     return Container(
       margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-      width: 160,
-      height: 150,
+      width: cWidth,
+      height: cHeight,
       child: Stack(
         children: <Widget>[
           Positioned(
@@ -63,18 +88,18 @@ class CCardWallets extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.all(0),
                   child: Container(
-                    width: 127.0,
-                    height: 97.0,
+                    width: sWidth,
+                    height: sHeight,
                     child: Container(
                       decoration: new BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: cardShadow,
-                              blurRadius: 13,
-                              offset: const Offset(4, 4),
-                            ),
-                          ]
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: cardShadow,
+                            blurRadius: 13,
+                            offset: const Offset(4, 4),
+                          ),
+                        ]
                       ),
                     ),
                   ),
@@ -89,15 +114,15 @@ class CCardWallets extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(15, 17, 15, 0),
+            padding: cPadding,
             child: Column(
               children: <Widget>[
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(txtTypeWallet,
+                  child: Text(txtTypeWallet.toUpperCase(),
                     style: TextStyle(
                       color: Color(0x80FFFFFF),
-                      fontSize: 8,
+                      fontSize: typeFont,
                     ),
                   ),
                 ),
@@ -108,7 +133,7 @@ class CCardWallets extends StatelessWidget {
                     child: Text(txtWallet,
                         style: TextStyle(
                             color: Color(0xFFFFFFFF),
-                            fontSize: 14
+                            fontSize: walletFont
                         )
                     ),
                   ),
@@ -118,17 +143,17 @@ class CCardWallets extends StatelessWidget {
                   child: Text("AVAILABLE BALANCE",
                       style: TextStyle(
                           color: Color(0x80FFFFFF),
-                          fontSize: 8
+                          fontSize: aBalanceFont
                       )
                   ),
                 ),
                 Container(
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text("₱ " + availableBalance.toString(),
+                    child: Text(currencySign + availableBalance.toString(),
                         style: TextStyle(
                             color: Color(0xFFFFFFFF),
-                            fontSize: 14
+                            fontSize: amountFont
                         )
                     ),
                   ),
