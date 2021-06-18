@@ -11,7 +11,7 @@ class CCardWallets extends StatelessWidget {
     this.availableBalance = 0.00,
     this.cardColor = CardColor.green,
     this.currency = "Peso",
-    this.cardSize = CardSize.large
+    this.cardSize = CardSize.small
   });
 
   final String txtTypeWallet;
@@ -50,9 +50,9 @@ class CCardWallets extends StatelessWidget {
     double sWidth = 127;
     double sHeight = 97;
     double typeFont = 8;
-    double walletFont = 8;
+    double walletFont = 14;
     double aBalanceFont = 8;
-    double amountFont = 8;
+    double amountFont = 14;
     String currencySign = (currency=='Dollar')? "\$ ": "₱ ";
     EdgeInsets cPadding = EdgeInsets.fromLTRB(15, 17, 15, 0);
 
