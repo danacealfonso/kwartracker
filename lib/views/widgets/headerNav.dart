@@ -4,13 +4,10 @@ AppBar headerNav({
   required Widget title,
   List<Widget>? action,
   Widget? leading,
-  double? toolBarHeight,
-  bool? centerTitle, double? titleSpacing}){
+  double toolBarHeight = 90,
+  bool centerTitle = true,
+  double titleSpacing = 40}){
   //TODO: IF Conditionals
-  if (toolBarHeight == null) toolBarHeight = 90;
-  if (titleSpacing == null) titleSpacing = 40;
-  if (centerTitle == null) centerTitle = true;
-
   if (leading == null) leading = Builder(
     builder: (BuildContext context) {
       return Container(

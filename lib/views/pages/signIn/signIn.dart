@@ -9,6 +9,7 @@ import 'package:kwartracker/views/widgets/cButton.dart';
 import 'package:kwartracker/views/widgets/cTextField.dart';
 import 'package:kwartracker/util/myRoute.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import '../../widgets/headerNav.dart';
 
@@ -17,6 +18,7 @@ class SignInPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
+//TODO: Authenticating Users with FirebaseAuth
 class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
   final _auth = FirebaseAuth.instance;
   bool showSpinner = false;
@@ -90,7 +92,15 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                   setState(() {
                     showSpinner = false;
                   });
-                  print(e);
+                  Fluttertoast.showToast(
+                      msg: e.toString(),
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
                 }
               }
             ),
@@ -186,7 +196,7 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                     child: RichText(
                       text: TextSpan(
                         children: <TextSpan>[

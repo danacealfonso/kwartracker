@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 class ColorConstants {
   //gray
-  static const grey5 = Color(0xFFECF0F2);
   static const grey = Color(0xFFF1F3F6);
+  static const grey1 = Color(0xFFE4EAEF);
+  static const grey2 = Color(0x7AF1F3F6);
+  static const grey3 = Color(0xFFC2C9CE);
+  static const grey5 = Color(0xFFECF0F2);
   static const grey6 = Color(0xFFBBC3C9);
   //cyan
   static const cyan = Color(0xFF03BED6);
