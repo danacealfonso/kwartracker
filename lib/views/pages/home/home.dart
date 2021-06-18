@@ -94,6 +94,7 @@ class _HomePageState extends State<HomePage> {
       tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
     );
   }
+
   Widget content() {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -399,7 +400,6 @@ class _HomePageState extends State<HomePage> {
         ]
     );
   }
-
   @override
   Widget build(BuildContext context) {
     double offsetLeftDrawer = -MediaQuery.of(context).size.width * .77;
