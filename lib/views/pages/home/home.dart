@@ -5,8 +5,10 @@ import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
 import 'package:kwartracker/views/pages/transactions/transactionAddWallet.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
+import 'package:kwartracker/views/widgets/cButton.dart';
 import 'package:kwartracker/views/widgets/cCardWallets.dart';
 import 'package:kwartracker/views/widgets/cDrawer.dart';
+import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
 import 'package:kwartracker/views/widgets/cTransactionListItem.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kwartracker/util/globals.dart' as globals;
@@ -20,6 +22,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   DrawerState drawerState = DrawerState.close;
   final _auth = FirebaseAuth.instance;
+  String fDate = "";
+  String fDateID = "";
 
   void getCurrentUser() async {
     try {
@@ -150,7 +154,90 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           button("images/icons/ic_date_cyan.png", (){
                             showModalBottomSheet(context: context,
-                            builder: bsDateRange,
+                            builder: (context) {
+                              return StatefulBuilder(
+                                  builder: (BuildContext context, StateSetter setState) {
+                                    return BackdropFilter(
+                                      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                                      child: Container(
+                                          height: 350.0,
+                                          child: Container(
+                                              padding: EdgeInsets.fromLTRB(30, 40, 30, 0),
+                                              decoration: new BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius: new BorderRadius.only(
+                                                      topLeft: const Radius.circular(60.0),
+                                                      topRight: const Radius.circular(60.0)
+                                                  )
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: Text(
+                                                            "Default date range",
+                                                            style: TextStyle(
+                                                                color: ColorConstants.black,
+                                                                fontSize: 18,
+                                                                fontWeight: FontWeight.bold
+                                                            )
+                                                        ),
+                                                      ),
+                                                      Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                                        children: [
+                                                          Container(
+                                                              height: 30,
+                                                              width: 30,
+                                                              child: FloatingActionButton(
+                                                                  backgroundColor: ColorConstants.grey,
+                                                                  onPressed: () {
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                  child: Image.asset(
+                                                                      'images/icons/ic_close.png',
+                                                                      width: 10,
+                                                                      height: 10,
+                                                                      fit:BoxFit.fill
+                                                                  )
+                                                              )
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  CDropdownTextField(
+                                                      label: "Select Date Range",
+                                                      text: fDate,
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          fDate = value[1];
+                                                          fDateID = value[0];
+                                                          print(value);
+                                                        });
+                                                      },
+                                                      items: <PopupMenuEntry>[
+                                                        PopupMenuItem<List>(
+                                                            child: Text('This week'), value: ['This week', 'This week']),
+                                                        PopupMenuItem<List>(
+                                                            child: Text('This month'), value: ['This month', 'This month'])
+                                                      ]
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    child: CButton(
+                                                        text: "Apply",
+                                                        onPressed: () {}
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                          )
+                                      ),
+                                    );
+                                  });
+                            },
                             barrierColor: Colors.white.withOpacity(0.5),
                             );
                           }),
