@@ -148,7 +148,6 @@ class _WalletsPageState extends State<WalletsPage> {
         )
       ),
     )).toList();
-
     Widget content() {
       return Container(
         height: 300,

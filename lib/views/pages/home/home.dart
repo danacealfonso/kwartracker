@@ -238,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                                     );
                                   });
                             },
-                            barrierColor: Colors.white.withOpacity(0.5),
+                            barrierColor: Colors.white.withOpacity(0),
                             );
                           }),
                           button("images/icons/ic_graph_cyan.png", (){}),
@@ -323,9 +323,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Container(
-            height: 130,
+            height: 140,
             child: ListView(
-              padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
+              padding: EdgeInsets.fromLTRB(25, 8, 25, 10),
               scrollDirection: Axis.horizontal,
               children: <Widget>[
                 CCardWallets(
