@@ -152,49 +152,56 @@ class _WalletsPageState extends State<WalletsPage> {
     Widget content() {
       return Container(
         height: 300,
-        child: Stack(
-            children: [
-              CarouselSlider(
-                items: imageSliders,
-                options: CarouselOptions(
-                    viewportFraction: 0.6,
-                    aspectRatio: 2.0,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _current = index;
-                      });
-                    }
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 180.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: imgList.map((url) {
-                    int index = imgList.indexOf(url);
-                    return _current == index ? Container(
-                      width: 15.0,
-                      height: 10.0,
-                      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(5),
-                        color : ColorConstants.cyan,
-                      ),
-                    ) : Container(
-                      width: 10.0,
-                      height: 10.0,
-                      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(5),
-                        color : ColorConstants.grey1,
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ]
+        child: Column(
+          children: [
+            Stack(
+                children: [
+                  CarouselSlider(
+                    items: imageSliders,
+                    options: CarouselOptions(
+                        viewportFraction: 0.6,
+                        aspectRatio: 2.0,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _current = index;
+                          });
+                        }
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 180.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: imgList.map((url) {
+                        int index = imgList.indexOf(url);
+                        return _current == index ? Container(
+                          width: 15.0,
+                          height: 10.0,
+                          margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(5),
+                            color : ColorConstants.cyan,
+                          ),
+                        ) : Container(
+                          width: 10.0,
+                          height: 10.0,
+                          margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(5),
+                            color : ColorConstants.grey1,
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ]
+            ),
+            Row(children: [
+
+            ])
+          ],
         ),
       );
     }

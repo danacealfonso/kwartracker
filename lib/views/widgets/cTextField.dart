@@ -4,14 +4,14 @@ import 'package:kwartracker/util/colorConstants.dart';
 class CTextField extends StatelessWidget {
   CTextField({
     required this.label,
-    this.text = "",
+    this.text,
     this.hintText = "",
     this.onChanged,
     this.obscureText = false
   });
 
   final String label;
-  final String text;
+  final String? text;
   final String hintText;
   final bool obscureText;
   final ValueChanged? onChanged;
@@ -20,9 +20,11 @@ class CTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = TextEditingController();
 
-    if(text.isNotEmpty) {
+
+    if(text != null) {
+      print(text);
       onChanged!(text);
-      controller.text = text;
+      controller.text = text!;
     }
     return Column(children: [
       Padding(

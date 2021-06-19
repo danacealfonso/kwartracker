@@ -35,7 +35,7 @@ class CDropdownTextField extends StatelessWidget {
       );
       onChanged!(selected);
     }
-    if(text.isNotEmpty) controller.text = text!;
+    if(text.isNotEmpty) controller.text = text;
     return Column(children: [
       Padding(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
