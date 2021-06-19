@@ -7,6 +7,7 @@ import 'package:kwartracker/views/pages/wallets/walletAdd.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:kwartracker/views/widgets/cCardWallets.dart';
+import 'package:kwartracker/views/widgets/cTransactionListItem.dart';
 import '../../widgets/headerNav.dart';
 
 class WalletsPage extends StatefulWidget {
@@ -154,52 +155,130 @@ class _WalletsPageState extends State<WalletsPage> {
         child: Column(
           children: [
             Stack(
-                children: [
-                  CarouselSlider(
-                    items: imageSliders,
-                    options: CarouselOptions(
-                        viewportFraction: 0.6,
-                        aspectRatio: 2.0,
-                        onPageChanged: (index, reason) {
-                          setState(() {
-                            _current = index;
-                          });
-                        }
-                    ),
+              children: [
+                CarouselSlider(
+                  items: imageSliders,
+                  options: CarouselOptions(
+                    viewportFraction: 0.6,
+                    aspectRatio: 2.0,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _current = index;
+                      });
+                    }
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 180.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: imgList.map((url) {
-                        int index = imgList.indexOf(url);
-                        return _current == index ? Container(
-                          width: 15.0,
-                          height: 10.0,
-                          margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(5),
-                            color : ColorConstants.cyan,
-                          ),
-                        ) : Container(
-                          width: 10.0,
-                          height: 10.0,
-                          margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(5),
-                            color : ColorConstants.grey1,
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 180.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: imgList.map((url) {
+                      int index = imgList.indexOf(url);
+                      return _current == index ? Container(
+                        width: 15.0,
+                        height: 10.0,
+                        margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(5),
+                          color : ColorConstants.cyan,
+                        ),
+                      ) : Container(
+                        width: 10.0,
+                        height: 10.0,
+                        margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(5),
+                          color : ColorConstants.grey1,
+                        ),
+                      );
+                    }).toList(),
                   ),
-                ]
+                ),
+              ]
             ),
             Row(children: [
-
-            ])
+              Container(
+                  height: 30,
+                  width: 30,
+                  child: FloatingActionButton(
+                      backgroundColor: ColorConstants.grey,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Image.asset(
+                          'images/icons/ic_close.png',
+                          width: 10,
+                          height: 10,
+                          fit:BoxFit.fill
+                      )
+                  )
+              ),
+              Text("Edit Wallet"),
+              Container(
+                  height: 30,
+                  width: 30,
+                  child: FloatingActionButton(
+                      backgroundColor: ColorConstants.grey,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Image.asset(
+                          'images/icons/ic_close.png',
+                          width: 10,
+                          height: 10,
+                          fit:BoxFit.fill
+                      )
+                  )
+              ),
+              Text("Add Transaction")
+            ]),
+            Container(
+              margin: const EdgeInsets.only(left: 30.0, right: 30.0),
+              padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
+              child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                          "Transactions",
+                          style: TextStyle(
+                              color: ColorConstants.black1,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700
+                          )
+                      ),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [Text(
+                          "View All",
+                          style: TextStyle(
+                              color: ColorConstants.grey6,
+                              fontSize: 12,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w500
+                          )
+                      )],
+                    ),
+                  ]
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.fromLTRB(25, 0, 25, 90),
+                children: <Widget>[
+                  for(int i=0; i<15; i++)
+                    CTransactionListItem(
+                      month: "Mar",
+                      day: 15,
+                      walletType: "SALARY",
+                      walletName: "March 15 Payroll",
+                      amount: 10000.00,
+                    ),
+                ],
+              ),
+            ),
           ],
         ),
       );
