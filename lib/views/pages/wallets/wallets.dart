@@ -3,6 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
+import 'package:kwartracker/views/pages/transactions/transactionAddWallet.dart';
+import 'package:kwartracker/views/pages/transactions/transactions.dart';
+import 'package:kwartracker/views/pages/wallets/transactionList.dart';
 import 'package:kwartracker/views/pages/wallets/walletAdd.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -66,13 +69,20 @@ class _WalletsPageState extends State<WalletsPage> {
       "My Wallet",
     );
   }
-  final List<Map<String, dynamic>> imgList = [];
+  final List<Map<String, dynamic>> walletsList = [];
   int prevListCount = 0;
   int _current = 0;
 
-  void getData() async {
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+  }
+
+  Future<Null> _getData() async {
     List<Map<String, dynamic>> walletTypeData = [];
     List<Map<String, dynamic>> colorData = [];
+
     for (CardColor cColor in CardColor.values) {
       var cColorLast = cColor.toString().split('.').last;
       colorData.add({
@@ -95,49 +105,49 @@ class _WalletsPageState extends State<WalletsPage> {
           "name":walletName,
         });
       }
+    });
 
-      var walletsStream = _fireStore.collection("wallets")
-          .where("uID", isEqualTo: _auth.currentUser!.uid)
-          .snapshots();
+    var walletsStream = _fireStore.collection("wallets")
+        .where("uID", isEqualTo: _auth.currentUser!.uid)
+        .snapshots();
 
-      walletsStream.listen((snapshot) {
-        imgList.clear();
-        for (var walletType in snapshot.docs) {
-          String walletName = walletType.data()["name"];
-          String walletTypeID = walletType.data()["type"];
-          String balance = walletType.data()["balance"];
-          CardColor? walletColor;
-          String? walletTypeName = "";
-          for (var walletType in walletTypeData) {
-            if(walletTypeID == walletType["id"]) {
-              var colorIndex = colorData.indexWhere((element) =>
-                element["color"] == walletType["color"]);
+    walletsStream.listen((snapshot) {
+      walletsList.clear();
+      for (var walletType in snapshot.docs) {
+        String walletName = walletType.data()["name"];
+        String walletTypeID = walletType.data()["type"];
+        String balance = walletType.data()["balance"];
+        CardColor? walletColor;
+        String? walletTypeName = "";
+        for (var walletType in walletTypeData) {
+          if(walletTypeID == walletType["id"]) {
+            var colorIndex = colorData.indexWhere((element) =>
+            element["color"] == walletType["color"]);
 
-              walletTypeName = walletType["name"];
-              walletColor = colorData[colorIndex]["cardColor"];
-              break;
-            }
+            walletTypeName = walletType["name"];
+            walletColor = colorData[colorIndex]["cardColor"];
+            break;
           }
-
-          imgList.add({
-            "color": walletColor,
-            "type": walletTypeName,
-            "name":walletName,
-            "balance":balance == null ? "0.00": balance
-          });
         }
 
-        if(prevListCount != imgList.length)
-          setState(() {});
+        walletsList.add({
+          "color": walletColor,
+          "type": walletTypeName,
+          "name":walletName,
+          "balance":balance == null ? "0.00": balance
+        });
+      }
 
-        prevListCount = imgList.length;
-      });
+      if(prevListCount != walletsList.length)
+        setState(() {});
+
+      prevListCount = walletsList.length;
     });
+    return null;
   }
   @override
   Widget build(BuildContext context) {
-    getData();
-    final List<Widget> imageSliders = imgList.map((item) => Container(
+    final List<Widget> imageSliders = walletsList.map((item) => Container(
       child: Container(
         width: 240,
         child: CCardWallets(
@@ -172,8 +182,8 @@ class _WalletsPageState extends State<WalletsPage> {
                   padding: const EdgeInsets.only(top: 180.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: imgList.map((url) {
-                      int index = imgList.indexOf(url);
+                    children: walletsList.map((item) {
+                      int index = walletsList.indexOf(item);
                       return _current == index ? Container(
                         width: 15.0,
                         height: 10.0,
@@ -198,70 +208,96 @@ class _WalletsPageState extends State<WalletsPage> {
                 ),
               ]
             ),
-            Row(children: [
-              Container(
+            Padding(
+              padding: const EdgeInsets.fromLTRB(30,20,30,30),
+              child: Row(children: [
+                Container(
+                  margin: EdgeInsets.only(right: 10),
                   height: 30,
                   width: 30,
                   child: FloatingActionButton(
-                      backgroundColor: ColorConstants.grey,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Image.asset(
-                          'images/icons/ic_close.png',
-                          width: 10,
-                          height: 10,
-                          fit:BoxFit.fill
-                      )
+                    backgroundColor: ColorConstants.grey,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Image.asset(
+                        'images/icons/ic_edit.png',
+                        width: 10,
+                        height: 10,
+                        fit:BoxFit.fill
+                    )
                   )
-              ),
-              Text("Edit Wallet"),
-              Container(
+                ),
+                Expanded(child: Text("Edit Wallet",
+                  style: TextStyle(
+                    color: ColorConstants.grey6,
+                    fontSize: 12
+                  ))),
+                Container(
+                  margin: EdgeInsets.only(right: 10),
                   height: 30,
                   width: 30,
                   child: FloatingActionButton(
-                      backgroundColor: ColorConstants.grey,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Image.asset(
-                          'images/icons/ic_close.png',
-                          width: 10,
-                          height: 10,
-                          fit:BoxFit.fill
-                      )
+                    backgroundColor: ColorConstants.grey,
+                    onPressed: () {
+                      Navigator.push(context,
+                        MyRoute(
+                          builder: (context) => TransactionAddWalletPage()
+                        )
+                      );
+                    },
+                    child: Image.asset(
+                        'images/icons/ic_add.png',
+                        width: 10,
+                        height: 10,
+                        fit:BoxFit.fill
+                    )
                   )
-              ),
-              Text("Add Transaction")
-            ]),
+                ),
+                Expanded(child: Text("Add Transaction",
+                  style: TextStyle(
+                    color: ColorConstants.grey6,
+                    fontSize: 12
+                  ),
+                ))
+              ]),
+            ),
             Container(
               margin: const EdgeInsets.only(left: 30.0, right: 30.0),
               padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
               child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                          "Transactions",
-                          style: TextStyle(
-                              color: ColorConstants.black1,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700
-                          )
-                      ),
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Transactions",
+                      style: TextStyle(
+                        color: ColorConstants.black1,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700
+                      )
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [Text(
-                          "View All",
-                          style: TextStyle(
-                              color: ColorConstants.grey6,
-                              fontSize: 12,
-                              decoration: TextDecoration.underline,
-                              fontWeight: FontWeight.w500
-                          )
-                      )],
-                    ),
-                  ]
+                  ),
+                  GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                      MyRoute(
+                        builder: (context) => TransactionsPage()
+                      )
+                    );
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [Text(
+                        "View All",
+                        style: TextStyle(
+                            color: ColorConstants.grey6,
+                            fontSize: 12,
+                            decoration: TextDecoration.underline,
+                            fontWeight: FontWeight.w500
+                        )
+                    )],
+                  ),
+                )]
               ),
             ),
             Expanded(

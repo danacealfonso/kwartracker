@@ -44,6 +44,14 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
     }
 
     Widget content() {
+      var controller = TextEditingController();
+      controller.text = "test1234@gmail.com";
+      email = "test1234@gmail.com";
+
+      var controllerPass = TextEditingController();
+      controllerPass.text = "test123";
+      password = "test123";
+      
       return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -58,13 +66,14 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
               ),
             ),
             CTextField(hintText: "Enter email address", label: "Email",
-              text: "test1234@gmail.com",
+              controller: controller,
               onChanged: (value) {
                 email = value;
               },
             ),
             CTextField(hintText: "Enter password", label: "Password",
-              text: "test123",
+              initialValue: "test123",
+              controller: controllerPass,
               obscureText: true,
               onChanged: (value) {
                 password = value;
@@ -77,7 +86,7 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                   showSpinner = true;
                 });
                 try {
-                  final newUser = await _auth.signInWithEmailAndPassword(
+                  await _auth.signInWithEmailAndPassword(
                       email: email,
                       password: password
                   );

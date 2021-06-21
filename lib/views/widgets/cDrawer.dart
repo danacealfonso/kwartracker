@@ -175,9 +175,9 @@ class CWidgets extends CustomWidgets {
   @override
   void navPush(page) {
     Navigator.push(context,
-        MyRoute(
-            builder: (context) => page
-        )
+      MyRoute(
+        builder: (context) => page
+      )
     );
   }
 }
