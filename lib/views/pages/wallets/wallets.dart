@@ -247,7 +247,7 @@ class _WalletsPageState extends State<WalletsPage> {
                       );
                     },
                     child: Image.asset(
-                        'images/icons/ic_add.png',
+                        'images/icons/ic_add_grey.png',
                         width: 10,
                         height: 10,
                         fit:BoxFit.fill
