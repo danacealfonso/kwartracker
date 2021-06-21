@@ -31,9 +31,7 @@ class CDatePickerTextField extends StatelessWidget {
         items: items,
         elevation: 8.0,
       );
-      if (selected != null) {
-        txt.text = selected.toString();
-      }
+      txt.text = selected.toString();
     }
     return Column(children: [
       Padding(

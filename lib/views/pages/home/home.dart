@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   void getCurrentUser() async {
     try {
-      final user = await _auth.currentUser;
+      final user = _auth.currentUser;
       if (user != null)
         globals.isLoggedIn = true;
 
@@ -95,6 +95,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget bsDateRange(BuildContext context) {
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+      child: Container(
+        child: Center(child: Text("asdf"))
+      ),
+    );
+  }
+
   Widget content() {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -151,80 +160,80 @@ class _HomePageState extends State<HomePage> {
                                     return BackdropFilter(
                                       filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                                       child: Container(
-                                        height: 350.0,
-                                        child: Container(
-                                          padding: EdgeInsets.fromLTRB(30, 40, 30, 0),
-                                          decoration: new BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: new BorderRadius.only(
-                                                  topLeft: const Radius.circular(60.0),
-                                                  topRight: const Radius.circular(60.0)
-                                              )
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Row(
+                                          height: 350.0,
+                                          child: Container(
+                                              padding: EdgeInsets.fromLTRB(30, 40, 30, 0),
+                                              decoration: new BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius: new BorderRadius.only(
+                                                      topLeft: const Radius.circular(60.0),
+                                                      topRight: const Radius.circular(60.0)
+                                                  )
+                                              ),
+                                              child: Column(
                                                 children: [
-                                                  Expanded(
-                                                    child: Text(
-                                                        "Default date range",
-                                                        style: TextStyle(
-                                                            color: ColorConstants.black,
-                                                            fontSize: 18,
-                                                            fontWeight: FontWeight.bold
-                                                        )
-                                                    ),
-                                                  ),
                                                   Row(
-                                                    crossAxisAlignment: CrossAxisAlignment.end,
                                                     children: [
-                                                      Container(
-                                                        height: 30,
-                                                        width: 30,
-                                                        child: FloatingActionButton(
-                                                          backgroundColor: ColorConstants.grey,
-                                                          onPressed: () {
-                                                            Navigator.pop(context);
-                                                          },
-                                                          child: Image.asset(
-                                                              'images/icons/ic_close.png',
-                                                              width: 10,
-                                                              height: 10,
-                                                              fit:BoxFit.fill
+                                                      Expanded(
+                                                        child: Text(
+                                                            "Default date range",
+                                                            style: TextStyle(
+                                                                color: ColorConstants.black,
+                                                                fontSize: 18,
+                                                                fontWeight: FontWeight.bold
+                                                            )
+                                                        ),
+                                                      ),
+                                                      Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                                        children: [
+                                                          Container(
+                                                              height: 30,
+                                                              width: 30,
+                                                              child: FloatingActionButton(
+                                                                  backgroundColor: ColorConstants.grey,
+                                                                  onPressed: () {
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                  child: Image.asset(
+                                                                      'images/icons/ic_close.png',
+                                                                      width: 10,
+                                                                      height: 10,
+                                                                      fit:BoxFit.fill
+                                                                  )
+                                                              )
                                                           )
-                                                        )
-                                                      )
+                                                        ],
+                                                      ),
                                                     ],
                                                   ),
+                                                  CDropdownTextField(
+                                                      label: "Select Date Range",
+                                                      text: fDate,
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          fDate = value[1];
+                                                          fDateID = value[0];
+                                                          print(value);
+                                                        });
+                                                      },
+                                                      items: <PopupMenuEntry>[
+                                                        PopupMenuItem<List>(
+                                                            child: Text('This week'), value: ['This week', 'This week']),
+                                                        PopupMenuItem<List>(
+                                                            child: Text('This month'), value: ['This month', 'This month'])
+                                                      ]
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    child: CButton(
+                                                        text: "Apply",
+                                                        onPressed: () {}
+                                                    ),
+                                                  ),
                                                 ],
-                                              ),
-                                              CDropdownTextField(
-                                                  label: "Select Date Range",
-                                                  text: fDate,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      fDate = value[1];
-                                                      fDateID = value[0];
-                                                      print(value);
-                                                    });
-                                                  },
-                                                  items: <PopupMenuEntry>[
-                                                    PopupMenuItem<List>(
-                                                        child: Text('This week'), value: ['This week', 'This week']),
-                                                    PopupMenuItem<List>(
-                                                        child: Text('This month'), value: ['This month', 'This month'])
-                                                  ]
-                                              ),
-                                              Container(
-                                                width: double.infinity,
-                                                child: CButton(
-                                                    text: "Apply",
-                                                    onPressed: () {}
-                                                ),
-                                              ),
-                                            ],
+                                              )
                                           )
-                                        )
                                       ),
                                     );
                                   });

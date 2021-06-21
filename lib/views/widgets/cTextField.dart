@@ -1,23 +1,28 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 
 class CTextField extends StatelessWidget {
   CTextField({
     required this.label,
-    this.text = "",
     this.hintText = "",
     this.onChanged,
-    this.obscureText = false
+    this.obscureText = false,
+    this.controller,
+    this.initialValue = ""
   });
 
   final String label;
-  final String text;
+  final TextEditingController? controller;
   final String hintText;
   final bool obscureText;
   final ValueChanged? onChanged;
+  final String initialValue;
 
   @override
   Widget build(BuildContext context) {
+
     return Column(children: [
       Padding(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
@@ -36,6 +41,7 @@ class CTextField extends StatelessWidget {
       ),
       Container(
         child: TextField(
+          controller: controller,
           obscureText: obscureText,
           onChanged: onChanged,
           decoration: new InputDecoration(

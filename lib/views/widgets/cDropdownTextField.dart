@@ -3,7 +3,7 @@ import 'package:kwartracker/util/colorConstants.dart';
 
 class CDropdownTextField extends StatelessWidget {
   final String label;
-  final String? text;
+  final String text;
   final String? hintText;
   final ValueChanged? onChanged;
   final List<PopupMenuEntry> items;
@@ -12,7 +12,7 @@ class CDropdownTextField extends StatelessWidget {
 
   CDropdownTextField({
     required this.label,
-    this.text,
+    this.text = "",
     this.hintText,
     this.onChanged,
     required this.items,
@@ -33,11 +33,9 @@ class CDropdownTextField extends StatelessWidget {
         items: items,
         elevation: 8.0,
       );
-      if (selected != null) {
-        onChanged!(selected);
-      }
+      onChanged!(selected);
     }
-    if(text != null) controller.text = text!;
+    if(text.isNotEmpty) controller.text = text;
     return Column(children: [
       Padding(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 7),

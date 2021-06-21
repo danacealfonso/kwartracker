@@ -92,7 +92,7 @@ class CCardWallets extends StatelessWidget {
                     height: sHeight,
                     child: Container(
                       decoration: new BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(80),
                         boxShadow: [
                           BoxShadow(
                             color: cardShadow,
