@@ -33,7 +33,8 @@ class _WalletsPageState extends State<WalletsPage> {
                 onPressed: () {
                   Navigator.push(context,
                       MyRoute(
-                          builder: (context) => WalletAddPage()
+                          builder: (context) => WalletAddPage(),
+                          routeSettings: RouteSettings(name: "/walletAdd"),
                       )
                   );
                 },
@@ -242,7 +243,8 @@ class _WalletsPageState extends State<WalletsPage> {
                     onPressed: () {
                       Navigator.push(context,
                         MyRoute(
-                          builder: (context) => TransactionAddWalletPage()
+                          builder: (context) => TransactionAddWalletPage(),
+                          routeSettings: RouteSettings(name: "/transactionAddWallet"),
                         )
                       );
                     },
@@ -281,7 +283,8 @@ class _WalletsPageState extends State<WalletsPage> {
                   onTap: () {
                     Navigator.push(context,
                       MyRoute(
-                        builder: (context) => TransactionsPage()
+                        builder: (context) => TransactionsPage(),
+                        routeSettings: RouteSettings(name: "/transactions"),
                       )
                     );
                   },

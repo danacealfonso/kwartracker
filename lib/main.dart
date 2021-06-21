@@ -5,6 +5,10 @@ import 'package:flutter/rendering.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/globals.dart' as globals;
 import 'package:kwartracker/views/pages/signIn/signIn.dart';
+import 'package:kwartracker/views/pages/signUp/signUp.dart';
+import 'package:kwartracker/views/pages/transactions/transactionAddDetails.dart';
+import 'package:kwartracker/views/pages/transactions/transactionAddWallet.dart';
+import 'package:kwartracker/views/pages/transactions/transactions.dart';
 
 var homeNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -22,8 +26,16 @@ class KwartrackerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Kwartracker App',
+      initialRoute: (globals.isLoggedIn) ? '/': '/signIn',
+      routes: {
+        '/': (context) => HomePage(),
+        '/signIn': (context) => SignInPage(),
+        '/signUp': (context) => SignUpPage(),
+        '/transactions': (context) => TransactionsPage(),
+        '/transactionAddWallet': (context) => TransactionAddWalletPage(),
+        '/transactionDetailsWallet': (context) => TransactionAddDetailsPage(null),
+      },
       debugShowCheckedModeBanner: false,
-      home: (globals.isLoggedIn) ? HomePage(): SignInPage(),
       //TODO: Flutter Themes
       theme: ThemeData(
         primaryColor: ColorConstants.cyan,

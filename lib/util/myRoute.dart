@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyRoute<T> extends MaterialPageRoute<T> {
-  MyRoute({ required WidgetBuilder builder})
+  MyRoute({ required WidgetBuilder builder, required RouteSettings routeSettings})
       : super(builder: builder);
 
   @override

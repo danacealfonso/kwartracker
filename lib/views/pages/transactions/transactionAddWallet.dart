@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
@@ -13,18 +15,46 @@ class TransactionAddWalletPage extends StatefulWidget {
 }
 
 class _TransactionAddWalletPageState extends State<TransactionAddWalletPage> {
-  late final String fName;
-  late final String fType;
-  late final String fCategory;
-  late final String fDate;
-  late final String fPerson;
-  late final String fPhoto;
+  final _fireStore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
+  String fWallet = "";
+  String fWalletID = "";
+  final walletsList = <PopupMenuEntry>[];
+
   var actionButtons = [
     TextButton(
         onPressed: () {  },
         child: Text(""),
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+  }
+
+  Future<Null> _getData() async {
+    walletsList.clear();
+    var walletsStream = _fireStore.collection("wallets")
+        .where("uID", isEqualTo: _auth.currentUser!.uid)
+        .orderBy("name")
+        .snapshots();
+
+    walletsStream.listen((snapshot) {
+      for (var wallet in snapshot.docs) {
+        String walletName = wallet.data()["name"];
+        String walletID = wallet.id;
+
+        List value = [walletID, walletName];
+
+        walletsList.add(PopupMenuItem<List>(
+            child: Text(walletName), value: value)
+        );
+      }
+    });
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +72,16 @@ class _TransactionAddWalletPageState extends State<TransactionAddWalletPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             CDropdownTextField(
-                hintText: "Select wallet to add",
                 label: "Which wallet do you want it to add?",
+                hintText: "Select wallet to add",
+                text: fWallet,
                 onChanged: (value) {
-                  fType = value;
+                  setState(() {
+                    fWallet = value[1];
+                    fWalletID = value[0];
+                  });
                 },
-                items: [
-                  PopupMenuItem<String>(
-                      child: const Text('Salary'), value: 'Salary'),
-                  PopupMenuItem<String>(
-                      child: const Text('Bills'), value: 'Bills'),
-                  PopupMenuItem<String>(
-                      child: const Text('Shopping'), value: 'Shopping'),
-                ]
+                items: walletsList
             ),
             Container(
               width: double.infinity,
@@ -64,7 +91,8 @@ class _TransactionAddWalletPageState extends State<TransactionAddWalletPage> {
                   onPressed: () {
                     Navigator.push(context,
                         MyRoute(
-                            builder: (context) => TransactionAddDetailsPage()
+                            builder: (context) => TransactionAddDetailsPage(fWalletID),
+                          routeSettings: RouteSettings(name: "/TransactionAddDetailsPage"),
                         )
                     );
                   }

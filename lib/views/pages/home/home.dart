@@ -454,7 +454,8 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     Navigator.push(context,
                       MyRoute(
-                          builder: (context) => TransactionAddWalletPage()
+                          builder: (context) => TransactionAddWalletPage(), routeSettings:
+                      RouteSettings(name: "/transactionAddWallet"),
                       )
                     );
                   },

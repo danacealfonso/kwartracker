@@ -92,7 +92,8 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                   );
                   globals.isLoggedIn = true;
                   Navigator.pushAndRemoveUntil(context, MyRoute(
-                      builder: (context) => HomePage()
+                      builder: (context) => HomePage(), routeSettings:
+                  RouteSettings(name: "/home"),
                   ), (route) => false);
                   setState(() {
                     showSpinner = false;
@@ -227,7 +228,8 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                               ..onTap = () {
                                 Navigator.push(context,
                                   MyRoute(
-                                    builder: (context) => SignUpPage()
+                                    builder: (context) => SignUpPage(), routeSettings:
+                                  RouteSettings(name: "/signUp"),
                                   )
                                 );
                               }
