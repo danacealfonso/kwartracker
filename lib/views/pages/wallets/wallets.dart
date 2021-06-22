@@ -33,7 +33,8 @@ class _WalletsPageState extends State<WalletsPage> {
                 onPressed: () {
                   Navigator.push(context,
                       MyRoute(
-                          builder: (context) => WalletAddPage()
+                          builder: (context) => WalletAddPage(),
+                          routeSettings: RouteSettings(name: "/walletAdd"),
                       )
                   );
                 },
@@ -134,7 +135,7 @@ class _WalletsPageState extends State<WalletsPage> {
           "color": walletColor,
           "type": walletTypeName,
           "name":walletName,
-          "balance":balance == null ? "0.00": balance
+          "balance":balance.isEmpty ? "0.00": balance
         });
       }
 
@@ -242,12 +243,13 @@ class _WalletsPageState extends State<WalletsPage> {
                     onPressed: () {
                       Navigator.push(context,
                         MyRoute(
-                          builder: (context) => TransactionAddWalletPage()
+                          builder: (context) => TransactionAddWalletPage(),
+                          routeSettings: RouteSettings(name: "/transactionAddWallet"),
                         )
                       );
                     },
                     child: Image.asset(
-                        'images/icons/ic_add.png',
+                        'images/icons/ic_add_grey.png',
                         width: 10,
                         height: 10,
                         fit:BoxFit.fill
@@ -281,7 +283,8 @@ class _WalletsPageState extends State<WalletsPage> {
                   onTap: () {
                     Navigator.push(context,
                       MyRoute(
-                        builder: (context) => TransactionsPage()
+                        builder: (context) => TransactionsPage(),
+                        routeSettings: RouteSettings(name: "/transactions"),
                       )
                     );
                   },

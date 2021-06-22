@@ -27,7 +27,8 @@ class _TransactionsPageState extends State<TransactionsPage>
               onPressed: () {
                 Navigator.push(context,
                   MyRoute(
-                    builder: (context) => TransactionAddWalletPage()
+                    builder: (context) => TransactionAddWalletPage(),
+                    routeSettings: RouteSettings(name: "/transactionAddWallet"),
                   )
                 );
               },
