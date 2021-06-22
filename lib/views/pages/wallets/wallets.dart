@@ -135,7 +135,7 @@ class _WalletsPageState extends State<WalletsPage> {
           "color": walletColor,
           "type": walletTypeName,
           "name":walletName,
-          "balance":balance == null ? "0.00": balance
+          "balance":balance.isEmpty ? "0.00": balance
         });
       }
 
