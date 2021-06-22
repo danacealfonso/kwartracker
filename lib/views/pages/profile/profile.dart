@@ -22,7 +22,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     var actionButtons = [
       TextButton(
           onPressed: null,

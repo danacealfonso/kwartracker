@@ -21,20 +21,7 @@ class CDatePickerTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var txt = TextEditingController();
-    void _showPopupMenu(Offset offset) async {
-      double left = offset.dx;
-      double top = offset.dy;
-      String selected = await showMenu(
-        initialValue: initialValue,
-        context: context,
-        position: RelativeRect.fromLTRB(left, top, 0, 0),
-        items: items,
-        elevation: 8.0,
-      );
-      if (selected != null) {
-        txt.text = selected.toString();
-      }
-    }
+    if (text != null) txt.text = text!;
     return Column(children: [
       Padding(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
@@ -52,52 +39,48 @@ class CDatePickerTextField extends StatelessWidget {
         ),
       ),
       Container(
-        child: GestureDetector(
-          onTapDown: (TapDownDetails details) {
-            _showPopupMenu(details.globalPosition);
-          },
-          child: TextField(
-              controller: txt,
-              enabled: false,
-              onChanged: onChanged,
-              decoration: new InputDecoration(
-                disabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(
-                        color: Colors.white,
-                        style: BorderStyle.solid,
-                        width: 0
-                    )
+        child: TextField(
+            controller: txt,
+            enabled: false,
+            onChanged: onChanged,
+            decoration: new InputDecoration(
+              disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(
+                      color: Colors.white,
+                      style: BorderStyle.solid,
+                      width: 0
+                  )
+              ),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(
+                      color: Colors.white,
+                      style: BorderStyle.solid,
+                      width: 1
+                  )
+              ),
+              filled: true,
+              hintStyle: new TextStyle(
+                  color: Color(0xFFBBC3C9),
+                  fontSize: 14,
+                  fontStyle: FontStyle.italic
+              ),
+              hintText: hintText,
+              fillColor: Color(0xFFF1F3F6),
+              suffixIcon: Container(
+                margin: EdgeInsets.only(right: 5),
+                width: 50,
+                height: 40,
+                decoration: BoxDecoration(
+                    color: ColorConstants.grey1,
+                    borderRadius: BorderRadius.all(Radius.circular(14))
                 ),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(
-                        color: Colors.white,
-                        style: BorderStyle.solid,
-                        width: 1
-                    )
-                ),
-                filled: true,
-                hintStyle: new TextStyle(
-                    color: Color(0xFFBBC3C9),
-                    fontSize: 14,
-                    fontStyle: FontStyle.italic
-                ),
-                hintText: hintText,
-                fillColor: Color(0xFFF1F3F6),
-                suffixIcon: Container(
-                  margin: EdgeInsets.only(right: 5),
-                  width: 50,
-                  height: 40,
-                  decoration: BoxDecoration(
-                      color: ColorConstants.grey1,
-                      borderRadius: BorderRadius.all(Radius.circular(14))
-                  ),
-                  child: Icon(Icons.date_range),
-                ),
-              )
-          ),
+                child: Icon(Icons.date_range),
+              ),
+            )
         ),
+
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           boxShadow: [

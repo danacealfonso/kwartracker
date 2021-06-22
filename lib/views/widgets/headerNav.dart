@@ -43,7 +43,7 @@ AppBar headerNav({
   );
 
   return AppBar(
-    title: Hero(tag: 'AppBarTitle', child: title),
+    title: title,
     actions: action,
     leadingWidth: 80,
     automaticallyImplyLeading: true,

@@ -72,7 +72,7 @@ class CDrawer extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            cWidgets.navPush(TransactionsPage());
+            cWidgets.navPush(TransactionsPage(), "/transactions");
           },
           //TODO: Custom Flutter Widgets
           child: CDrawerListItem(
@@ -82,7 +82,7 @@ class CDrawer extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            cWidgets.navPush(WalletsPage());
+            cWidgets.navPush(WalletsPage(), "/wallets");
           },
           child: CDrawerListItem(
             title: "Wallets",
@@ -91,7 +91,7 @@ class CDrawer extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            cWidgets.navPush(ReportsPage());
+            cWidgets.navPush(ReportsPage(), '/reports');
           },
           child: CDrawerListItem(
             title: "Reports",
@@ -100,7 +100,7 @@ class CDrawer extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            cWidgets.navPush(ProfilePage());
+            cWidgets.navPush(ProfilePage(), '/profile');
           },
           child: CDrawerListItem(
             title: "My Profile",
@@ -109,7 +109,7 @@ class CDrawer extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            cWidgets.navPush(SettingsPage());
+            cWidgets.navPush(SettingsPage(),'/settings');
           },
           child: CDrawerListItem(
             title: "Settings",
@@ -126,7 +126,8 @@ class CDrawer extends StatelessWidget {
                       _auth.signOut();
                       globals.isLoggedIn = false;
                       Navigator.pushAndRemoveUntil(context, MyRoute(
-                          builder: (context) => SignInPage()
+                        builder: (context) => SignInPage(), routeSettings:
+                        RouteSettings(name: "/signIn"),
                       ), (route) => false);
                     },
                     child: CDrawerListItem(
@@ -161,7 +162,7 @@ class CDrawer extends StatelessWidget {
 }
 
 abstract class CustomWidgets {
-  void navPush(page);
+  void navPush(page, name);
 }
 //TODO: Enums
 enum DrawerState { open, close, }
@@ -173,11 +174,12 @@ class CWidgets extends CustomWidgets {
   final BuildContext context;
 
   @override
-  void navPush(page) {
+  void navPush(page, name) {
     Navigator.push(context,
-        MyRoute(
-            builder: (context) => page
-        )
+      MyRoute(
+        builder: (context) => page,
+        routeSettings:  RouteSettings(name: name)
+      )
     );
   }
 }

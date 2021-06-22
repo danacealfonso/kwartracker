@@ -23,7 +23,6 @@ class _ReportsPageState extends State<ReportsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     var actionButtons = [
       TextButton(
           onPressed: null,

@@ -44,6 +44,14 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
     }
 
     Widget content() {
+      var controller = TextEditingController();
+      controller.text = "test1234@gmail.com";
+      email = "test1234@gmail.com";
+
+      var controllerPass = TextEditingController();
+      controllerPass.text = "test123";
+      password = "test123";
+      
       return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -58,11 +66,14 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
               ),
             ),
             CTextField(hintText: "Enter email address", label: "Email",
+              controller: controller,
               onChanged: (value) {
                 email = value;
               },
             ),
             CTextField(hintText: "Enter password", label: "Password",
+              initialValue: "test123",
+              controller: controllerPass,
               obscureText: true,
               onChanged: (value) {
                 password = value;
@@ -75,16 +86,15 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                   showSpinner = true;
                 });
                 try {
-                  final newUser = await _auth.signInWithEmailAndPassword(
+                  await _auth.signInWithEmailAndPassword(
                       email: email,
                       password: password
                   );
-                  if (newUser != null) {
-                    globals.isLoggedIn = true;
-                    Navigator.pushAndRemoveUntil(context, MyRoute(
-                        builder: (context) => HomePage()
-                    ), (route) => false);
-                  }
+                  globals.isLoggedIn = true;
+                  Navigator.pushAndRemoveUntil(context, MyRoute(
+                      builder: (context) => HomePage(), routeSettings:
+                  RouteSettings(name: "/home"),
+                  ), (route) => false);
                   setState(() {
                     showSpinner = false;
                   });
@@ -218,7 +228,8 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                               ..onTap = () {
                                 Navigator.push(context,
                                   MyRoute(
-                                    builder: (context) => SignUpPage()
+                                    builder: (context) => SignUpPage(), routeSettings:
+                                  RouteSettings(name: "/signUp"),
                                   )
                                 );
                               }
