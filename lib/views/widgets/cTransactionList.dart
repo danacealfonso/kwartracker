@@ -37,20 +37,34 @@ class _CTransactionListState extends State<CTransactionList> {
 
   Future<Null> _getData() async {
     var query;
-
-    if (_lastVisible == null)
-      query = _fireStore
-        .collection('transactions')
-        .where("wallet",isEqualTo: widget.walletID)
-        .orderBy('created_at', descending: true)
-        .limit(20);
-    else
-      query = _fireStore
-        .collection('transactions')
-        .where("wallet",isEqualTo: widget.walletID)
-        .orderBy('created_at', descending: true)
-        .startAfterDocument(_lastVisible!)
-        .limit(20);
+    String uID = _auth.currentUser!.uid;
+    if (_lastVisible == null) {
+      query = (widget.walletID==null)? _fireStore
+          .collection('transactions')
+          .where("uID", isEqualTo: uID)
+          .orderBy('created_at', descending: true)
+          .limit(20)
+        : _fireStore
+          .collection('transactions')
+          .where("wallet", isEqualTo: widget.walletID)
+          .where("uID", isEqualTo: uID)
+          .orderBy('created_at', descending: true)
+          .limit(20);
+    } else {
+      query = (widget.walletID==null)? _fireStore
+            .collection('transactions')
+            .where("uID", isEqualTo: uID)
+            .orderBy('created_at', descending: true)
+            .startAfterDocument(_lastVisible!)
+            .limit(20)
+          : _fireStore
+            .collection('transactions')
+            .where("wallet", isEqualTo: widget.walletID)
+            .where("uID", isEqualTo: uID)
+            .orderBy('created_at', descending: true)
+            .startAfterDocument(_lastVisible!)
+            .limit(20);
+    }
 
     query.get().then((documentSnapshot) {
       if (documentSnapshot.docs.length > 0) {
@@ -65,6 +79,12 @@ class _CTransactionListState extends State<CTransactionList> {
         }
       } else {
         setState(() => _isLoading = false);
+
+        ScaffoldMessenger.of(context)
+            .showSnackBar( SnackBar(
+          content: Text("No transaction."),
+          duration: Duration(milliseconds: 1000),
+        ), );
       }
     });
     return null;
@@ -125,14 +145,17 @@ class _CTransactionListState extends State<CTransactionList> {
                 alignment: Alignment.bottomCenter,
                 child: Opacity(
                   opacity: _isLoading ? 1.0 : 0.0,
-                  child: SizedBox(
-                    width: 32.0,
-                    height: 32.0,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        ColorConstants.cyan
-                      ),
-                    )),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top:15),
+                    child: SizedBox(
+                      width: 32.0,
+                      height: 32.0,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          ColorConstants.cyan
+                        ),
+                      )),
+                  ),
                 ),
               );
             },

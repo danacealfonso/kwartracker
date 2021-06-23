@@ -9,8 +9,6 @@ import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
 import 'package:kwartracker/views/widgets/cSwitch.dart';
 import 'package:kwartracker/views/widgets/cTextField.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:dropdownfield/dropdownfield.dart';
-import 'dart:async';
 import '../../widgets/headerNav.dart';
 
 class WalletAddPage extends StatefulWidget {
@@ -128,87 +126,85 @@ class _WalletAddPageState extends State<WalletAddPage> {
     Widget content() {
       return Container(
         padding: const EdgeInsets.fromLTRB(30,30,30,0),
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 30.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Center(child: CCardWallets(
-                txtWallet: fName.toString(),
-                txtTypeWallet: fType,
-                currency: fCurrency,
-                cardSize: CardSize.large,
-                cardColor: cardColor,)
-              ),
-              CTextField(
-                label: "Wallet Name",
-                hintText: "Enter wallet name",
+        child: ListView(
+          padding: EdgeInsets.only(bottom: 30),
+          children: <Widget>[
+            Center(child: CCardWallets(
+              txtWallet: fName.toString(),
+              txtTypeWallet: fType,
+              currency: fCurrency,
+              cardSize: CardSize.large,
+              cardColor: cardColor,)
+            ),
+            CTextField(
+              label: "Wallet Name",
+              hintText: "Enter wallet name",
+              autofocus: true,
+              onChanged: (value) {
+                setState(() {
+                  fName = value;
+                });
+              },
+            ),
+            CDropdownTextField(
+                label: "Currency",
+                hintText: "Select wallet currency",
+                text: fCurrency,
                 onChanged: (value) {
                   setState(() {
-                    fName = value;
+                    fCurrency = value[1];
+                    fCurrencyID = value[0];
                   });
                 },
-              ),
-              CDropdownTextField(
-                  label: "Currency",
-                  hintText: "Select wallet currency",
-                  text: fCurrency,
-                  onChanged: (value) {
-                    setState(() {
-                      fCurrency = value[1];
-                      fCurrencyID = value[0];
-                    });
-                  },
-                  items: currencyList
-              ),
-              CDropdownTextField(
-                  label: "Wallet Type",
-                  hintText: "Select wallet type",
-                  text: fType,
-                  onChanged: (value) {
-                    setState(() {
-                      fType = value[1];
-                      fTypeID = value[0];
-                    });
-                  },
-                  items: walletTypeList
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      child: Text(
-                        "Include in overall total balance?",
-                        style: TextStyle(
-                            color: ColorConstants.grey6,
-                            fontSize: 12
-                        ),
-                      ),
-                    )
-                ),
-              ),
-              Row(children: [
-                Text("Yes"),
-                RotatedBox(
-                  quarterTurns: 2,
+                items: currencyList
+            ),
+            CDropdownTextField(
+                label: "Wallet Type",
+                hintText: "Select wallet type",
+                text: fType,
+                onChanged: (value) {
+                  setState(() {
+                    fType = value[1];
+                    fTypeID = value[0];
+                  });
+                },
+                items: walletTypeList
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
+              child: Align(
+                  alignment: Alignment.centerLeft,
                   child: Container(
-                    margin: EdgeInsets.only(right: 10, left: 10),
-                    child: CSwitch(
-                      value: fOverallBalance,
-                      onChanged: (bool val){
-                        setState(() {
-                          fOverallBalance = val;
-                        });
-                      },
+                    child: Text(
+                      "Include in overall total balance?",
+                      style: TextStyle(
+                          color: ColorConstants.grey6,
+                          fontSize: 12
+                      ),
                     ),
+                  )
+              ),
+            ),
+            Row(children: [
+              Text("Yes"),
+              RotatedBox(
+                quarterTurns: 2,
+                child: Container(
+                  margin: EdgeInsets.only(right: 10, left: 10),
+                  child: CSwitch(
+                    value: fOverallBalance,
+                    onChanged: (bool val){
+                      setState(() {
+                        fOverallBalance = val;
+                      });
+                    },
                   ),
                 ),
-                Text("No"),
-              ],)
+              ),
+              Text("No"),
+            ],)
 
-            ]
-          ),
+          ]
         ),
       );
     }
@@ -223,7 +219,7 @@ class _WalletAddPageState extends State<WalletAddPage> {
                 title: title(),
                 action: actionButtons
             ),
-            body: CBody(child: content())
+            body: CBody(child: content(),hasScrollBody: true,)
         ),
       ),
     );

@@ -117,7 +117,7 @@ class _WalletsPageState extends State<WalletsPage> {
       for (var walletType in snapshot.docs) {
         String walletName = walletType.data()["name"];
         String walletTypeID = walletType.data()["type"];
-        String balance = walletType.data()["balance"];
+        double balance = walletType.data()["balance"];
         CardColor? walletColor;
         String? walletTypeName = "";
         for (var walletType in walletTypeData) {
@@ -337,6 +337,7 @@ class _WalletsPageState extends State<WalletsPage> {
             ),
             Expanded(
               child: CTransactionList(
+                walletID: "0hv9IKdugQN8tWV2ajEU",
                 paddingItem: EdgeInsets.only(left: 30,right: 30),
               ),
             ),

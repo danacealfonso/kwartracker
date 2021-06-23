@@ -10,7 +10,6 @@ import 'package:kwartracker/views/widgets/cCardWallets.dart';
 import 'package:kwartracker/views/widgets/cDrawer.dart';
 import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
 import 'package:kwartracker/views/widgets/cTransactionList.dart';
-import 'package:kwartracker/views/widgets/cTransactionListItem.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kwartracker/util/globals.dart' as globals;
 import '../../widgets/headerNav.dart';
@@ -215,7 +214,6 @@ class _HomePageState extends State<HomePage> {
                                                         setState(() {
                                                           fDate = value[1];
                                                           fDateID = value[0];
-                                                          print(value);
                                                         });
                                                       },
                                                       items: <PopupMenuEntry>[
