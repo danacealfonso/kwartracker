@@ -21,7 +21,7 @@ packages:
       name: carousel_slider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0"
+    version: "4.0.0"
   characters:
     dependency: transitive
     description:
@@ -84,7 +84,7 @@ packages:
       name: dropdownfield
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.3"
   fake_async:
     dependency: transitive
     description:
