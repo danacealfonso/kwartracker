@@ -441,6 +441,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 body: CBody(child: content(),hasScrollBody: true,),
                 floatingActionButton: FloatingActionButton(
+                  heroTag: null,
                   onPressed: () {
                     Navigator.push(context,
                       MyRoute(
