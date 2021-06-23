@@ -29,13 +29,14 @@ class _WalletsPageState extends State<WalletsPage> {
             height: 40,
             margin: EdgeInsets.all(20),
             child: FloatingActionButton(
-                backgroundColor: ColorConstants.grey,
-                onPressed: () {
-                  Navigator.push(context,
-                      MyRoute(
-                          builder: (context) => WalletAddPage(),
-                          routeSettings: RouteSettings(name: "/walletAdd"),
-                      )
+              heroTag: null,
+              backgroundColor: ColorConstants.grey,
+              onPressed: () {
+                Navigator.push(context,
+                    MyRoute(
+                        builder: (context) => WalletAddPage(),
+                        routeSettings: RouteSettings(name: "/walletAdd"),
+                    )
                   );
                 },
                 child: Image.asset(
@@ -232,6 +233,7 @@ class _WalletsPageState extends State<WalletsPage> {
                     ],
                   ),
                   child: FloatingActionButton(
+                    heroTag: null,
                     elevation: 0,
                     backgroundColor: ColorConstants.grey,
                     onPressed: () {
@@ -255,6 +257,7 @@ class _WalletsPageState extends State<WalletsPage> {
                   height: 30,
                   width: 30,
                   child: FloatingActionButton(
+                    heroTag: null,
                     backgroundColor: ColorConstants.grey,
                     elevation: 0,
                     onPressed: () {
