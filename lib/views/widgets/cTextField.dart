@@ -5,7 +5,7 @@ import 'package:kwartracker/util/colorConstants.dart';
 
 class CTextField extends StatelessWidget {
   CTextField({
-    required this.label,
+    this.label = "",
     this.hintText = "",
     this.onChanged,
     this.obscureText = false,
@@ -22,9 +22,8 @@ class CTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(children: [
-      Padding(
+      (label.isNotEmpty)? Padding(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
         child: Align(
           alignment: Alignment.centerLeft,
@@ -38,8 +37,9 @@ class CTextField extends StatelessWidget {
             ),
           )
         ),
-      ),
+      ) : SizedBox(),
       Container(
+        height: 56,
         child: TextField(
           controller: controller,
           obscureText: obscureText,

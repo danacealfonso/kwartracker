@@ -9,6 +9,7 @@ import 'package:kwartracker/views/widgets/cButton.dart';
 import 'package:kwartracker/views/widgets/cCardWallets.dart';
 import 'package:kwartracker/views/widgets/cDrawer.dart';
 import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
+import 'package:kwartracker/views/widgets/cTransactionList.dart';
 import 'package:kwartracker/views/widgets/cTransactionListItem.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kwartracker/util/globals.dart' as globals;
@@ -392,18 +393,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-            child: ListView(
-              padding: EdgeInsets.fromLTRB(25, 0, 25, 90),
-              children: <Widget>[
-                for(int i=0; i<15; i++)
-                  CTransactionListItem(
-                    month: "Mar",
-                    day: 15,
-                    walletType: "SALARY",
-                    walletName: "March 15 Payroll",
-                    amount: 10000.00,
-                  ),
-              ],
+            child: CTransactionList(
+              buttonToTop: false,
+              paddingItem: EdgeInsets.only(left: 30,right: 30),
             ),
           ),
         ]
