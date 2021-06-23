@@ -80,7 +80,6 @@ class CDatePickerTextField extends StatelessWidget {
               ),
             )
         ),
-
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           boxShadow: [

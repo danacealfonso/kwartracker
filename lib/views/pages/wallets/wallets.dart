@@ -5,7 +5,7 @@ import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
 import 'package:kwartracker/views/pages/transactions/transactionAddWallet.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
-import 'package:kwartracker/views/pages/wallets/transactionList.dart';
+import 'package:kwartracker/views/widgets/cTransactionList.dart';
 import 'package:kwartracker/views/pages/wallets/walletAdd.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -117,7 +117,7 @@ class _WalletsPageState extends State<WalletsPage> {
       for (var walletType in snapshot.docs) {
         String walletName = walletType.data()["name"];
         String walletTypeID = walletType.data()["type"];
-        String balance = walletType.data()["balance"];
+        double balance = walletType.data()["balance"];
         CardColor? walletColor;
         String? walletTypeName = "";
         for (var walletType in walletTypeData) {
@@ -216,7 +216,23 @@ class _WalletsPageState extends State<WalletsPage> {
                   margin: EdgeInsets.only(right: 10),
                   height: 30,
                   width: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 8,
+                        offset: const Offset(6, 6),
+                      ),
+                      BoxShadow(
+                        color: Color(0xFFFFFFFF),
+                        blurRadius: 10,
+                        offset: const Offset(-6, -6),
+                      ),
+                    ],
+                  ),
                   child: FloatingActionButton(
+                    elevation: 0,
                     backgroundColor: ColorConstants.grey,
                     onPressed: () {
                       Navigator.pop(context);
@@ -240,6 +256,7 @@ class _WalletsPageState extends State<WalletsPage> {
                   width: 30,
                   child: FloatingActionButton(
                     backgroundColor: ColorConstants.grey,
+                    elevation: 0,
                     onPressed: () {
                       Navigator.push(context,
                         MyRoute(
@@ -254,6 +271,21 @@ class _WalletsPageState extends State<WalletsPage> {
                         height: 10,
                         fit:BoxFit.fill
                     )
+                  ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 8,
+                          offset: const Offset(6, 6),
+                        ),
+                        BoxShadow(
+                          color: Color(0xFFFFFFFF),
+                          blurRadius: 10,
+                          offset: const Offset(-6, -6),
+                        ),
+                      ],
                   )
                 ),
                 Expanded(child: Text("Add Transaction",
@@ -304,18 +336,9 @@ class _WalletsPageState extends State<WalletsPage> {
               ),
             ),
             Expanded(
-              child: ListView(
-                padding: EdgeInsets.fromLTRB(25, 0, 25, 90),
-                children: <Widget>[
-                  for(int i=0; i<15; i++)
-                    CTransactionListItem(
-                      month: "Mar",
-                      day: 15,
-                      walletType: "SALARY",
-                      walletName: "March 15 Payroll",
-                      amount: 10000.00,
-                    ),
-                ],
+              child: CTransactionList(
+                walletID: "0hv9IKdugQN8tWV2ajEU",
+                paddingItem: EdgeInsets.only(left: 30,right: 30),
               ),
             ),
           ],
@@ -331,7 +354,7 @@ class _WalletsPageState extends State<WalletsPage> {
               title: title(),
               action: actionButtons
           ),
-          body: CBody(child: content(),hasScrollBody: false,)
+          body: CBody(child: content(),hasScrollBody: true,)
       ),
     );
   }
