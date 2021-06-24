@@ -90,10 +90,10 @@ class _TransactionAddWalletPageState extends State<TransactionAddWalletPage> {
                   backgroundColor: ColorConstants.cyan,
                   onPressed: () {
                     Navigator.push(context,
-                        MyRoute(
-                            builder: (context) => TransactionAddDetailsPage(fWalletID),
-                          routeSettings: RouteSettings(name: "/TransactionAddDetailsPage"),
-                        )
+                      MyRoute(
+                        builder: (context) => TransactionAddDetailsPage(fWalletID),
+                        routeSettings: RouteSettings(name: "/transactionAddDetailsPage"),
+                      )
                     );
                   }
               ),

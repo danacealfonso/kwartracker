@@ -9,6 +9,7 @@ import 'package:kwartracker/views/widgets/cButton.dart';
 import 'package:kwartracker/views/widgets/cCardWallets.dart';
 import 'package:kwartracker/views/widgets/cDrawer.dart';
 import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
+import 'package:kwartracker/views/widgets/cProgressBar.dart';
 import 'package:kwartracker/views/widgets/cTransactionList.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kwartracker/util/globals.dart' as globals;
@@ -287,7 +288,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-                  ProgressBar(max: 100, current: 90),
+                  CProgressBar(max: 100, current: 90),
                 ]
             ),
           ),
@@ -464,46 +465,5 @@ class _HomePageState extends State<HomePage> {
       ),
     );
 
-  }
-}
-
-//TODO: Refactor Flutter Widgets
-class ProgressBar extends StatelessWidget {
-  ProgressBar({
-    required this.max,
-    required this.current
-  });
-  final double max;
-  final double current;
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (_, boxConstraints) {
-        var x = boxConstraints.maxWidth;
-        var percent = (current / max) * x;
-        return Stack(
-          children: [
-            Container(
-              width: x,
-              height: 10,
-              decoration: BoxDecoration(
-                color: ColorConstants.red,
-                borderRadius: BorderRadius.circular(35),
-              ),
-            ),
-            AnimatedContainer(
-              duration: Duration(milliseconds: 500),
-              width: percent,
-              height: 10,
-              decoration: BoxDecoration(
-                color: ColorConstants.cyan6,
-                borderRadius: BorderRadius.circular(35),
-              ),
-            ),
-          ],
-        );
-      },
-    );
   }
 }

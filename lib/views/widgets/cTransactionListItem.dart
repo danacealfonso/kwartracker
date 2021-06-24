@@ -1,33 +1,41 @@
+import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:kwartracker/util/colorConstants.dart';
+import 'package:kwartracker/util/myRoute.dart';
+import 'package:kwartracker/views/pages/transactions/transactionDetails.dart';
 
 class CTransactionListItem extends StatelessWidget {
 
   CTransactionListItem({
-    required this.month,
-    required this.day,
-    required this.walletType,
-    required this.transactionType,
+    required this.category,
+    this.transactionType = 'income',
+    required this.transactionDate,
+    required this.walletID,
     required this.walletName,
     required this.amount,
-    required this.currency,
+    this.currency = "peso",
   });
 
-  final String month;
-  final int day;
-  final String walletType;
+  final String category;
   final String transactionType;
+  final DateTime transactionDate;
+  final String walletID;
   final String walletName;
   final String currency;
   final double amount;
 
   @override
   Widget build(BuildContext context) {
+    var newAmount = NumberFormat.currency(customPattern: '#,###.##').format(amount);
 
     String currencyAbb =  "Php";
     if(currency!=null)
       if(currency.toLowerCase() == "dollar")
         currencyAbb = "Usd";
+
+    dynamic monthData =
+        '{ "1" : "Jan", "2" : "Feb", "3" : "Mar", "4" : "Apr", "5" : "May", "6" : "Jun", "7" : "Jul", "8" : "Aug", "9" : "Sep", "10" : "Oct", "11" : "Nov", "12" : "Dec" }';
 
     return Container(
       margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
@@ -63,14 +71,14 @@ class CTransactionListItem extends StatelessWidget {
           ),
             padding: EdgeInsets.fromLTRB(11, 8, 11, 0),
             child: Column(children: [
-              Text(month,
+              Text(json.decode(monthData)[transactionDate.month.toString()],
                 style: TextStyle(
                   fontSize: 8,
                   color: ColorConstants.black1,
                   fontWeight: FontWeight.w700
                 ),
               ),
-              Text(day.toString(),
+              Text(transactionDate.day.toString(),
                 style: TextStyle(
                   fontSize: 16,
                   color: ColorConstants.cyan,
@@ -87,7 +95,7 @@ class CTransactionListItem extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      (transactionType.toUpperCase()!='INCOME')?
+                      (transactionType.toLowerCase()!='income')?
                       Container(
                         padding: EdgeInsets.all(2),
                         margin: EdgeInsets.only(right: 5),
@@ -109,7 +117,7 @@ class CTransactionListItem extends StatelessWidget {
                             fit:BoxFit.fill
                         ),
                       ),
-                      Text(walletType,
+                      Text(category,
                         style: TextStyle(
                             fontSize: 8 ,
                             fontWeight: FontWeight.w700,
@@ -133,14 +141,14 @@ class CTransactionListItem extends StatelessWidget {
             children: [
               (transactionType.toUpperCase()=='INCOME')?
               Text(
-                "+ $currencyAbb ${amount.toString()}",
+                "+ $currencyAbb ${newAmount.toString()}",
                 style: TextStyle(
                     color: ColorConstants.cyan6,
                     fontSize: 12,
                     fontWeight: FontWeight.w500
                 )
               ): Text(
-                "- $currencyAbb ${amount.toString()}",
+                "- $currencyAbb ${newAmount.toString()}",
                 style: TextStyle(
                   color: ColorConstants.red,
                   fontSize: 12,
@@ -172,7 +180,14 @@ class CTransactionListItem extends StatelessWidget {
               heroTag: null,
               elevation: 0,
               backgroundColor: ColorConstants.grey,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                  MyRoute(
+                    builder: (context) => TransactionDetailsPage(walletID),
+                    routeSettings: RouteSettings(name: "/transactionDetailsPage"),
+                  )
+                );
+              },
               child: Image.asset(
               'images/icons/ic_next_grey.png',
               width: 5,

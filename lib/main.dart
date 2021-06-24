@@ -8,7 +8,11 @@ import 'package:kwartracker/views/pages/signIn/signIn.dart';
 import 'package:kwartracker/views/pages/signUp/signUp.dart';
 import 'package:kwartracker/views/pages/transactions/transactionAddDetails.dart';
 import 'package:kwartracker/views/pages/transactions/transactionAddWallet.dart';
+import 'package:kwartracker/views/pages/transactions/transactionDetails.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
+import 'package:kwartracker/views/pages/wallets/walletEdit.dart';
+import 'package:provider/provider.dart';
+import 'model/firestoreData.dart';
 
 var homeNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -19,31 +23,33 @@ void main() async {
 }
 
 class KwartrackerApp extends StatelessWidget {
-  static final RouteObserver<PageRoute> routeObserver =
-  RouteObserver<PageRoute>();
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Kwartracker App',
-      initialRoute: (globals.isLoggedIn) ? '/': '/signIn',
-      routes: {
-        '/': (context) => HomePage(),
-        '/signIn': (context) => SignInPage(),
-        '/signUp': (context) => SignUpPage(),
-        '/transactions': (context) => TransactionsPage(),
-        '/transactionAddWallet': (context) => TransactionAddWalletPage(),
-        '/transactionDetailsWallet': (context) => TransactionAddDetailsPage(null),
-      },
-      debugShowCheckedModeBanner: false,
-      //TODO: Flutter Themes
-      theme: ThemeData(
-        primaryColor: ColorConstants.cyan,
-        accentColor: Color(0xFF03BED6),
-        primaryTextTheme: TextTheme(
-            headline6: TextStyle(
-                color: Colors.white
-            )
+    return ChangeNotifierProvider(
+      create: (_) => FirestoreData(),
+      child: MaterialApp(
+        title: 'Kwartracker App',
+        initialRoute: (globals.isLoggedIn) ? '/': '/signIn',
+        routes: {
+          '/': (context) => HomePage(),
+          '/signIn': (context) => SignInPage(),
+          '/signUp': (context) => SignUpPage(),
+          '/transactions': (context) => TransactionsPage(),
+          '/transactionAddWallet': (context) => TransactionAddWalletPage(),
+          '/transactionDetailsWallet': (context) => TransactionAddDetailsPage(null),
+          '/walletEdit': (context) => WalletEditPage(null),
+          '/transactionDetailsPage': (context) => TransactionDetailsPage(null),
+        },
+        debugShowCheckedModeBanner: false,
+        //TODO: Flutter Themes
+        theme: ThemeData(
+          primaryColor: ColorConstants.cyan,
+          accentColor: Color(0xFF03BED6),
+          primaryTextTheme: TextTheme(
+              headline6: TextStyle(
+                  color: Colors.white
+              )
+          ),
         ),
       ),
     );

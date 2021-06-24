@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:kwartracker/model/firestoreData.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
 import 'package:kwartracker/views/pages/transactions/transactionAddWallet.dart';
@@ -10,6 +11,7 @@ import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
 import 'package:kwartracker/views/widgets/cTextField.dart';
 import 'package:kwartracker/views/widgets/cTransactionList.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
+import 'package:provider/provider.dart';
 import '../../widgets/headerNav.dart';
 
 class TransactionsPage extends StatefulWidget {
@@ -20,68 +22,17 @@ class TransactionsPage extends StatefulWidget {
 class _TransactionsPageState extends State<TransactionsPage>
     with TickerProviderStateMixin {
   final _fireStore = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
   String fDate = "";
   String fDateID = "";
-  final categoryList = <PopupMenuEntry>[];
+  List<PopupMenuEntry<dynamic>> categoryList = <PopupMenuEntry>[];
+  List<PopupMenuEntry<dynamic>> walletTypeList = <PopupMenuEntry>[];
   String fCategory = "";
   String fCategoryID = "";
-  final walletTypeList = <PopupMenuEntry>[];
   String fType = "";
   String fTypeID = "";
 
   @override
-  void initState() {
-    super.initState();
-    _getData();
-  }
-
-  Future<Null> _getData() async {
-    var query = _fireStore.collection("categories")
-        .orderBy("name");
-    query.get().then((documentSnapshot) {
-      categoryList.clear();
-      if (documentSnapshot.docs.length > 0) {
-        if (mounted) {
-          for (var category in documentSnapshot.docs) {
-            String categoryName = category.data()["name"];
-            String categoryID = category.id;
-            List value = [categoryID, categoryName];
-
-            categoryList.add(PopupMenuItem<List>(
-                child: Text(categoryName), value: value)
-            );
-          }
-        }
-      }
-    });
-
-    query = _fireStore.collection("walletType");
-
-    query.get().then((documentSnapshot) {
-      walletTypeList.clear();
-      if (documentSnapshot.docs.length > 0) {
-        if (mounted) {
-          for (var walletType in documentSnapshot.docs) {
-            String walletTypeName = walletType.data()["name"];
-            String walletTypeID = walletType.id;
-
-            List value = [walletTypeID, walletTypeName];
-
-            walletTypeList.add(PopupMenuItem<List>(
-                child: Text(walletTypeName), value: value)
-            );
-          }
-        }
-      }
-    });
-
-    return null;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    _getData();
     var actionButtons = [
       Builder(
         builder: (BuildContext context) {
@@ -134,174 +85,189 @@ class _TransactionsPageState extends State<TransactionsPage>
     }
 
     Widget content() {
-      return Container(
-        height: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30,0,30,10),
-              child: Row(children: [
-                Expanded(child:
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Stack(children: [
-                      CTextField(hintText: "Search transaction",),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          height: 25,
-                          width: 25,
-                          margin: EdgeInsets.fromLTRB(0, 15, 15, 0),
-                          child: Image.asset(
-                            'images/icons/ic_search.png',
-                            width: 16,
-                            height: 16,
-                            fit:BoxFit.fill
+      return Consumer<FirestoreData>(
+        builder: (context, firestoreData, child) {
+
+          categoryList = firestoreData.categoriesList.map((item) {
+            return PopupMenuItem<List>(
+                child: Text(item["name"]), value: [item["id"],item["name"]]);
+          }).toList();
+
+          walletTypeList = firestoreData.walletTypeData.map((item) {
+            return PopupMenuItem<List>(
+                child: Text(item["name"]), value: [item["id"],item["name"]]);
+          }).toList();
+
+          return Container(
+            height: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(30,0,30,10),
+                  child: Row(children: [
+                    Expanded(child:
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Stack(children: [
+                        CTextField(hintText: "Search transaction",),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            height: 25,
+                            width: 25,
+                            margin: EdgeInsets.fromLTRB(0, 15, 15, 0),
+                            child: Image.asset(
+                                'images/icons/ic_search.png',
+                                width: 16,
+                                height: 16,
+                                fit:BoxFit.fill
+                            ),
                           ),
                         ),
-                      ),
-                    ]),
-                  )
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 10),
-                  height: 58,
-                  width: 58,
-                  child: MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(15)),
-                    onPressed: (){
-                      showModalBottomSheet(context: context,
-                        builder: (context) {
-                          return StatefulBuilder(
-                              builder: (BuildContext context, StateSetter setState) {
-                                return BackdropFilter(
-                                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                                  child: Container(
-                                      height: 500.0,
+                      ]),
+                    )
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10),
+                      height: 58,
+                      width: 58,
+                      child: MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(15)),
+                        onPressed: (){
+                          showModalBottomSheet(context: context,
+                            builder: (context) {
+                              return StatefulBuilder(
+                                  builder: (BuildContext context, StateSetter setState) {
+                                    return BackdropFilter(
+                                      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                                       child: Container(
-                                          padding: EdgeInsets.fromLTRB(30, 40, 30, 30),
-                                          decoration: new BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: new BorderRadius.only(
+                                          height: 500.0,
+                                          child: Container(
+                                              padding: EdgeInsets.fromLTRB(30, 40, 30, 30),
+                                              decoration: new BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: new BorderRadius.only(
                                                   topLeft: const Radius.circular(60.0),
                                                   topRight: const Radius.circular(60.0)
-                                              )
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Row(
+                                                )
+                                              ),
+                                              child: Column(
                                                 children: [
-                                                  Expanded(
-                                                    child: Text(
-                                                        "Default date range",
-                                                        style: TextStyle(
-                                                            color: ColorConstants.black,
-                                                            fontSize: 18,
-                                                            fontWeight: FontWeight.bold
-                                                        )
-                                                    ),
-                                                  ),
                                                   Row(
-                                                    crossAxisAlignment: CrossAxisAlignment.end,
                                                     children: [
-                                                      Container(
-                                                          height: 30,
-                                                          width: 30,
-                                                          child: FloatingActionButton(
+                                                      Expanded(
+                                                        child: Text(
+                                                            "Default date range",
+                                                            style: TextStyle(
+                                                                color: ColorConstants.black,
+                                                                fontSize: 18,
+                                                                fontWeight: FontWeight.bold
+                                                            )
+                                                        ),
+                                                      ),
+                                                      Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                                        children: [
+                                                          Container(
+                                                            height: 30,
+                                                            width: 30,
+                                                            child: FloatingActionButton(
                                                               backgroundColor: ColorConstants.grey,
                                                               onPressed: () {
                                                                 Navigator.pop(context);
                                                               },
                                                               child: Image.asset(
-                                                                  'images/icons/ic_close.png',
-                                                                  width: 10,
-                                                                  height: 10,
-                                                                  fit:BoxFit.fill
+                                                                'images/icons/ic_close.png',
+                                                                width: 10,
+                                                                height: 10,
+                                                                fit:BoxFit.fill
                                                               )
+                                                            )
                                                           )
-                                                      )
+                                                        ],
+                                                      ),
                                                     ],
                                                   ),
+                                                  CDropdownTextField(
+                                                      label: "Select Date Range",
+                                                      text: fDate,
+                                                      onChanged: (value) {
+                                                        if (value != null) {
+                                                          setState(() {
+                                                            fDate = value[1];
+                                                            fDateID = value[0];
+                                                          });
+                                                        }
+                                                      },
+                                                      items: <PopupMenuEntry>[
+                                                        PopupMenuItem<List>(
+                                                            child: Text('This week'), value: ['This week', 'This week']),
+                                                        PopupMenuItem<List>(
+                                                            child: Text('This month'), value: ['This month', 'This month'])
+                                                      ]
+                                                  ),
+                                                  CDropdownTextField(
+                                                      label: "Wallet Type",
+                                                      hintText: "Select wallet type",
+                                                      text: fType,
+                                                      onChanged: (value) {
+                                                        if (value != null) {
+                                                          setState(() {
+                                                            fType = value[1];
+                                                            fTypeID = value[0];
+                                                          });
+                                                        }
+                                                      },
+                                                      items: walletTypeList
+                                                  ),
+                                                  CDropdownTextField(
+                                                      label: "Category",
+                                                      hintText: "Select Category",
+                                                      text: fCategory.toString(),
+                                                      onChanged: (value) {
+                                                        if (value != null )
+                                                          setState(() {
+                                                            fCategory = value[1];
+                                                            fCategoryID = value[0];
+                                                          });
+                                                      },
+                                                      items: categoryList
+                                                  ),
+                                                  Container(
+                                                    width: double.infinity,
+                                                    child: CButton(
+                                                        text: "Apply",
+                                                        onPressed: () {}
+                                                    ),
+                                                  ),
                                                 ],
-                                              ),
-                                              CDropdownTextField(
-                                                  label: "Select Date Range",
-                                                  text: fDate,
-                                                  onChanged: (value) {
-                                                    if (value != null) {
-                                                      setState(() {
-                                                        fDate = value[1];
-                                                        fDateID = value[0];
-                                                      });
-                                                    }
-                                                  },
-                                                  items: <PopupMenuEntry>[
-                                                    PopupMenuItem<List>(
-                                                        child: Text('This week'), value: ['This week', 'This week']),
-                                                    PopupMenuItem<List>(
-                                                        child: Text('This month'), value: ['This month', 'This month'])
-                                                  ]
-                                              ),
-                                              CDropdownTextField(
-                                                  label: "Wallet Type",
-                                                  hintText: "Select wallet type",
-                                                  text: fType,
-                                                  onChanged: (value) {
-                                                    if (value != null) {
-                                                      setState(() {
-                                                        fType = value[1];
-                                                        fTypeID = value[0];
-                                                      });
-                                                    }
-                                                  },
-                                                  items: walletTypeList
-                                              ),
-                                              CDropdownTextField(
-                                                  label: "Category",
-                                                  hintText: "Select Category",
-                                                  text: fCategory.toString(),
-                                                  onChanged: (value) {
-                                                    if (value != null )
-                                                      setState(() {
-                                                        fCategory = value[1];
-                                                        fCategoryID = value[0];
-                                                      });
-                                                  },
-                                                  items: categoryList
-                                              ),
-                                              Container(
-                                                width: double.infinity,
-                                                child: CButton(
-                                                    text: "Apply",
-                                                    onPressed: () {}
-                                                ),
-                                              ),
-                                            ],
+                                              )
                                           )
-                                      )
-                                  ),
-                                );
-                              });
+                                      ),
+                                    );
+                                  });
+                            },
+                            barrierColor: Colors.white.withOpacity(0),
+                          );
                         },
-                        barrierColor: Colors.white.withOpacity(0),
-                      );
-                    },
-                    child: Image.asset(
-                        'images/icons/ic_filter.png',
-                        width: 16,
-                        height: 16,
-                        fit:BoxFit.fill
-                    ),
-                    color: ColorConstants.cyan,
-                  ),
-                )
-              ],),
+                        child: Image.asset(
+                            'images/icons/ic_filter.png',
+                            width: 16,
+                            height: 16,
+                            fit:BoxFit.fill
+                        ),
+                        color: ColorConstants.cyan,
+                      ),
+                    )
+                  ],),
+                ),
+                Flexible(child: CTransactionList(paddingItem: EdgeInsets.fromLTRB(30, 0, 30, 0),)),
+              ],
             ),
-            Flexible(child: CTransactionList(paddingItem: EdgeInsets.fromLTRB(30, 0, 30, 0),)),
-          ],
-        ),
+          );
+        }
       );
     }
     return Container(

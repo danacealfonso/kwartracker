@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 
 enum CardColor { green, cyan, red}
@@ -150,7 +151,9 @@ class CCardWallets extends StatelessWidget {
                 Container(
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(currencySign + availableBalance.toString(),
+                    child: Text(currencySign + NumberFormat
+                        .currency(customPattern: '#,###.##')
+                        .format(availableBalance),
                         style: TextStyle(
                             color: Color(0xFFFFFFFF),
                             fontSize: amountFont
