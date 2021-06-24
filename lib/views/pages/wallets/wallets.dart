@@ -1,16 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:kwartracker/model/firestoreData.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
-import 'package:kwartracker/views/pages/transactions/transactionAddWallet.dart';
+import 'package:kwartracker/views/pages/transactions/transactionAddDetails.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
+import 'package:kwartracker/views/pages/wallets/walletEdit.dart';
+import 'package:kwartracker/views/widgets/cProgressBar.dart';
 import 'package:kwartracker/views/widgets/cTransactionList.dart';
 import 'package:kwartracker/views/pages/wallets/walletAdd.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:kwartracker/views/widgets/cCardWallets.dart';
-import 'package:kwartracker/views/widgets/cTransactionListItem.dart';
+import 'package:provider/provider.dart';
 import '../../widgets/headerNav.dart';
 
 class WalletsPage extends StatefulWidget {
@@ -19,8 +20,7 @@ class WalletsPage extends StatefulWidget {
 }
 
 class _WalletsPageState extends State<WalletsPage> {
-  final _fireStore = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
+  bool overAllBalance = false;
   var actionButtons = [
     Builder(
       builder: (BuildContext context) {
@@ -71,154 +71,202 @@ class _WalletsPageState extends State<WalletsPage> {
       "My Wallet",
     );
   }
-  final List<Map<String, dynamic>> walletsList = [];
   int prevListCount = 0;
   int _current = 0;
 
   @override
   void initState() {
     super.initState();
-    _getData();
   }
 
-  Future<Null> _getData() async {
-    List<Map<String, dynamic>> walletTypeData = [];
-    List<Map<String, dynamic>> colorData = [];
-
-    for (CardColor cColor in CardColor.values) {
-      var cColorLast = cColor.toString().split('.').last;
-      colorData.add({
-        "color": cColorLast,
-        "cardColor": cColor,
-      });
-    }
-
-    var walletTypeStream = _fireStore.collection("walletType")
-        .snapshots();
-
-    walletTypeStream.listen((snapshot) {
-      for (var walletType in snapshot.docs) {
-        String walletName = walletType.data()["name"];
-        String walletId = walletType.id;
-        String walletColor = walletType.data()["colorName"];
-        walletTypeData.add({
-          "id": walletId,
-          "color": walletColor,
-          "name":walletName,
-        });
-      }
-    });
-
-    var walletsStream = _fireStore.collection("wallets")
-        .where("uID", isEqualTo: _auth.currentUser!.uid)
-        .snapshots();
-
-    walletsStream.listen((snapshot) {
-      walletsList.clear();
-      for (var walletType in snapshot.docs) {
-        String walletName = walletType.data()["name"];
-        String walletTypeID = walletType.data()["type"];
-        double balance = walletType.data()["balance"];
-        CardColor? walletColor;
-        String? walletTypeName = "";
-        for (var walletType in walletTypeData) {
-          if(walletTypeID == walletType["id"]) {
-            var colorIndex = colorData.indexWhere((element) =>
-            element["color"] == walletType["color"]);
-
-            walletTypeName = walletType["name"];
-            walletColor = colorData[colorIndex]["cardColor"];
-            break;
-          }
-        }
-
-        walletsList.add({
-          "color": walletColor,
-          "type": walletTypeName,
-          "name":walletName,
-          "balance":"0.00"
-        });
-      }
-
-      if(prevListCount != walletsList.length)
-        setState(() {});
-
-      prevListCount = walletsList.length;
-    });
-    return null;
-  }
   @override
   Widget build(BuildContext context) {
-    final List<Widget> imageSliders = walletsList.map((item) => Container(
-      child: Container(
-        width: 240,
-        child: CCardWallets(
-          txtTypeWallet: item["type"],
-          txtWallet: item["name"],
-          availableBalance: double.parse(item["balance"]),
-          cardSize: CardSize.large,
-          cardColor: item["color"],
-        )
-      ),
-    )).toList();
     Widget content() {
-      return Container(
-        height: 300,
-        child: Column(
-          children: [
-            Stack(
+      return Consumer<FirestoreData>(
+        builder: (context, firestoreData, child) {
+          final List<Widget> imageSliders = firestoreData
+            .walletsList.map((item) {
+             return Container(
+               child: Container(
+                   width: 240,
+                   child: CCardWallets(
+                     txtTypeWallet: item["type"],
+                     txtWallet: item["name"],
+                     availableBalance: item["amount"],
+                     cardSize: CardSize.large,
+                     cardColor: item["color"],
+                     currency: item["currency"],
+                   )
+               ),
+             );
+          }).toList();
+
+          return Container(
+            height: 300,
+            child: Column(
               children: [
-                CarouselSlider(
-                  items: imageSliders,
-                  options: CarouselOptions(
-                    viewportFraction: 0.6,
-                    aspectRatio: 2.0,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _current = index;
-                      });
-                    }
-                  ),
+                Stack(
+                    children: [
+                      CarouselSlider(
+                        items: imageSliders,
+                        options: CarouselOptions(
+                          viewportFraction: 0.6,
+                          aspectRatio: 2.0,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              _current = index;
+                              overAllBalance = firestoreData
+                                .overallBalance[index];
+                            });
+                          }
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 180.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: firestoreData
+                            .walletsList.map((item) {
+                            int index = firestoreData
+                              .walletsList.indexOf(item);
+
+                            return _current == index ? Container(
+                              width: 15.0,
+                              height: 10.0,
+                              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(5),
+                                color : ColorConstants.cyan,
+                              ),
+                            ) : Container(
+                              width: 10.0,
+                              height: 10.0,
+                              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(5),
+                                color : ColorConstants.grey1,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ]
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 180.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: walletsList.map((item) {
-                      int index = walletsList.indexOf(item);
-                      return _current == index ? Container(
-                        width: 15.0,
-                        height: 10.0,
-                        margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                  padding: const EdgeInsets.fromLTRB(30,20,30,30),
+                  child: Row(children: [
+                    Container(
+                        margin: EdgeInsets.only(right: 10),
+                        height: 30,
+                        width: 30,
                         decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(5),
-                          color : ColorConstants.cyan,
+                          borderRadius: BorderRadius.circular(50),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 8,
+                              offset: const Offset(6, 6),
+                            ),
+                            BoxShadow(
+                              color: Color(0xFFFFFFFF),
+                              blurRadius: 10,
+                              offset: const Offset(-6, -6),
+                            ),
+                          ],
                         ),
-                      ) : Container(
-                        width: 10.0,
-                        height: 10.0,
-                        margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                        child: FloatingActionButton(
+                            heroTag: null,
+                            elevation: 0,
+                            backgroundColor: ColorConstants.grey,
+                            onPressed: () {
+                              Navigator.push(context,
+                                MyRoute(
+                                  builder: (context) => WalletEditPage(
+                                    firestoreData.walletIDs[_current]
+                                  ),
+                                  routeSettings: RouteSettings(name: "/walletEdit"),
+                                )
+                              );
+                            },
+                            child: Image.asset(
+                                'images/icons/ic_edit.png',
+                                width: 10,
+                                height: 10,
+                                fit:BoxFit.fill
+                            )
+                        )
+                    ),
+                    Expanded(child: Text("Edit Wallet",
+                        style: TextStyle(
+                            color: ColorConstants.grey6,
+                            fontSize: 12
+                        ))),
+                    Container(
+                        margin: EdgeInsets.only(right: 10),
+                        height: 30,
+                        width: 30,
+                        child: FloatingActionButton(
+                            heroTag: null,
+                            backgroundColor: ColorConstants.grey,
+                            elevation: 0,
+                            onPressed: () {
+                              Navigator.push(context,
+                                MyRoute(
+                                  builder: (context) => TransactionAddDetailsPage(
+                                    firestoreData.walletIDs[_current]
+                                  ),
+                                  routeSettings: RouteSettings(name: "/transactionAddDetailsPage"),
+                                )
+                              );
+                            },
+                            child: Image.asset(
+                                'images/icons/ic_add_grey.png',
+                                width: 10,
+                                height: 10,
+                                fit:BoxFit.fill
+                            )
+                        ),
                         decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(5),
-                          color : ColorConstants.grey1,
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                          borderRadius: BorderRadius.circular(50),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 8,
+                              offset: const Offset(6, 6),
+                            ),
+                            BoxShadow(
+                              color: Color(0xFFFFFFFF),
+                              blurRadius: 10,
+                              offset: const Offset(-6, -6),
+                            ),
+                          ],
+                        )
+                    ),
+                    Expanded(child: Text("Add Transaction",
+                      style: TextStyle(
+                          color: ColorConstants.grey6,
+                          fontSize: 12
+                      ),
+                    ))
+                  ]),
                 ),
-              ]
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30,20,30,30),
-              child: Row(children: [
-                Container(
-                  margin: EdgeInsets.only(right: 10),
-                  height: 30,
-                  width: 30,
+                (overAllBalance==false)? Container(
+                  margin: const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 30),
+                  padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
+                    color: Color(0xFFF2F4F6),
+                    border: Border.all(
+                      color: Color(0x00000029),
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(30),
+                      topLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+                      bottomLeft: Radius.circular(30),
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black12,
@@ -226,126 +274,122 @@ class _WalletsPageState extends State<WalletsPage> {
                         offset: const Offset(6, 6),
                       ),
                       BoxShadow(
-                        color: Color(0xFFFFFFFF),
+                        color: Color(0xA8FFFFFF),
                         blurRadius: 10,
                         offset: const Offset(-6, -6),
                       ),
                     ],
                   ),
-                  child: FloatingActionButton(
-                    heroTag: null,
-                    elevation: 0,
-                    backgroundColor: ColorConstants.grey,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Image.asset(
-                        'images/icons/ic_edit.png',
-                        width: 10,
-                        height: 10,
-                        fit:BoxFit.fill
-                    )
-                  )
-                ),
-                Expanded(child: Text("Edit Wallet",
-                  style: TextStyle(
-                    color: ColorConstants.grey6,
-                    fontSize: 12
-                  ))),
+                  child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "₱ 70,000.00",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: ColorConstants.cyan
+                                  ),
+                                ),
+                                Text("to target amount",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: ColorConstants.black1
+                                    )),
+                              ],
+                            )),
+                            Container(
+                                height: 40,
+                                child: VerticalDivider(
+                                    color: Colors.grey
+                                )
+                            ),
+                            Expanded(child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    "1Y : 10M : 10D",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: ColorConstants.cyan
+                                    )
+                                ),
+                                Text("to target date",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: ColorConstants.black1
+                                    )),
+                              ],
+                            )
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: CProgressBar(max: 100, current: 30,
+                            backgroundColor: ColorConstants.grey4,
+                            progressBarColor: ColorConstants.cyan,
+                          ),
+                        ),
+                      ]
+                  ),
+                ):SizedBox(),
                 Container(
-                  margin: EdgeInsets.only(right: 10),
-                  height: 30,
-                  width: 30,
-                  child: FloatingActionButton(
-                    heroTag: null,
-                    backgroundColor: ColorConstants.grey,
-                    elevation: 0,
-                    onPressed: () {
-                      Navigator.push(context,
-                        MyRoute(
-                          builder: (context) => TransactionAddWalletPage(),
-                          routeSettings: RouteSettings(name: "/transactionAddWallet"),
-                        )
-                      );
-                    },
-                    child: Image.asset(
-                        'images/icons/ic_add_grey.png',
-                        width: 10,
-                        height: 10,
-                        fit:BoxFit.fill
-                    )
-                  ),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 8,
-                          offset: const Offset(6, 6),
-                        ),
-                        BoxShadow(
-                          color: Color(0xFFFFFFFF),
-                          blurRadius: 10,
-                          offset: const Offset(-6, -6),
-                        ),
-                      ],
-                  )
-                ),
-                Expanded(child: Text("Add Transaction",
-                  style: TextStyle(
-                    color: ColorConstants.grey6,
-                    fontSize: 12
-                  ),
-                ))
-              ]),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-              padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      "Transactions",
-                      style: TextStyle(
-                        color: ColorConstants.black1,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700
-                      )
-                    ),
-                  ),
-                  GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                      MyRoute(
-                        builder: (context) => TransactionsPage(),
-                        routeSettings: RouteSettings(name: "/transactions"),
-                      )
-                    );
-                  },
+                  margin: const EdgeInsets.only(left: 30.0, right: 30.0),
+                  padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [Text(
-                        "View All",
-                        style: TextStyle(
-                            color: ColorConstants.grey6,
-                            fontSize: 12,
-                            decoration: TextDecoration.underline,
-                            fontWeight: FontWeight.w500
-                        )
-                    )],
+                      children: [
+                        Expanded(
+                          child: Text(
+                              "Transactions",
+                              style: TextStyle(
+                                  color: ColorConstants.black1,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700
+                              )
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                                MyRoute(
+                                  builder: (context) => TransactionsPage(),
+                                  routeSettings: RouteSettings(name: "/transactions"),
+                                )
+                            );
+                          },
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [Text(
+                                "View All",
+                                style: TextStyle(
+                                    color: ColorConstants.grey6,
+                                    fontSize: 12,
+                                    decoration: TextDecoration.underline,
+                                    fontWeight: FontWeight.w500
+                                )
+                            )],
+                          ),
+                        )]
                   ),
-                )]
-              ),
+                ),
+                Expanded(
+                  child: CTransactionList(
+                    key: Key(firestoreData.walletIDs[_current]),
+                    walletID: (firestoreData.walletIDs.length > 0)?
+                    firestoreData.walletIDs[_current]: "",
+                    paddingItem: EdgeInsets.only(left: 30,right: 30),
+                  ),
+                ),
+              ],
             ),
-            Expanded(
-              child: CTransactionList(
-                walletID: "0hv9IKdugQN8tWV2ajEU",
-                paddingItem: EdgeInsets.only(left: 30,right: 30),
-              ),
-            ),
-          ],
-        ),
+          );
+        }
       );
     }
 
