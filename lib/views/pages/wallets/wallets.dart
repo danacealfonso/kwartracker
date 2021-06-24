@@ -71,7 +71,6 @@ class _WalletsPageState extends State<WalletsPage> {
       "My Wallet",
     );
   }
-  final List<Map<String, dynamic>> walletsList = [];
   int prevListCount = 0;
   int _current = 0;
 
@@ -126,8 +125,11 @@ class _WalletsPageState extends State<WalletsPage> {
                         padding: const EdgeInsets.only(top: 180.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: walletsList.map((item) {
-                            int index = walletsList.indexOf(item);
+                          children: firestoreData
+                            .walletsList.map((item) {
+                            int index = firestoreData
+                              .walletsList.indexOf(item);
+
                             return _current == index ? Container(
                               width: 15.0,
                               height: 10.0,

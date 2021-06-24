@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kwartracker/model/firestoreData.dart';
 import 'package:kwartracker/util/colorConstants.dart';
@@ -23,15 +21,15 @@ class CTransactionList extends StatefulWidget {
 }
 
 class _CTransactionListState extends State<CTransactionList> {
-  ScrollController? scrollController;
+  ScrollController? _scrollController;
   bool goToTopButton = false;
-
   @override
   void initState() {
     Provider.of<FirestoreData>(context, listen: false)
         .transactionList.clear();
     Provider.of<FirestoreData>(context, listen: false)
         .getData(walletID: widget.walletID,context: context);
+    _scrollController = new ScrollController()..addListener((){});
     super.initState();
   }
 
@@ -71,7 +69,7 @@ class _CTransactionListState extends State<CTransactionList> {
             children: [
               ListView.builder(
                 padding: EdgeInsets.only(bottom: 50),
-                controller: scrollController,
+                controller: _scrollController,
                 itemCount: firestoreData.transactionList.length + 1,
                 itemBuilder: (context, int index) {
 
@@ -126,10 +124,10 @@ class _CTransactionListState extends State<CTransactionList> {
                   padding: EdgeInsets.only(bottom: 40),
                   child: FloatingActionButton(
                       onPressed: () {
-                        scrollController!.animateTo(
+                        _scrollController!.animateTo(
                           0.0,
                           curve: Curves.easeOut,
-                          duration: const Duration(milliseconds: 300),
+                          duration: Duration(milliseconds: 300),
                         );
                       },
                       child: Image.asset(
