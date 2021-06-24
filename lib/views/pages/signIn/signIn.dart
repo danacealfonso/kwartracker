@@ -126,12 +126,14 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
             CButton(text:
               "Sign in with Google",
               onPressed: (){},
-              backgroundColor: ColorConstants.blue
+              backgroundColor: ColorConstants.blue,
+              leadingIconPath: "images/icons/ic_google.png",
             ),
             CButton(text:
               "Sign in with Apple",
               onPressed: (){},
-              backgroundColor: Colors.black
+              backgroundColor: Colors.black,
+              leadingIconPath: "images/icons/ic_apple.png",
             ),
             Row(
               children: [
