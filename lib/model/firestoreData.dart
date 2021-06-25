@@ -13,6 +13,7 @@ class FirestoreData extends ChangeNotifier {
   final _fireStore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   var walletIDs = [];
+  var walletType = [];
   double totalAmount = 0;
   DocumentSnapshot? _lastVisible;
   bool isLoading = true;
@@ -100,6 +101,9 @@ class FirestoreData extends ChangeNotifier {
           }
           walletIDs.add(wallet.id);
           overallBalance.add(wallet.data()["overallBalance"]);
+          if(walletTypeName!.toLowerCase() == "goal") walletType.add(true);
+          else walletType.add(false);
+
           walletsList.add({
             "id": wallet.id,
             "color": walletColor,
