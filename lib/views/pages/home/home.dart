@@ -37,18 +37,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  var actionButtons = [
-    TextButton(
-      onPressed: null,
-      child: Image.asset(
-        'images/users/profile_pic.png',
-        width: 70,
-        height: 85,
-        fit:BoxFit.fill
-      )
-    )
-  ];
-
   Widget title() {
     return Column(children: [
       Text(
@@ -96,14 +84,24 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget bsDateRange(BuildContext context) {
-    return BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-      child: Container(
-        child: Center(child: Text("asdf"))
-      ),
-    );
-  }
+  List<Widget> actionButtons(BuildContext context) => [
+    TextButton(
+        onPressed: () {
+          Navigator.push(context,
+              MyRoute(
+                builder: (context) => TransactionAddWalletPage(), routeSettings:
+              RouteSettings(name: "/transactionAddWallet"),
+              )
+          );
+        },
+        child: Image.asset(
+            'images/users/profile_pic.png',
+            width: 70,
+            height: 85,
+            fit:BoxFit.fill
+        )
+    )
+  ];
 
   Widget content() {
     return Column(
@@ -436,7 +434,7 @@ class _HomePageState extends State<HomePage> {
                 backgroundColor: Color(0xFF03BED6),
                 appBar: headerNav(
                     title: title(),
-                    action: actionButtons,
+                    action: actionButtons(context),
                     leading: leading(),
                     toolBarHeight: 90
                 ),

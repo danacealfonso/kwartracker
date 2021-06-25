@@ -88,15 +88,15 @@ class _WalletsPageState extends State<WalletsPage> {
             .walletsList.map((item) {
              return Container(
                child: Container(
-                   width: 240,
-                   child: CCardWallets(
-                     txtTypeWallet: item["type"],
-                     txtWallet: item["name"],
-                     availableBalance: item["amount"],
-                     cardSize: CardSize.large,
-                     cardColor: item["color"],
-                     currency: item["currency"],
-                   )
+                 width: 240,
+                 child: CCardWallets(
+                   txtTypeWallet: item["type"],
+                   txtWallet: item["name"],
+                   availableBalance: item["amount"],
+                   cardSize: CardSize.large,
+                   cardColor: item["color"],
+                   currency: item["currency"],
+                 )
                ),
              );
           }).toList();

@@ -146,6 +146,7 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: Scaffold(
+        resizeToAvoidBottomInset:false,
         backgroundColor: ColorConstants.cyan,
         appBar: headerNav(
           title: title(),
