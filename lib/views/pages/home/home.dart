@@ -419,7 +419,13 @@ class _HomePageState extends State<HomePage> {
             child: Container(
               width: MediaQuery.of(context).size.width * .77,
               height: MediaQuery.of(context).size.height,
-              child: CDrawer(drawerState: drawerState),
+              child: CDrawer(drawerState: drawerState,
+                drawerStateChange: (value){
+                  setState(() {
+                    drawerState = value;
+                  });
+                },
+              ),
             ),
           ),
           AnimatedPositioned(
