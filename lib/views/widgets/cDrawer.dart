@@ -15,11 +15,9 @@ import 'cDrawerListItem.dart';
 class CDrawer extends StatelessWidget {
   final _auth = FirebaseAuth.instance;
   final DrawerState drawerState;
-  CDrawer({Key? key, required this.drawerState}) : super(key: key);
+  final ValueChanged? drawerStateChange;
+  CDrawer({Key? key, required this.drawerState, this.drawerStateChange}) : super(key: key);
 
-  DrawerState getDrawerState () {
-    return drawerState;
-  }
 
   Widget drawerList(BuildContext context) {
     CWidgets cWidgets = CWidgets(context);
@@ -52,7 +50,7 @@ class CDrawer extends StatelessWidget {
         //TODO: GestureDetector
         GestureDetector(
             onTap: () {
-              CDrawer(drawerState: DrawerState.close);
+              drawerStateChange!(DrawerState.close);
             },
             child: Card(
                 color: ColorConstants.grey5,
@@ -72,6 +70,7 @@ class CDrawer extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
+            drawerStateChange!(DrawerState.close);
             cWidgets.navPush(TransactionsPage(), "/transactions");
           },
           //TODO: Custom Flutter Widgets
@@ -82,6 +81,7 @@ class CDrawer extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
+            drawerStateChange!(DrawerState.close);
             cWidgets.navPush(WalletsPage(), "/wallets");
           },
           child: CDrawerListItem(
@@ -91,6 +91,7 @@ class CDrawer extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
+            drawerStateChange!(DrawerState.close);
             cWidgets.navPush(ReportsPage(), '/reports');
           },
           child: CDrawerListItem(
@@ -100,6 +101,7 @@ class CDrawer extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
+            drawerStateChange!(DrawerState.close);
             cWidgets.navPush(ProfilePage(), '/profile');
           },
           child: CDrawerListItem(
@@ -109,6 +111,7 @@ class CDrawer extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
+            drawerStateChange!(DrawerState.close);
             cWidgets.navPush(SettingsPage(),'/settings');
           },
           child: CDrawerListItem(

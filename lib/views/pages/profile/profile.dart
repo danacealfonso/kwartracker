@@ -35,14 +35,9 @@ class _ProfilePageState extends State<ProfilePage> {
     ];
 
     Widget title() {
-      return Column(children: [
-        Text(
-          "Hello",
-        ),
-        Text(
-          "Samantha",
-        ),
-      ]);
+      return Text(
+          "My Profile",
+        );
     }
     Widget content() {
       return Container(

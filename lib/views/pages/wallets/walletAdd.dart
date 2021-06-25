@@ -38,9 +38,11 @@ class _WalletAddPageState extends State<WalletAddPage> {
     walletTypeListFS.clear();
 
     currencyList.add(PopupMenuItem<List>(
-        child: Text('Peso'), value: ['Peso', 'Peso']));
+        child: Text('₱ (Php) Philippine Peso'),
+        value: ['php', '₱ (Php) Philippine Peso']));
     currencyList.add(PopupMenuItem<List>(
-        child: Text('Dollar'), value: ['Dollar', 'Dollar']));
+        child: Text('\$ (Usd) US Dollar'),
+        value: ['usd', '\$ (Usd) US Dollar']));
 
     await for (var snapshot in _fireStore
       .collection("walletType").snapshots()) {

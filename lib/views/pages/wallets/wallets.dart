@@ -15,6 +15,9 @@ import 'package:provider/provider.dart';
 import '../../widgets/headerNav.dart';
 
 class WalletsPage extends StatefulWidget {
+  final int? cardIndex;
+  WalletsPage({this.cardIndex});
+
   @override
   _WalletsPageState createState() => _WalletsPageState();
 }
@@ -76,6 +79,7 @@ class _WalletsPageState extends State<WalletsPage> {
 
   @override
   void initState() {
+    if (widget.cardIndex != null) _current = widget.cardIndex!;
     super.initState();
   }
 
@@ -88,15 +92,15 @@ class _WalletsPageState extends State<WalletsPage> {
             .walletsList.map((item) {
              return Container(
                child: Container(
-                   width: 240,
-                   child: CCardWallets(
-                     txtTypeWallet: item["type"],
-                     txtWallet: item["name"],
-                     availableBalance: item["amount"],
-                     cardSize: CardSize.large,
-                     cardColor: item["color"],
-                     currency: item["currency"],
-                   )
+                 width: 240,
+                 child: CCardWallets(
+                   txtTypeWallet: item["type"],
+                   txtWallet: item["name"],
+                   availableBalance: item["amount"],
+                   cardSize: CardSize.large,
+                   cardColor: item["color"],
+                   currency: item["currency"],
+                 )
                ),
              );
           }).toList();
@@ -110,6 +114,7 @@ class _WalletsPageState extends State<WalletsPage> {
                       CarouselSlider(
                         items: imageSliders,
                         options: CarouselOptions(
+                          initialPage: _current,
                           viewportFraction: 0.6,
                           aspectRatio: 2.0,
                           onPageChanged: (index, reason) {
@@ -252,7 +257,7 @@ class _WalletsPageState extends State<WalletsPage> {
                     ))
                   ]),
                 ),
-                (overAllBalance==false)? Container(
+                (firestoreData.walletType[_current]==true)? Container(
                   margin: const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 30),
                   padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                   decoration: BoxDecoration(

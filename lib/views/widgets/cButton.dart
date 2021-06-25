@@ -23,7 +23,7 @@ class CButton extends StatelessWidget {
         child: MaterialButton(
           height: 55,
           shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(15)),
+          borderRadius: new BorderRadius.circular(15)),
           onPressed: onPressed,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

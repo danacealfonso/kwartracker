@@ -11,6 +11,7 @@ import 'package:kwartracker/views/pages/transactions/transactionAddWallet.dart';
 import 'package:kwartracker/views/pages/transactions/transactionDetails.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
 import 'package:kwartracker/views/pages/wallets/walletEdit.dart';
+import 'package:kwartracker/views/pages/wallets/wallets.dart';
 import 'package:provider/provider.dart';
 import 'model/firestoreData.dart';
 
@@ -37,6 +38,7 @@ class KwartrackerApp extends StatelessWidget {
           '/transactions': (context) => TransactionsPage(),
           '/transactionAddWallet': (context) => TransactionAddWalletPage(),
           '/transactionDetailsWallet': (context) => TransactionAddDetailsPage(null),
+          '/wallets': (context) => WalletsPage(),
           '/walletEdit': (context) => WalletEditPage(null),
           '/transactionDetailsPage': (context) => TransactionDetailsPage(null),
         },

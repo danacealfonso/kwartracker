@@ -1,11 +1,7 @@
 import 'dart:ui';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kwartracker/model/firestoreData.dart';
 import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/util/myRoute.dart';
-import 'package:kwartracker/views/pages/transactions/transactionAddWallet.dart';
 import 'package:kwartracker/views/widgets/cButton.dart';
 import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
 import 'package:kwartracker/views/widgets/cTextField.dart';
@@ -21,7 +17,6 @@ class TransactionsPage extends StatefulWidget {
 
 class _TransactionsPageState extends State<TransactionsPage>
     with TickerProviderStateMixin {
-  final _fireStore = FirebaseFirestore.instance;
   String fDate = "";
   String fDateID = "";
   List<PopupMenuEntry<dynamic>> categoryList = <PopupMenuEntry>[];
@@ -44,12 +39,8 @@ class _TransactionsPageState extends State<TransactionsPage>
               heroTag: null,
               backgroundColor: ColorConstants.grey,
               onPressed: () {
-                Navigator.push(context,
-                  MyRoute(
-                    builder: (context) => TransactionAddWalletPage(),
-                    routeSettings: RouteSettings(name: "/transactionAddWallet"),
-                  )
-                );
+                Navigator.of(context)
+                    .pushNamed("/transactionAddWallet");
               },
               child: Image.asset(
                   'images/icons/ic_add.png',
