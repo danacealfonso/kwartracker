@@ -54,7 +54,7 @@ class CCardWallets extends StatelessWidget {
     double walletFont = 14;
     double aBalanceFont = 8;
     double amountFont = 14;
-    String currencySign = (currency=='Dollar')? "\$ ": "₱ ";
+    String currencySign = (currency.toLowerCase()=='usd')? "\$ ": "₱ ";
     EdgeInsets cPadding = EdgeInsets.fromLTRB(15, 17, 15, 0);
 
     if (cardSize == CardSize.large) {

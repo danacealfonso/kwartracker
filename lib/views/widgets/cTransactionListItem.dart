@@ -14,7 +14,7 @@ class CTransactionListItem extends StatelessWidget {
     required this.walletID,
     required this.walletName,
     required this.amount,
-    this.currency = "peso",
+    this.currency = "php",
   });
 
   final String category;
