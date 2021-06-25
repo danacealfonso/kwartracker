@@ -15,6 +15,9 @@ import 'package:provider/provider.dart';
 import '../../widgets/headerNav.dart';
 
 class WalletsPage extends StatefulWidget {
+  final int cardIndex;
+  WalletsPage({this.cardIndex = 0});
+
   @override
   _WalletsPageState createState() => _WalletsPageState();
 }
@@ -81,6 +84,7 @@ class _WalletsPageState extends State<WalletsPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.cardIndex != null) _current = widget.cardIndex;
     Widget content() {
       return Consumer<FirestoreData>(
         builder: (context, firestoreData, child) {
@@ -110,6 +114,7 @@ class _WalletsPageState extends State<WalletsPage> {
                       CarouselSlider(
                         items: imageSliders,
                         options: CarouselOptions(
+                          initialPage: widget.cardIndex,
                           viewportFraction: 0.6,
                           aspectRatio: 2.0,
                           onPageChanged: (index, reason) {

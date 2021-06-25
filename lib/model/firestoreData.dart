@@ -240,6 +240,7 @@ class FirestoreData extends ChangeNotifier {
         }).then((value) {
             showSpinner = false;
             var count = 0;
+            getData(context: context);
             Navigator.popUntil(context, (route) {
               return count++ == 2;
             });

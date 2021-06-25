@@ -111,18 +111,26 @@ class _HomePageState extends State<HomePage> {
     return Consumer<FirestoreData>(
       builder: (context, firestoreData, child) {
         final List<Widget> imageSliders = firestoreData
-            .walletsList.map((item) {
-          return Container(
+          .walletsList.map((item) {
+          int index = firestoreData.walletsList.indexOf(item);
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MyRoute(
+                      builder: (context) => WalletsPage(cardIndex: index,),
+                      routeSettings:  RouteSettings(name: '/wallets')
+                  )
+              );
+            },
             child: Container(
-                width: 160,
-                child: CCardWallets(
-                  txtTypeWallet: item["type"],
-                  txtWallet: item["name"],
-                  availableBalance: item["amount"],
-                  cardSize: CardSize.small,
-                  cardColor: item["color"],
-                  currency: item["currency"],
-                )
+              child: CCardWallets(
+                txtTypeWallet: item["type"],
+                txtWallet: item["name"],
+                availableBalance: item["amount"],
+                cardSize: CardSize.small,
+                cardColor: item["color"],
+                currency: item["currency"],
+              ),
             ),
           );
         }).toList();
