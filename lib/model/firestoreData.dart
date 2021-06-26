@@ -265,7 +265,6 @@ class FirestoreData extends ChangeNotifier {
           'created_at': FieldValue.serverTimestamp()
         }).then((value) {
             var count = 0;
-            getData(context: context);
             Navigator.popUntil(context, (route) {
               return count++ == 2;
             });
@@ -297,7 +296,6 @@ class FirestoreData extends ChangeNotifier {
         'savedTo': savedTo,
         'created_at': FieldValue.serverTimestamp()
       }).then((value) {
-        getData(context: context);
         Navigator.pop(context);
       });
     } catch (e) {}

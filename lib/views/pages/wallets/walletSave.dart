@@ -29,7 +29,6 @@ class _WalletSavePageState extends State<WalletSavePage> {
   String targetAmount = "";
   String walletCurrency = "";
   String savedTo = "";
-  bool showSpinner = false;
   bool fOverallBalance = true;
   bool enableSaveButton = false;
   CardColor cardColor = CardColor.cyan;
@@ -307,7 +306,7 @@ class _WalletSavePageState extends State<WalletSavePage> {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: ModalProgressHUD(
-        inAsyncCall: showSpinner,
+        inAsyncCall: Provider.of<FirestoreData>(context).showSpinner,
         child: Scaffold(
             backgroundColor: Color(0xFF03BED6),
             appBar: headerNav(

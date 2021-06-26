@@ -82,6 +82,7 @@ class _WalletsPageState extends State<WalletsPage> {
   @override
   void initState() {
     if (widget.cardIndex != null) _current = widget.cardIndex!;
+
     super.initState();
   }
 
@@ -90,6 +91,8 @@ class _WalletsPageState extends State<WalletsPage> {
     Widget content() {
       return Consumer<FirestoreData>(
         builder: (context, firestoreData, child) {
+          targetAmount.clear();
+          showGoal.clear();
           final List<Widget> imageSliders = firestoreData
             .walletsList.map((item) {
             showGoal.add(
@@ -313,62 +316,62 @@ class _WalletsPageState extends State<WalletsPage> {
                     ],
                   ),
                   child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  targetAmount[_current],
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                targetAmount[_current],
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorConstants.cyan
+                                ),
+                              ),
+                              Text("to target amount",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: ColorConstants.black1
+                                )),
+                            ],
+                          )),
+                          Container(
+                              height: 40,
+                              child: VerticalDivider(
+                                  color: Colors.grey
+                              )
+                          ),
+                          Expanded(child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  "1Y : 10M : 10D",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                       color: ColorConstants.cyan
-                                  ),
-                                ),
-                                Text("to target amount",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: ColorConstants.black1
-                                    )),
-                              ],
-                            )),
-                            Container(
-                                height: 40,
-                                child: VerticalDivider(
-                                    color: Colors.grey
-                                )
-                            ),
-                            Expanded(child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                    "1Y : 10M : 10D",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: ColorConstants.cyan
-                                    )
-                                ),
-                                Text("to target date",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: ColorConstants.black1
-                                    )),
-                              ],
-                            )
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: CProgressBar(max: 100, current: 30,
-                            backgroundColor: ColorConstants.grey4,
-                            progressBarColor: ColorConstants.cyan,
+                                  )
+                              ),
+                              Text("to target date",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: ColorConstants.black1
+                                  )),
+                            ],
+                          )
                           ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: CProgressBar(max: 100, current: 30,
+                          backgroundColor: ColorConstants.grey4,
+                          progressBarColor: ColorConstants.cyan,
                         ),
-                      ]
+                      ),
+                    ]
                   ),
                 ):SizedBox(),
                 Container(
