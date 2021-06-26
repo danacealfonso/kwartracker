@@ -13,7 +13,7 @@ class FirestoreData extends ChangeNotifier {
   final _fireStore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   var walletIDs = [];
-  var walletType = [];
+  bool resetState = false;
   double totalAmount = 0;
   DocumentSnapshot? _lastVisible;
   bool isLoading = true;
@@ -24,6 +24,7 @@ class FirestoreData extends ChangeNotifier {
   List<Map<String, dynamic>> walletsList = [];
   List<Map<String, dynamic>> categoriesList = [];
   List<Map<String, dynamic>> walletTypeData = [];
+  List<Map<String, dynamic>> currenciesList = [];
 
   Future<void> getData({String walletID = "",
     required BuildContext context}) async {
@@ -42,10 +43,9 @@ class FirestoreData extends ChangeNotifier {
         });
       }
 
-      var categoriesQuery = _fireStore.collection("categories")
-          .where("uID", isEqualTo: _auth.currentUser!.uid)
-          .orderBy("name");
-      await categoriesQuery.get().then((documentSnapshot) {
+      await _fireStore.collection("categories")
+        .where("uID", isEqualTo: _auth.currentUser!.uid)
+        .orderBy("name").get().then((documentSnapshot) {
         categoriesList.clear();
         if (documentSnapshot.docs.length > 0) {
           for (var category in documentSnapshot.docs) {
@@ -59,9 +59,8 @@ class FirestoreData extends ChangeNotifier {
         }
       });
 
-      var walletTypeQuery = _fireStore.collection("walletType");
-
-      await walletTypeQuery.get().then((snapshot) {
+      await _fireStore.collection("walletType")
+        .get().then((snapshot) {
         walletTypeData.clear();
         for (var walletType in snapshot.docs) {
           String walletTypeName = walletType.data()["name"];
@@ -75,17 +74,34 @@ class FirestoreData extends ChangeNotifier {
         }
       });
 
-      var walletsQuery = _fireStore.collection("wallets")
-          .where("uID", isEqualTo: _auth.currentUser!.uid);
+      await _fireStore.collection("currencies")
+        .get().then((snapshot) {
+        currenciesList.clear();
+        for (var currency in snapshot.docs) {
+          String name = currency.data()["name"];
+          String id = currency.id;
+          String sign = currency.data()["sign"];
+          currenciesList.add({
+            "id": id,
+            "sign": sign,
+            "name":name
+          });
+        }
+      });
 
-      await walletsQuery.get().then((snapshot) {
+      await _fireStore.collection("wallets")
+        .where("uID", isEqualTo: _auth.currentUser!.uid)
+        .get().then((snapshot) {
         walletsList.clear();
         walletIDs.clear();
         overallBalance.clear();
         for (var wallet in snapshot.docs) {
           String walletName = wallet.data()["name"];
           String walletTypeID = wallet.data()["type"];
-          String walletCurrency = wallet.data()["currency"];
+          String walletCurrencyID = wallet.data()["currency"];
+          bool overAllBalance = wallet.data()["overAllBalance"];
+          String savedTo = wallet.data()["savedTo"];
+          double targetAmount = wallet.data()["targetAmount"];
           CardColor? walletColor;
           String? walletTypeName = "";
 
@@ -99,27 +115,32 @@ class FirestoreData extends ChangeNotifier {
               break;
             }
           }
-          walletIDs.add(wallet.id);
-          overallBalance.add(wallet.data()["overallBalance"]);
-          if(walletTypeName!.toLowerCase() == "goal") walletType.add(true);
-          else walletType.add(false);
+          var currencyIndex = currenciesList.indexWhere((element) =>
+          element["id"] == walletCurrencyID);
+          String walletCurrency = currenciesList[currencyIndex]["name"];
+          String currencySign = currenciesList[currencyIndex]["sign"];
 
+          overallBalance.add(wallet.data()["overallBalance"]);
+          walletIDs.add(wallet.id);
           walletsList.add({
             "id": wallet.id,
             "color": walletColor,
             "type": walletTypeName,
+            "typeID": walletTypeID,
             "currency": walletCurrency,
+            "currencyID": walletCurrencyID,
+            "currencySign": currencySign,
             "name":walletName,
-            "amount": 0.00
+            "overAllBalance": overAllBalance!=null? overAllBalance: false,
+            "savedTo": savedTo!=null? savedTo: "",
+            "amount": 0.00,
+            "targetAmount": targetAmount!=null? targetAmount: 0.00,
           });
         }
       });
-
-      var qryTrans = _fireStore
-          .collection('transactions')
-          .where("uID", isEqualTo: uID);
-
-      await qryTrans.get().then((documentSnapshot) {
+      await _fireStore.collection('transactions')
+        .where("uID", isEqualTo: uID).
+        get().then((documentSnapshot) {
         if (documentSnapshot.docs.length > 0) {
           for (var transaction in documentSnapshot.docs) {
             String walletTransactionID = transaction.data()['wallet'];
@@ -137,6 +158,7 @@ class FirestoreData extends ChangeNotifier {
           }
         }
       });
+
       if (_lastVisible == null) {
         query = (walletID.isEmpty)? _fireStore
             .collection('transactions')
@@ -200,7 +222,7 @@ class FirestoreData extends ChangeNotifier {
           }
         } else {
           ScaffoldMessenger.of(context)
-              .showSnackBar( SnackBar(
+            .showSnackBar( SnackBar(
             content: Text("No transaction data to load."),
             duration: Duration(milliseconds: 1000),
           ), );
@@ -242,16 +264,41 @@ class FirestoreData extends ChangeNotifier {
           'photo' : destination,
           'created_at': FieldValue.serverTimestamp()
         }).then((value) {
-            showSpinner = false;
             var count = 0;
-            getData(context: context);
             Navigator.popUntil(context, (route) {
               return count++ == 2;
             });
         })
       });
-    } catch (e) {
-      showSpinner = false;
-    }
+    } catch (e) {}
+    showSpinner = false;
+  }
+
+  Future<void> saveWallet({
+    required BuildContext context,
+    String? walletID,
+    double? targetAmount,
+    String? walletName,
+    String? walletTypeID,
+    bool? overAllBalance,
+    String? walletCurrency,
+    String? savedTo,
+  }) async {
+    showSpinner = true;
+    try{
+      await _fireStore.collection("wallets").doc(walletID).set({
+        'uID': _auth.currentUser!.uid,
+        'name': walletName,
+        'currency': walletCurrency,
+        'type': walletTypeID,
+        'targetAmount': targetAmount,
+        'overAllBalance': overAllBalance,
+        'savedTo': savedTo,
+        'created_at': FieldValue.serverTimestamp()
+      }).then((value) {
+        Navigator.pop(context);
+      });
+    } catch (e) {}
+    showSpinner = false;
   }
 }

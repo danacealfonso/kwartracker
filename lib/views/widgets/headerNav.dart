@@ -15,7 +15,7 @@ AppBar headerNav({
         child: FloatingActionButton(
           heroTag: null,
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.pop(context,"test");
           },
           child: Image.asset(
               'images/icons/ic_back.png',

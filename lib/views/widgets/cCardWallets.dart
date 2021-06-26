@@ -11,13 +11,13 @@ class CCardWallets extends StatelessWidget {
     this.txtWallet = "",
     this.availableBalance = 0.00,
     this.cardColor = CardColor.green,
-    this.currency = "Peso",
+    this.currencyID = "Peso",
     this.cardSize = CardSize.small
   });
 
   final String txtTypeWallet;
   final String txtWallet;
-  final String currency;
+  final String currencyID;
   final double availableBalance;
   final CardColor cardColor;
   final CardSize cardSize;
@@ -54,7 +54,7 @@ class CCardWallets extends StatelessWidget {
     double walletFont = 14;
     double aBalanceFont = 8;
     double amountFont = 14;
-    String currencySign = (currency.toLowerCase()=='usd')? "\$ ": "₱ ";
+    String currencySign = (currencyID.toLowerCase()=='usd')? "\$ ": "₱ ";
     EdgeInsets cPadding = EdgeInsets.fromLTRB(15, 17, 15, 0);
 
     if (cardSize == CardSize.large) {
@@ -109,7 +109,8 @@ class CCardWallets extends StatelessWidget {
             ),
           ),
           Image.asset(
-            'images/cards/$cardBG${(cardSize == CardSize.large)? "_l": "_s"}.png',
+            'images/cards/$cardBG${(cardSize == CardSize.large)?
+            "_l": "_s"}.png',
             alignment: Alignment.topCenter,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kwartracker/model/firestoreData.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
-import 'package:kwartracker/views/pages/transactions/transactionAddDetails.dart';
+import 'package:kwartracker/views/pages/transactions/transactionSaveDetails.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
-import 'package:kwartracker/views/pages/wallets/walletEdit.dart';
 import 'package:kwartracker/views/widgets/cProgressBar.dart';
 import 'package:kwartracker/views/widgets/cTransactionList.dart';
-import 'package:kwartracker/views/pages/wallets/walletAdd.dart';
+import 'package:kwartracker/views/pages/wallets/walletSave.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:kwartracker/views/widgets/cCardWallets.dart';
@@ -24,6 +24,8 @@ class WalletsPage extends StatefulWidget {
 
 class _WalletsPageState extends State<WalletsPage> {
   bool overAllBalance = false;
+  List showGoal = [];
+  List targetAmount = [];
   var actionButtons = [
     Builder(
       builder: (BuildContext context) {
@@ -37,7 +39,7 @@ class _WalletsPageState extends State<WalletsPage> {
               onPressed: () {
                 Navigator.push(context,
                     MyRoute(
-                        builder: (context) => WalletAddPage(),
+                        builder: (context) => WalletSavePage(),
                         routeSettings: RouteSettings(name: "/walletAdd"),
                     )
                   );
@@ -80,6 +82,7 @@ class _WalletsPageState extends State<WalletsPage> {
   @override
   void initState() {
     if (widget.cardIndex != null) _current = widget.cardIndex!;
+
     super.initState();
   }
 
@@ -88,8 +91,21 @@ class _WalletsPageState extends State<WalletsPage> {
     Widget content() {
       return Consumer<FirestoreData>(
         builder: (context, firestoreData, child) {
+          targetAmount.clear();
+          showGoal.clear();
           final List<Widget> imageSliders = firestoreData
             .walletsList.map((item) {
+            showGoal.add(
+              item["type"].toString().toLowerCase() == 'goal' ?
+              true : false
+            );
+            targetAmount.add(
+              item["targetAmount"] != null ?
+                "${item["currencySign"]} ${NumberFormat
+                .currency(customPattern: '#,###.##')
+                .format(item["targetAmount"])}"
+                : 0.00
+            );
              return Container(
                child: Container(
                  width: 240,
@@ -99,7 +115,7 @@ class _WalletsPageState extends State<WalletsPage> {
                    availableBalance: item["amount"],
                    cardSize: CardSize.large,
                    cardColor: item["color"],
-                   currency: item["currency"],
+                   currencyID: item["currencyID"],
                  )
                ),
              );
@@ -132,13 +148,16 @@ class _WalletsPageState extends State<WalletsPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: firestoreData
                             .walletsList.map((item) {
+
                             int index = firestoreData
                               .walletsList.indexOf(item);
 
                             return _current == index ? Container(
                               width: 15.0,
                               height: 10.0,
-                              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                              margin: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 2.0
+                              ),
                               decoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
                                 borderRadius: BorderRadius.circular(5),
@@ -147,7 +166,9 @@ class _WalletsPageState extends State<WalletsPage> {
                             ) : Container(
                               width: 10.0,
                               height: 10.0,
-                              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                              margin: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 2.0
+                              ),
                               decoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
                                 borderRadius: BorderRadius.circular(5),
@@ -182,25 +203,27 @@ class _WalletsPageState extends State<WalletsPage> {
                           ],
                         ),
                         child: FloatingActionButton(
-                            heroTag: null,
-                            elevation: 0,
-                            backgroundColor: ColorConstants.grey,
-                            onPressed: () {
-                              Navigator.push(context,
-                                MyRoute(
-                                  builder: (context) => WalletEditPage(
-                                    firestoreData.walletIDs[_current]
-                                  ),
-                                  routeSettings: RouteSettings(name: "/walletEdit"),
-                                )
-                              );
-                            },
-                            child: Image.asset(
-                                'images/icons/ic_edit.png',
-                                width: 10,
-                                height: 10,
-                                fit:BoxFit.fill
-                            )
+                          heroTag: null,
+                          elevation: 0,
+                          backgroundColor: ColorConstants.grey,
+                          onPressed: () {
+                            Navigator.push(context,
+                              MyRoute(
+                                builder: (context) => WalletSavePage(
+                                  walletID: firestoreData.walletIDs[_current]
+                                ),
+                                routeSettings: RouteSettings(
+                                  name: "/walletSave"
+                                ),
+                              )
+                            );
+                          },
+                          child: Image.asset(
+                            'images/icons/ic_edit.png',
+                            width: 10,
+                            height: 10,
+                            fit:BoxFit.fill
+                          )
                         )
                     ),
                     Expanded(child: Text("Edit Wallet",
@@ -219,10 +242,13 @@ class _WalletsPageState extends State<WalletsPage> {
                             onPressed: () {
                               Navigator.push(context,
                                 MyRoute(
-                                  builder: (context) => TransactionAddDetailsPage(
+                                  builder: (context) =>
+                                    TransactionSaveDetailsPage(
                                     firestoreData.walletIDs[_current]
                                   ),
-                                  routeSettings: RouteSettings(name: "/transactionAddDetailsPage"),
+                                  routeSettings: RouteSettings(
+                                    name: "/transactionAddDetailsPage")
+                                  ,
                                 )
                               );
                             },
@@ -257,8 +283,12 @@ class _WalletsPageState extends State<WalletsPage> {
                     ))
                   ]),
                 ),
-                (firestoreData.walletType[_current]==true)? Container(
-                  margin: const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 30),
+                (showGoal[_current]==true)? Container(
+                  margin: const EdgeInsets.only(
+                    left: 30.0,
+                    right: 30.0,
+                    bottom: 30
+                  ),
                   padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                   decoration: BoxDecoration(
                     color: Color(0xFFF2F4F6),
@@ -286,62 +316,62 @@ class _WalletsPageState extends State<WalletsPage> {
                     ],
                   ),
                   child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "₱ 70,000.00",
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                targetAmount[_current],
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorConstants.cyan
+                                ),
+                              ),
+                              Text("to target amount",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: ColorConstants.black1
+                                )),
+                            ],
+                          )),
+                          Container(
+                              height: 40,
+                              child: VerticalDivider(
+                                  color: Colors.grey
+                              )
+                          ),
+                          Expanded(child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  "1Y : 10M : 10D",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                       color: ColorConstants.cyan
-                                  ),
-                                ),
-                                Text("to target amount",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: ColorConstants.black1
-                                    )),
-                              ],
-                            )),
-                            Container(
-                                height: 40,
-                                child: VerticalDivider(
-                                    color: Colors.grey
-                                )
-                            ),
-                            Expanded(child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                    "1Y : 10M : 10D",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: ColorConstants.cyan
-                                    )
-                                ),
-                                Text("to target date",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: ColorConstants.black1
-                                    )),
-                              ],
-                            )
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: CProgressBar(max: 100, current: 30,
-                            backgroundColor: ColorConstants.grey4,
-                            progressBarColor: ColorConstants.cyan,
+                                  )
+                              ),
+                              Text("to target date",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: ColorConstants.black1
+                                  )),
+                            ],
+                          )
                           ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: CProgressBar(max: 100, current: 30,
+                          backgroundColor: ColorConstants.grey4,
+                          progressBarColor: ColorConstants.cyan,
                         ),
-                      ]
+                      ),
+                    ]
                   ),
                 ):SizedBox(),
                 Container(
@@ -362,22 +392,24 @@ class _WalletsPageState extends State<WalletsPage> {
                         GestureDetector(
                           onTap: () {
                             Navigator.push(context,
-                                MyRoute(
-                                  builder: (context) => TransactionsPage(),
-                                  routeSettings: RouteSettings(name: "/transactions"),
-                                )
+                              MyRoute(
+                                builder: (context) => TransactionsPage(),
+                                routeSettings: RouteSettings(
+                                  name: "/transactions"
+                                ),
+                              )
                             );
                           },
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [Text(
-                                "View All",
-                                style: TextStyle(
-                                    color: ColorConstants.grey6,
-                                    fontSize: 12,
-                                    decoration: TextDecoration.underline,
-                                    fontWeight: FontWeight.w500
-                                )
+                              "View All",
+                              style: TextStyle(
+                                color: ColorConstants.grey6,
+                                fontSize: 12,
+                                decoration: TextDecoration.underline,
+                                fontWeight: FontWeight.w500
+                              )
                             )],
                           ),
                         )]

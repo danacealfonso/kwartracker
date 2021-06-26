@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:kwartracker/model/firestoreData.dart';
 import 'package:kwartracker/util/colorConstants.dart';
+import 'package:kwartracker/util/myRoute.dart';
+import 'package:kwartracker/views/pages/transactions/transactionSaveWallet.dart';
 import 'package:kwartracker/views/widgets/cButton.dart';
 import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
 import 'package:kwartracker/views/widgets/cTextField.dart';
@@ -39,8 +41,13 @@ class _TransactionsPageState extends State<TransactionsPage>
               heroTag: null,
               backgroundColor: ColorConstants.grey,
               onPressed: () {
-                Navigator.of(context)
-                    .pushNamed("/transactionAddWallet");
+                Navigator.push(context,
+                  MyRoute(
+                    builder: (context) => TransactionSaveWalletPage(),
+                    routeSettings:
+                    RouteSettings(name: "/transactionAddWallet")
+                  )
+                );
               },
               child: Image.asset(
                   'images/icons/ic_add.png',
