@@ -16,8 +16,8 @@ class CDrawer extends StatelessWidget {
   final _auth = FirebaseAuth.instance;
   final DrawerState drawerState;
   final ValueChanged? drawerStateChange;
-  CDrawer({Key? key, required this.drawerState, this.drawerStateChange}) : super(key: key);
-
+  CDrawer({Key? key, required this.drawerState, this.drawerStateChange})
+    : super(key: key);
 
   Widget drawerList(BuildContext context) {
     CWidgets cWidgets = CWidgets(context);
@@ -159,8 +159,6 @@ class CDrawer extends StatelessWidget {
         ),
       ),
     );
-
-
   }
 }
 

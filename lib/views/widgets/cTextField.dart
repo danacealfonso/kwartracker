@@ -11,7 +11,8 @@ class CTextField extends StatelessWidget {
     this.obscureText = false,
     this.controller,
     this.initialValue = "",
-    this.autofocus = false
+    this.autofocus = false,
+    this.keyboardType
   });
 
   final String label;
@@ -21,6 +22,7 @@ class CTextField extends StatelessWidget {
   final bool autofocus;
   final ValueChanged? onChanged;
   final String initialValue;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,7 @@ class CTextField extends StatelessWidget {
           autofocus: autofocus,
           controller: controller,
           obscureText: obscureText,
+          keyboardType: keyboardType,
           onChanged: onChanged,
           decoration: new InputDecoration(
             enabledBorder: OutlineInputBorder(

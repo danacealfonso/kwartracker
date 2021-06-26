@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kwartracker/model/firestoreData.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
-import 'package:kwartracker/views/pages/transactions/transactionAddWallet.dart';
+import 'package:kwartracker/views/pages/transactions/transactionSaveWallet.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
 import 'package:kwartracker/views/pages/wallets/wallets.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
@@ -24,7 +24,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   DrawerState drawerState = DrawerState.close;
   final _auth = FirebaseAuth.instance;
   String fDate = "";
@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: () {
           Navigator.push(context,
               MyRoute(
-                builder: (context) => TransactionAddWalletPage(), routeSettings:
+                builder: (context) => TransactionSaveWalletPage(), routeSettings:
               RouteSettings(name: "/transactionAddWallet"),
               )
           );
@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                 availableBalance: item["amount"],
                 cardSize: CardSize.small,
                 cardColor: item["color"],
-                currency: item["currency"],
+                currencyID: item["currencyID"],
               ),
             ),
           );
@@ -422,10 +422,12 @@ class _HomePageState extends State<HomePage> {
                     GestureDetector(
                       onTap: () {
                         Navigator.push(context,
-                            MyRoute(
-                                builder: (context) => TransactionsPage(),
-                                routeSettings:  RouteSettings(name: '/transactions')
+                          MyRoute(
+                            builder: (context) => TransactionsPage(),
+                            routeSettings:  RouteSettings(
+                              name: '/transactions'
                             )
+                          )
                         );
                       },
                       child: Row(
@@ -510,7 +512,8 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     Navigator.push(context,
                       MyRoute(
-                          builder: (context) => TransactionAddWalletPage(), routeSettings:
+                        builder: (context) => TransactionSaveWalletPage(),
+                        routeSettings:
                       RouteSettings(name: "/transactionAddWallet"),
                       )
                     );
@@ -521,7 +524,8 @@ class _HomePageState extends State<HomePage> {
                   elevation: 5,
                   splashColor: Colors.grey,
                 ),
-                floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+                floatingActionButtonLocation: FloatingActionButtonLocation
+                  .centerFloat,
               ),
             ),
           ),

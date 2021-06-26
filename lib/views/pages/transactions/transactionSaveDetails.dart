@@ -16,15 +16,17 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/headerNav.dart';
 
-class TransactionAddDetailsPage extends StatefulWidget {
+class TransactionSaveDetailsPage extends StatefulWidget {
   final String? walletID;
-  TransactionAddDetailsPage(this.walletID);
+  TransactionSaveDetailsPage(this.walletID);
 
   @override
-  _TransactionAddDetailsPageState createState() => _TransactionAddDetailsPageState();
+  _TransactionSaveDetailsPageState createState() =>
+    _TransactionSaveDetailsPageState();
 }
 
-class _TransactionAddDetailsPageState extends State<TransactionAddDetailsPage> {
+class _TransactionSaveDetailsPageState extends
+  State<TransactionSaveDetailsPage> {
   String fName = "";
   String fType = "";
   String fCategory = "";
@@ -77,7 +79,6 @@ class _TransactionAddDetailsPageState extends State<TransactionAddDetailsPage> {
   }
 
   DateTime _date = DateTime.now();
-
   void _selectDate() async {
     final DateTime? newDate = await showDatePicker(
       context: context,
@@ -157,7 +158,8 @@ class _TransactionAddDetailsPageState extends State<TransactionAddDetailsPage> {
                     Center(child: Text("Enter amount"),),
                     Center(child: TextField(
                         autofocus: true,
-                        keyboardType: TextInputType.numberWithOptions(decimal: true),
+                        keyboardType: TextInputType
+                          .numberWithOptions(decimal: true),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 40,

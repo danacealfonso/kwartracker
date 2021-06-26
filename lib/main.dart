@@ -6,11 +6,11 @@ import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/globals.dart' as globals;
 import 'package:kwartracker/views/pages/signIn/signIn.dart';
 import 'package:kwartracker/views/pages/signUp/signUp.dart';
-import 'package:kwartracker/views/pages/transactions/transactionAddDetails.dart';
-import 'package:kwartracker/views/pages/transactions/transactionAddWallet.dart';
+import 'package:kwartracker/views/pages/transactions/transactionSaveDetails.dart';
+import 'package:kwartracker/views/pages/transactions/transactionSaveWallet.dart';
 import 'package:kwartracker/views/pages/transactions/transactionDetails.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
-import 'package:kwartracker/views/pages/wallets/walletEdit.dart';
+import 'package:kwartracker/views/pages/wallets/walletSave.dart';
 import 'package:kwartracker/views/pages/wallets/wallets.dart';
 import 'package:provider/provider.dart';
 import 'model/firestoreData.dart';
@@ -36,10 +36,10 @@ class KwartrackerApp extends StatelessWidget {
           '/signIn': (context) => SignInPage(),
           '/signUp': (context) => SignUpPage(),
           '/transactions': (context) => TransactionsPage(),
-          '/transactionAddWallet': (context) => TransactionAddWalletPage(),
-          '/transactionDetailsWallet': (context) => TransactionAddDetailsPage(null),
+          '/transactionSaveWallet': (context) => TransactionSaveWalletPage(),
+          '/transactionSaveDetails': (context) => TransactionSaveDetailsPage(null),
           '/wallets': (context) => WalletsPage(),
-          '/walletEdit': (context) => WalletEditPage(null),
+          '/walletSave': (context) => WalletSavePage(),
           '/transactionDetailsPage': (context) => TransactionDetailsPage(null),
         },
         debugShowCheckedModeBanner: false,
