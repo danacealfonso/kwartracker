@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kwartracker/model/firestoreData.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
-import 'package:kwartracker/views/pages/transactions/transactionSaveWallet.dart';
+import 'package:kwartracker/views/pages/transactions/transactionChooseWallet.dart';
 import 'package:kwartracker/views/widgets/cButton.dart';
 import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
 import 'package:kwartracker/views/widgets/cTextField.dart';
@@ -43,7 +43,7 @@ class _TransactionsPageState extends State<TransactionsPage>
               onPressed: () {
                 Navigator.push(context,
                   MyRoute(
-                    builder: (context) => TransactionSaveWalletPage(),
+                    builder: (context) => TransactionChooseWalletPage(),
                     routeSettings:
                     RouteSettings(name: "/transactionAddWallet")
                   )

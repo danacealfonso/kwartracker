@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:kwartracker/model/firestoreData.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
-import 'package:kwartracker/views/pages/transactions/transactionSaveWallet.dart';
+import 'package:kwartracker/views/pages/profile/profile.dart';
+import 'package:kwartracker/views/pages/transactions/transactionChooseWallet.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
 import 'package:kwartracker/views/pages/wallets/wallets.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
@@ -93,8 +94,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
         onPressed: () {
           Navigator.push(context,
               MyRoute(
-                builder: (context) => TransactionSaveWalletPage(), routeSettings:
-              RouteSettings(name: "/transactionAddWallet"),
+                builder: (context) => ProfilePage(), routeSettings:
+              RouteSettings(name: "/profile"),
               )
           );
         },
@@ -512,7 +513,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                   onPressed: () {
                     Navigator.push(context,
                       MyRoute(
-                        builder: (context) => TransactionSaveWalletPage(),
+                        builder: (context) => TransactionChooseWalletPage(),
                         routeSettings:
                       RouteSettings(name: "/transactionAddWallet"),
                       )

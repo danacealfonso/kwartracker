@@ -6,8 +6,8 @@ import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/globals.dart' as globals;
 import 'package:kwartracker/views/pages/signIn/signIn.dart';
 import 'package:kwartracker/views/pages/signUp/signUp.dart';
-import 'package:kwartracker/views/pages/transactions/transactionSaveDetails.dart';
-import 'package:kwartracker/views/pages/transactions/transactionSaveWallet.dart';
+import 'package:kwartracker/views/pages/transactions/transactionAddDetails.dart';
+import 'package:kwartracker/views/pages/transactions/transactionChooseWallet.dart';
 import 'package:kwartracker/views/pages/transactions/transactionDetails.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
 import 'package:kwartracker/views/pages/wallets/walletSave.dart';
@@ -36,8 +36,8 @@ class KwartrackerApp extends StatelessWidget {
           '/signIn': (context) => SignInPage(),
           '/signUp': (context) => SignUpPage(),
           '/transactions': (context) => TransactionsPage(),
-          '/transactionSaveWallet': (context) => TransactionSaveWalletPage(),
-          '/transactionSaveDetails': (context) => TransactionSaveDetailsPage(null),
+          '/transactionChooseWallet': (context) => TransactionChooseWalletPage(),
+          '/transactionAddDetails': (context) => TransactionAddDetailsPage(null),
           '/wallets': (context) => WalletsPage(),
           '/walletSave': (context) => WalletSavePage(),
           '/transactionDetailsPage': (context) => TransactionDetailsPage(null),

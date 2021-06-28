@@ -3,20 +3,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
-import 'package:kwartracker/views/pages/transactions/transactionSaveDetails.dart';
+import 'package:kwartracker/views/pages/transactions/transactionAddDetails.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:kwartracker/views/widgets/cButton.dart';
 import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
 import '../../widgets/headerNav.dart';
 
-class TransactionSaveWalletPage extends StatefulWidget {
+class TransactionChooseWalletPage extends StatefulWidget {
   @override
-  _TransactionSaveWalletPageState createState() =>
-      _TransactionSaveWalletPageState();
+  _TransactionChooseWalletPagePageState createState() =>
+      _TransactionChooseWalletPagePageState();
 }
 
-class _TransactionSaveWalletPageState extends
-  State<TransactionSaveWalletPage> {
+class _TransactionChooseWalletPagePageState extends
+  State<TransactionChooseWalletPage> {
   final _fireStore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   String fWallet = "";
@@ -93,7 +93,7 @@ class _TransactionSaveWalletPageState extends
                   onPressed: () {
                     Navigator.push(context,
                       MyRoute(
-                        builder: (context) => TransactionSaveDetailsPage(fWalletID),
+                        builder: (context) => TransactionAddDetailsPage(fWalletID),
                         routeSettings: RouteSettings(name: "/transactionAddDetailsPage"),
                       )
                     );

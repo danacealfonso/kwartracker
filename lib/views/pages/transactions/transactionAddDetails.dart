@@ -16,17 +16,17 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/headerNav.dart';
 
-class TransactionSaveDetailsPage extends StatefulWidget {
+class TransactionAddDetailsPage extends StatefulWidget {
   final String? walletID;
-  TransactionSaveDetailsPage(this.walletID);
+  TransactionAddDetailsPage(this.walletID);
 
   @override
-  _TransactionSaveDetailsPageState createState() =>
-    _TransactionSaveDetailsPageState();
+  _TransactionAddDetailsPageState createState() =>
+      _TransactionAddDetailsPageState();
 }
 
-class _TransactionSaveDetailsPageState extends
-  State<TransactionSaveDetailsPage> {
+class _TransactionAddDetailsPageState extends
+  State<TransactionAddDetailsPage> {
   String fName = "";
   String fType = "";
   String fCategory = "";

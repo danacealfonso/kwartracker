@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:kwartracker/model/firestoreData.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
-import 'package:kwartracker/views/pages/transactions/transactionSaveDetails.dart';
+import 'package:kwartracker/views/pages/transactions/transactionAddDetails.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
 import 'package:kwartracker/views/widgets/cProgressBar.dart';
 import 'package:kwartracker/views/widgets/cTransactionList.dart';
@@ -243,7 +243,7 @@ class _WalletsPageState extends State<WalletsPage> {
                               Navigator.push(context,
                                 MyRoute(
                                   builder: (context) =>
-                                    TransactionSaveDetailsPage(
+                                    TransactionAddDetailsPage(
                                     firestoreData.walletIDs[_current]
                                   ),
                                   routeSettings: RouteSettings(
