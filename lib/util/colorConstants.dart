@@ -9,6 +9,7 @@ class ColorConstants {
   static const grey4 = Color(0xFFE1E1E4);
   static const grey5 = Color(0xFFECF0F2);
   static const grey6 = Color(0xFFBBC3C9);
+  static const grey7 = Color(0xFFd0d0d0);
   //cyan
   static const cyan = Color(0xFF03BED6);
   static const cyan6 = Color(0xFF0EBCA7);
@@ -23,4 +24,5 @@ class ColorConstants {
   static const red1 = Color(0x6EE26767);
   //green
   static const green = Color(0x6E41A99D);
+  static const green1 = Color(0xFF6EBCA7);
 }

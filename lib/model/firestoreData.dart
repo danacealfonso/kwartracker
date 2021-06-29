@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -26,6 +27,61 @@ class FirestoreData extends ChangeNotifier {
   List<Map<String, dynamic>> walletTypeData = [];
   List<Map<String, dynamic>> currenciesList = [];
 
+  Future<Map<String, dynamic>> getTransaction(String transactionID) async {
+    Map<String, dynamic> transaction = Map<String, dynamic>();
+    String photo = "";
+    String currencyID = 'php';
+    await _fireStore.collection('transactions')
+      .doc(transactionID)
+      .get().then((documentSnapshot) {
+      if (documentSnapshot.exists) {
+        transaction = documentSnapshot.data()!;
+
+        var walletIndex = walletsList.indexWhere((element) =>
+        element["id"] == documentSnapshot.data()!["wallet"]);
+        String walletName = walletsList[walletIndex]["name"];
+        transaction.addAll({"walletName": walletName});
+
+        var categoryIndex = categoriesList.indexWhere((element) =>
+        element["id"] == documentSnapshot.data()!["category"]);
+        String categoryName = categoriesList[categoryIndex]["name"];
+        photo = documentSnapshot.data()!["photo"];
+        transaction.addAll({"categoryName": categoryName});
+        transaction.addAll({"categoryIcon": categoriesList[categoryIndex]["icon"]});
+
+        var completePath = documentSnapshot.data()!["photo"];
+        var fileName = (completePath.split('/').last);
+        transaction.addAll({"fileName": fileName});
+
+        String stringAmount = NumberFormat
+          .currency(customPattern: '#,###.##')
+          .format(documentSnapshot.data()!["amount"]);
+        transaction.addAll({"stringAmount": stringAmount});
+
+        for (var wallet in walletsList) {
+          if (wallet["id"] == documentSnapshot.data()!["wallet"]) {
+            currencyID = wallet["currencyID"];
+            break;
+          }
+        }
+        var currencyIndex = currenciesList.indexWhere((element) =>
+        element["id"] == currencyID);
+        String currencySign = currenciesList[currencyIndex]["sign"];
+        transaction.addAll({"currencySign": currencySign});
+      }
+    });
+
+    final ref = FirebaseStorage.instance
+      .ref()
+      .child(photo);
+
+    await ref.getDownloadURL().then((url) {
+      transaction.addAll({"photoURL": url});
+    });
+
+    return transaction;
+  }
+
   Future<void> getData({String walletID = "",
     required BuildContext context}) async {
     if(_auth.currentUser != null) {
@@ -50,10 +106,12 @@ class FirestoreData extends ChangeNotifier {
         if (documentSnapshot.docs.length > 0) {
           for (var category in documentSnapshot.docs) {
             String categoryName = category.data()["name"];
+            String icon = category.data()["icon"];
             String categoryID = category.id;
             categoriesList.add({
               "id": categoryID,
               "name":categoryName,
+              "icon": icon
             });
           }
         }
@@ -138,6 +196,7 @@ class FirestoreData extends ChangeNotifier {
           });
         }
       });
+
       await _fireStore.collection('transactions')
         .where("uID", isEqualTo: uID).
         get().then((documentSnapshot) {
@@ -211,6 +270,7 @@ class FirestoreData extends ChangeNotifier {
             double amount = double.parse(transaction.data()['amount'].toString());
 
             transactionList.add({
+              "transactionID": transaction.id,
               "amount": amount,
               "walletName": transaction.data()['name'],
               "category": categoryName,
@@ -248,7 +308,7 @@ class FirestoreData extends ChangeNotifier {
     final path = file.path;
     final ext = p.extension(path);
     final String fileName = DateTime.now().toString();
-    final destination = 'images/transactions/$fileName.$ext';
+    final destination = 'images/transactions/$fileName$ext';
     try{
       await FirebaseStorage.instance.ref(destination)
         .putFile(file).whenComplete(() => {

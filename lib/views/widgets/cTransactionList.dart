@@ -88,7 +88,7 @@ class _CTransactionListState extends State<CTransactionList> {
                             amount: doc['amount'],
                             walletName: doc['walletName'],
                             category: doc['category'],
-                            walletID: doc['walletID'],
+                            transactionID: doc['transactionID'],
                             currency: doc['currency'],
                             transactionType: doc['transactionType'],
                             transactionDate: doc['transactionDate'],

@@ -11,7 +11,7 @@ class CTransactionListItem extends StatelessWidget {
     required this.category,
     this.transactionType = 'income',
     required this.transactionDate,
-    required this.walletID,
+    required this.transactionID,
     required this.walletName,
     required this.amount,
     this.currency = "php",
@@ -20,22 +20,20 @@ class CTransactionListItem extends StatelessWidget {
   final String category;
   final String transactionType;
   final DateTime transactionDate;
-  final String walletID;
+  final String transactionID;
   final String walletName;
   final String currency;
   final double amount;
 
   @override
   Widget build(BuildContext context) {
-    var newAmount = NumberFormat.currency(customPattern: '#,###.##').format(amount);
+    var newAmount = NumberFormat.currency(customPattern: '#,###.##')
+        .format(amount);
 
     String currencyAbb =  "Php";
     if(currency!=null)
       if(currency.toLowerCase() == "dollar")
         currencyAbb = "Usd";
-
-    dynamic monthData =
-        '{ "1" : "Jan", "2" : "Feb", "3" : "Mar", "4" : "Apr", "5" : "May", "6" : "Jun", "7" : "Jul", "8" : "Aug", "9" : "Sep", "10" : "Oct", "11" : "Nov", "12" : "Dec" }';
 
     return Container(
       margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
@@ -71,7 +69,7 @@ class CTransactionListItem extends StatelessWidget {
           ),
             padding: EdgeInsets.fromLTRB(11, 8, 11, 0),
             child: Column(children: [
-              Text(json.decode(monthData)[transactionDate.month.toString()],
+              Text(DateFormat.MMM().format(transactionDate),
                 style: TextStyle(
                   fontSize: 8,
                   color: ColorConstants.black1,
@@ -104,7 +102,7 @@ class CTransactionListItem extends StatelessWidget {
                           borderRadius: BorderRadius.circular(3),
                         ),
                         child: Icon(
-                            Icons.receipt_outlined,
+                          Icons.receipt_outlined,
                           color: Colors.white,
                           size: 8,
                         ),
@@ -183,7 +181,7 @@ class CTransactionListItem extends StatelessWidget {
               onPressed: () {
                 Navigator.push(context,
                   MyRoute(
-                    builder: (context) => TransactionDetailsPage(walletID),
+                    builder: (context) => TransactionDetailsPage(transactionID),
                     routeSettings: RouteSettings(name: "/transactionDetailsPage"),
                   )
                 );
