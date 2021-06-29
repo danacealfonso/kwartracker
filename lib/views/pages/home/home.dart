@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:kwartracker/model/firestoreData.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
-import 'package:kwartracker/views/pages/transactions/transactionSaveWallet.dart';
+import 'package:kwartracker/views/pages/profile/profile.dart';
+import 'package:kwartracker/views/pages/transactions/transactionChooseWallet.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
 import 'package:kwartracker/views/pages/wallets/wallets.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
@@ -93,8 +94,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
         onPressed: () {
           Navigator.push(context,
               MyRoute(
-                builder: (context) => TransactionSaveWalletPage(), routeSettings:
-              RouteSettings(name: "/transactionAddWallet"),
+                builder: (context) => ProfilePage(), routeSettings:
+              RouteSettings(name: "/profile"),
               )
           );
         },
@@ -107,6 +108,121 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     )
   ];
 
+  Widget pageDefault(BuildContext context,
+  StateSetter setState) {
+    return BackdropFilter(
+      filter: ImageFilter.blur(
+        sigmaX: 20, sigmaY: 20),
+      child: Container(
+        height: 350.0,
+        child: Container(
+            padding: EdgeInsets
+                .fromLTRB(
+                30, 40, 30, 0),
+            decoration: new BoxDecoration(
+                color: Colors.white,
+                borderRadius: new BorderRadius
+                    .only(
+                    topLeft: const Radius
+                        .circular(
+                        60.0),
+                    topRight: const Radius
+                        .circular(
+                        60.0)
+                )
+            ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                          "Default date range",
+                          style: TextStyle(
+                              color: ColorConstants
+                                  .black,
+                              fontSize: 18,
+                              fontWeight: FontWeight
+                                  .bold
+                          )
+                      ),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment
+                          .end,
+                      children: [
+                        Container(
+                            height: 30,
+                            width: 30,
+                            child: FloatingActionButton(
+                                backgroundColor: ColorConstants
+                                    .grey,
+                                onPressed: () {
+                                  Navigator
+                                      .pop(
+                                      context);
+                                },
+                                child: Image
+                                    .asset(
+                                    'images/icons/ic_close.png',
+                                    width: 10,
+                                    height: 10,
+                                    fit: BoxFit
+                                        .fill
+                                )
+                            )
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                CDropdownTextField(
+                    label: "Select Date Range",
+                    text: fDate,
+                    onChanged: (
+                        value) {
+                      setState(() {
+                        fDate =
+                        value[1];
+                        fDateID =
+                        value[0];
+                      });
+                    },
+                    items: <
+                        PopupMenuEntry>[
+                      PopupMenuItem<
+                          List>(
+                          child: Text(
+                              'This week'),
+                          value: [
+                            'This week',
+                            'This week'
+                          ]),
+                      PopupMenuItem<
+                          List>(
+                          child: Text(
+                              'This month'),
+                          value: [
+                            'This month',
+                            'This month'
+                          ])
+                    ]
+                ),
+                Container(
+                  width: double
+                      .infinity,
+                  child: CButton(
+                      text: "Apply",
+                      onPressed: () {}
+                  ),
+                ),
+              ],
+            )
+        )
+      ),
+    );
+  }
+
   Widget content() {
     return Consumer<FirestoreData>(
       builder: (context, firestoreData, child) {
@@ -116,10 +232,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
           return GestureDetector(
             onTap: () {
               Navigator.push(context,
-                  MyRoute(
-                      builder: (context) => WalletsPage(cardIndex: index,),
-                      routeSettings:  RouteSettings(name: '/wallets')
-                  )
+                MyRoute(
+                  builder: (context) => WalletsPage(cardIndex: index,),
+                  routeSettings:  RouteSettings(name: '/wallets')
+                )
               );
             },
             child: Container(
@@ -134,6 +250,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
             ),
           );
         }).toList();
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -166,234 +283,125 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                 ],
               ),
               child: Column(
-                  children: [
-                    Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                                "March 01 - March 30, 2020",
-                                style: TextStyle(
-                                    color: ColorConstants.black,
-                                    fontSize: 12
-                                )
+                children: [
+                  Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                              "March 01 - March 30, 2020",
+                              style: TextStyle(
+                                  color: ColorConstants.black,
+                                  fontSize: 12
+                              )
+                          ),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            button("images/icons/ic_date_cyan.png", () {
+                              showModalBottomSheet(context: context,
+                                builder: (context) {
+                                  return StatefulBuilder(
+                                      builder: (BuildContext context,
+                                          StateSetter setState) {
+                                        return pageDefault(context,
+                                            setState);
+                                      });
+                                },
+                                barrierColor: Colors.white.withOpacity(0),
+                              );
+                            }),
+                            button(
+                                "images/icons/ic_graph_cyan.png", () {}),
+                          ],
+                        ),
+                      ]
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 10, 0, 8),
+                    child: Row(
+                      children: [
+                        Expanded(child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Total Balance"),
+                            Text(
+                              "₱ 40,000",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorConstants.cyan6
+                              ),
                             ),
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              button("images/icons/ic_date_cyan.png", () {
-                                showModalBottomSheet(context: context,
-                                  builder: (context) {
-                                    return StatefulBuilder(
-                                        builder: (BuildContext context,
-                                            StateSetter setState) {
-                                          return BackdropFilter(
-                                            filter: ImageFilter.blur(
-                                                sigmaX: 20, sigmaY: 20),
-                                            child: Container(
-                                                height: 350.0,
-                                                child: Container(
-                                                    padding: EdgeInsets
-                                                        .fromLTRB(
-                                                        30, 40, 30, 0),
-                                                    decoration: new BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius: new BorderRadius
-                                                            .only(
-                                                            topLeft: const Radius
-                                                                .circular(
-                                                                60.0),
-                                                            topRight: const Radius
-                                                                .circular(
-                                                                60.0)
-                                                        )
-                                                    ),
-                                                    child: Column(
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            Expanded(
-                                                              child: Text(
-                                                                  "Default date range",
-                                                                  style: TextStyle(
-                                                                      color: ColorConstants
-                                                                          .black,
-                                                                      fontSize: 18,
-                                                                      fontWeight: FontWeight
-                                                                          .bold
-                                                                  )
-                                                              ),
-                                                            ),
-                                                            Row(
-                                                              crossAxisAlignment: CrossAxisAlignment
-                                                                  .end,
-                                                              children: [
-                                                                Container(
-                                                                    height: 30,
-                                                                    width: 30,
-                                                                    child: FloatingActionButton(
-                                                                        backgroundColor: ColorConstants
-                                                                            .grey,
-                                                                        onPressed: () {
-                                                                          Navigator
-                                                                              .pop(
-                                                                              context);
-                                                                        },
-                                                                        child: Image
-                                                                            .asset(
-                                                                            'images/icons/ic_close.png',
-                                                                            width: 10,
-                                                                            height: 10,
-                                                                            fit: BoxFit
-                                                                                .fill
-                                                                        )
-                                                                    )
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        CDropdownTextField(
-                                                            label: "Select Date Range",
-                                                            text: fDate,
-                                                            onChanged: (
-                                                                value) {
-                                                              setState(() {
-                                                                fDate =
-                                                                value[1];
-                                                                fDateID =
-                                                                value[0];
-                                                              });
-                                                            },
-                                                            items: <
-                                                                PopupMenuEntry>[
-                                                              PopupMenuItem<
-                                                                  List>(
-                                                                  child: Text(
-                                                                      'This week'),
-                                                                  value: [
-                                                                    'This week',
-                                                                    'This week'
-                                                                  ]),
-                                                              PopupMenuItem<
-                                                                  List>(
-                                                                  child: Text(
-                                                                      'This month'),
-                                                                  value: [
-                                                                    'This month',
-                                                                    'This month'
-                                                                  ])
-                                                            ]
-                                                        ),
-                                                        Container(
-                                                          width: double
-                                                              .infinity,
-                                                          child: CButton(
-                                                              text: "Apply",
-                                                              onPressed: () {}
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    )
-                                                )
-                                            ),
-                                          );
-                                        });
-                                  },
-                                  barrierColor: Colors.white.withOpacity(0),
-                                );
-                              }),
-                              button(
-                                  "images/icons/ic_graph_cyan.png", () {}),
-                            ],
-                          ),
-                        ]
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 10, 0, 8),
-                      child: Row(
-                        children: [
-                          Expanded(child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Total Balance"),
-                              Text(
-                                "₱ 40,000",
+                          ],
+                        )),
+                        Container(
+                            height: 40,
+                            child: VerticalDivider(
+                                color: Colors.grey
+                            )
+                        ),
+                        Expanded(child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Total Expenses"),
+                            Text(
+                                "₱ 5,000",
                                 style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
-                                    color: ColorConstants.cyan6
-                                ),
-                              ),
-                            ],
-                          )),
-                          Container(
-                              height: 40,
-                              child: VerticalDivider(
-                                  color: Colors.grey
-                              )
-                          ),
-                          Expanded(child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Total Expenses"),
-                              Text(
-                                  "₱ 5,000",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: ColorConstants.red
-                                  )
-                              ),
-                            ],
-                          )
-                          ),
-                        ],
-                      ),
+                                    color: ColorConstants.red
+                                )
+                            ),
+                          ],
+                        )
+                        ),
+                      ],
                     ),
-                    CProgressBar(max: 100, current: 90),
-                  ]
+                  ),
+                  CProgressBar(max: 100, current: 90),
+                ]
               ),
             ),
             Container(
               margin: const EdgeInsets.only(left: 30.0, right: 30.0),
               padding: EdgeInsets.fromLTRB(0, 24, 0, 0),
               child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                          "Wallet",
-                          style: TextStyle(
-                              color: ColorConstants.black1,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700
-                          )
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(context,
-                          MyRoute(
-                            builder: (context) => WalletsPage(),
-                            routeSettings:  RouteSettings(name: '/wallets')
-                          )
-                        );
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [Text(
-                            "View All",
-                            style: TextStyle(
-                                color: ColorConstants.grey6,
-                                fontSize: 12,
-                                decoration: TextDecoration.underline,
-                                fontWeight: FontWeight.w500
-                            )
+                children: [
+                  Expanded(
+                    child: Text(
+                        "Wallet",
+                        style: TextStyle(
+                            color: ColorConstants.black1,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700
                         )
-                        ],
-                      ),
                     ),
-                  ]
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                        MyRoute(
+                          builder: (context) => WalletsPage(),
+                          routeSettings:  RouteSettings(name: '/wallets')
+                        )
+                      );
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [Text(
+                          "View All",
+                          style: TextStyle(
+                              color: ColorConstants.grey6,
+                              fontSize: 12,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w500
+                          )
+                      )
+                      ],
+                    ),
+                  ),
+                ]
               ),
             ),
             Container(
@@ -408,43 +416,43 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
               margin: const EdgeInsets.only(left: 30.0, right: 30.0),
               padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
               child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                          "Transactions",
-                          style: TextStyle(
-                              color: ColorConstants.black1,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700
-                          )
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(context,
-                          MyRoute(
-                            builder: (context) => TransactionsPage(),
-                            routeSettings:  RouteSettings(
-                              name: '/transactions'
-                            )
-                          )
-                        );
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [Text(
-                            "View All",
-                            style: TextStyle(
-                                color: ColorConstants.grey6,
-                                fontSize: 12,
-                                decoration: TextDecoration.underline,
-                                fontWeight: FontWeight.w500
-                            )
+                children: [
+                  Expanded(
+                    child: Text(
+                        "Transactions",
+                        style: TextStyle(
+                            color: ColorConstants.black1,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700
                         )
-                        ],
-                      ),
                     ),
-                  ]
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                        MyRoute(
+                          builder: (context) => TransactionsPage(),
+                          routeSettings:  RouteSettings(
+                            name: '/transactions'
+                          )
+                        )
+                      );
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [Text(
+                          "View All",
+                          style: TextStyle(
+                              color: ColorConstants.grey6,
+                              fontSize: 12,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w500
+                          )
+                      )
+                      ],
+                    ),
+                  ),
+                ]
               ),
             ),
             Expanded(
@@ -501,10 +509,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
               child: Scaffold(
                 backgroundColor: Color(0xFF03BED6),
                 appBar: headerNav(
-                    title: title(),
-                    action: actionButtons(context),
-                    leading: leading(),
-                    toolBarHeight: 90
+                  title: title(),
+                  action: actionButtons(context),
+                  leading: leading(),
+                  toolBarHeight: 90
                 ),
                 body: CBody(child: content(),hasScrollBody: true,),
                 floatingActionButton: FloatingActionButton(
@@ -512,7 +520,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                   onPressed: () {
                     Navigator.push(context,
                       MyRoute(
-                        builder: (context) => TransactionSaveWalletPage(),
+                        builder: (context) => TransactionChooseWalletPage(),
                         routeSettings:
                       RouteSettings(name: "/transactionAddWallet"),
                       )
