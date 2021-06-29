@@ -120,7 +120,6 @@ class _WalletsPageState extends State<WalletsPage> {
                ),
              );
           }).toList();
-
           return Container(
             height: 300,
             child: Column(
@@ -134,6 +133,7 @@ class _WalletsPageState extends State<WalletsPage> {
                           viewportFraction: 0.6,
                           aspectRatio: 2.0,
                           onPageChanged: (index, reason) {
+                            if(mounted)
                             setState(() {
                               _current = index;
                               overAllBalance = firestoreData

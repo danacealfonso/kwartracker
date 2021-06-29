@@ -1,8 +1,5 @@
 import 'dart:io';
-import 'dart:math';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kwartracker/model/firestoreData.dart';
 import 'package:kwartracker/util/colorConstants.dart';
@@ -50,7 +47,6 @@ class _TransactionAddDetailsPageState extends
     if (fName.isEmpty) validate = false;
     if (fType.isEmpty) validate = false;
     if (fCategory.isEmpty) validate = false;
-    if (fPersonName.isEmpty) validate = false;
     if (fCategory.isEmpty) validate = false;
     if (fType.isEmpty) validate = false;
     if (txtAmount.text.isEmpty) validate = false;
@@ -264,10 +260,15 @@ class _TransactionAddDetailsPageState extends
                             selectFile();
                           },
                           child: Container(
-                            child: Image.file(file!),
+                            width: MediaQuery.of(context).size.width,
+                            height: 100,
                             decoration: BoxDecoration(
                               color: ColorConstants.grey,
-                            borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(16),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: FileImage(file!),
+                              ),
                             )
                           ),
                         ),

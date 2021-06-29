@@ -93,8 +93,20 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
                 height: 450,
                 child: Column(
                   children: [
-                    Image.network(path,
-                      height: 360,
+                    Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 360,
+                        decoration: BoxDecoration(
+                          color: ColorConstants.grey,
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(30),
+                            topLeft: Radius.circular(30)
+                          ),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(path),
+                          ),
+                        )
                     ),
                     Expanded(
                       child: Container(
@@ -241,6 +253,8 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
                 });
                 if(transaction.isEmpty)
                 firestoreData.showSpinner = true;
+                else
+                  firestoreData.showSpinner = false;
                 return (transaction.isEmpty)? ModalProgressHUD(
                   color: Colors.transparent,
                   inAsyncCall: firestoreData.showSpinner, child: SizedBox()
@@ -386,23 +400,17 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
                         _showDialog(transaction["photoURL"]!);
                       },
                       child: Container(
-                        child: Image.network(transaction["photoURL"]!,
-                          width: double.infinity,
-                          height: 200,
-                        ),decoration: BoxDecoration(
-                          color: ColorConstants.grey7,
-                          border: Border.all(
-                            color: Color(0x00000029),
-                            width: 1,
+                        width: MediaQuery.of(context).size.width,
+                        height: 190,
+                        decoration: BoxDecoration(
+                          color: ColorConstants.grey,
+                          borderRadius: BorderRadius.circular(16),
+                          image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(transaction["photoURL"]!),
                           ),
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(16),
-                            topLeft: Radius.circular(16),
-                            bottomRight: Radius.circular(16),
-                            bottomLeft: Radius.circular(16),
-                          ),
-                        ),
-                      ),
+                        )
+                      )
                     ): Text(""),
                     labelInfo(transaction["fileName"]!, ""),
                   ],

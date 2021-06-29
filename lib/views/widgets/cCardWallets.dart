@@ -11,7 +11,7 @@ class CCardWallets extends StatelessWidget {
     this.txtWallet = "",
     this.availableBalance = 0.00,
     this.cardColor = CardColor.green,
-    this.currencyID = "Peso",
+    this.currencyID = "php",
     this.cardSize = CardSize.small
   });
 
