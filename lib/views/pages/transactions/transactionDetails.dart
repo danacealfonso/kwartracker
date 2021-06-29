@@ -8,6 +8,8 @@ import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
 import 'package:kwartracker/views/pages/transactions/transactionEdit.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
+import 'package:kwartracker/views/widgets/cConfirmationDialog.dart';
+import 'package:kwartracker/views/widgets/cDialog.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +24,7 @@ class TransactionDetailsPage extends StatefulWidget {
 }
 
 class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
+  final _fireStore = FirebaseFirestore.instance;
   Map<String, dynamic> transaction = Map<String, dynamic>();
   String? fDate;
   String? photoURL;
@@ -226,10 +229,11 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
               builder: (context, firestoreData, child) {
                 Provider.of<FirestoreData>(context,listen: true)
                     .getTransaction(widget.transactionID!).then((value) {
-                  Timestamp t = value["fDate"];
-                  fDate = "${DateFormat.MMMMd().format(t.toDate())}, "
-                      "${DateFormat.y().format(t.toDate())}";
-
+                  if(value["fDate"] != null) {
+                    Timestamp t = value["fDate"];
+                    fDate = "${DateFormat.MMMMd().format(t.toDate())}, "
+                        "${DateFormat.y().format(t.toDate())}";
+                  }
                   if (mounted) setState(() {
                     transaction = value;
                   });
@@ -260,9 +264,29 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
                                 backgroundColor: ColorConstants
                                   .grey,
                                 onPressed: () {
-                                  Navigator
-                                    .pop(
-                                    context);
+                                  cConfirmationDialog(context,
+                                  "Are you sure you want to delete this?",
+                                  () async {
+                                    await _fireStore.collection('transactions').doc(
+                                      widget.transactionID.toString()
+                                    ).delete().then((_) {
+                                      var count = 0;
+                                      Navigator.popUntil(context, (route) {
+                                        return count++ == 2;
+                                      });
+                                      cDialog(
+                                        context,
+                                        "Deleted",
+                                        "It has been successfully deleted.",
+                                        "Exit",
+                                        Icon(
+                                          Icons.delete_outline, size: 80,
+                                          color: ColorConstants.red,
+                                        )
+                                      );
+                                    });
+                                  }
+                                  );
                                 },
                                 child: Image
                                   .asset(

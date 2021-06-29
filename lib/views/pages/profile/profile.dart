@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
+import 'package:kwartracker/views/widgets/cButton.dart';
+import 'package:kwartracker/views/widgets/cDialog.dart';
 import '../../widgets/headerNav.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -51,7 +54,9 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Container(
             padding: const EdgeInsets.all(10.0),
             child: Center(
-                child: Text("Profile")
+                child: CButton(text: 'dialog', onPressed: () {
+
+                },)
             ),
           )
       );
