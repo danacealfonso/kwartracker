@@ -260,10 +260,15 @@ class _TransactionAddDetailsPageState extends
                             selectFile();
                           },
                           child: Container(
-                            child: Image.file(file!),
+                            width: MediaQuery.of(context).size.width,
+                            height: 100,
                             decoration: BoxDecoration(
                               color: ColorConstants.grey,
-                            borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(16),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: FileImage(file!),
+                              ),
                             )
                           ),
                         ),
