@@ -74,10 +74,11 @@ class FirestoreData extends ChangeNotifier {
     final ref = FirebaseStorage.instance
       .ref()
       .child(photo);
-
-    await ref.getDownloadURL().then((url) {
-      transaction.addAll({"photoURL": url});
-    });
+    try {
+      await ref.getDownloadURL().then((url) {
+        transaction.addAll({"photoURL": url});
+      });
+    } catch(e) {}
 
     return transaction;
   }
