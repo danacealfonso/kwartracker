@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:kwartracker/util/colorConstants.dart';
+import 'package:kwartracker/views/widgets/cDialog.dart';
 import 'package:path/path.dart' as p;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -304,6 +306,7 @@ class FirestoreData extends ChangeNotifier {
     required String spentPerson,
     required File file,
     required DateTime transDate,
+    String transID = ""
   }) async {
     showSpinner = true;
     final path = file.path;
@@ -329,6 +332,17 @@ class FirestoreData extends ChangeNotifier {
             Navigator.popUntil(context, (route) {
               return count++ == 2;
             });
+            cDialog(
+              context,
+              "Success",
+              (transID.isEmpty)? "It has been successfully added.":
+              "It has been successfully saved.",
+              "Cool",
+              Icon(
+                Icons.check_circle, size: 80,
+                color: ColorConstants.cyan,
+              )
+            );
         })
       });
     } catch (e) {}
