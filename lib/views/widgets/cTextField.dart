@@ -26,6 +26,8 @@ class CTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(controller!=null)
+      onChanged!(controller!.text);
     return Column(children: [
       (label.isNotEmpty)? Padding(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 7),

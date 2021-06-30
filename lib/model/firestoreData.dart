@@ -48,13 +48,18 @@ class FirestoreData extends ChangeNotifier {
         element["id"] == documentSnapshot.data()!["category"]);
         String categoryName = categoriesList[categoryIndex]["name"];
         photo = documentSnapshot.data()!["photo"];
+
         transaction.addAll({"categoryName": categoryName});
         transaction.addAll({"categoryIcon": categoriesList[categoryIndex]["icon"]});
-
-        var completePath = documentSnapshot.data()!["photo"];
-        var fileName = (completePath.split('/').last);
+        var fileName = "";
+        if(documentSnapshot.data()!["photo"] != null) {
+          var completePath = documentSnapshot.data()!["photo"];
+          var fileName = (completePath
+              .split('/')
+              .last);
+          transaction.addAll({"photo": completePath});
+        }
         transaction.addAll({"fileName": fileName});
-
         String stringAmount = NumberFormat
           .currency(customPattern: '#,###.##')
           .format(documentSnapshot.data()!["amount"]);
@@ -73,14 +78,20 @@ class FirestoreData extends ChangeNotifier {
       }
     });
 
-    final ref = FirebaseStorage.instance
-      .ref()
-      .child(photo);
-    try {
-      await ref.getDownloadURL().then((url) {
-        transaction.addAll({"photoURL": url});
-      });
-    } catch(e) {}
+    if(photo != null)
+    {
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child(photo);
+      try {
+        await ref.getDownloadURL().then((url) {
+          transaction.addAll({"photoURL": url});
+        });
+      } catch(e) {}
+    }else{
+      transaction.addAll({"photoURL": ""});
+    }
+
 
     return transaction;
   }
@@ -176,27 +187,29 @@ class FirestoreData extends ChangeNotifier {
               break;
             }
           }
-          var currencyIndex = currenciesList.indexWhere((element) =>
-          element["id"] == walletCurrencyID);
-          String walletCurrency = currenciesList[currencyIndex]["name"];
-          String currencySign = currenciesList[currencyIndex]["sign"];
+          if(walletCurrencyID != null){
+            var currencyIndex = currenciesList.indexWhere((element) =>
+            element["id"] == walletCurrencyID);
+            String walletCurrency = currenciesList[currencyIndex]["name"];
+            String currencySign = currenciesList[currencyIndex]["sign"];
 
-          overallBalance.add(wallet.data()["overallBalance"]);
-          walletIDs.add(wallet.id);
-          walletsList.add({
-            "id": wallet.id,
-            "color": walletColor,
-            "type": walletTypeName,
-            "typeID": walletTypeID,
-            "currency": walletCurrency,
-            "currencyID": walletCurrencyID,
-            "currencySign": currencySign,
-            "name":walletName,
-            "overAllBalance": overAllBalance!=null? overAllBalance: false,
-            "savedTo": savedTo!=null? savedTo: "",
-            "amount": 0.00,
-            "targetAmount": targetAmount!=null? targetAmount: 0.00,
-          });
+            overallBalance.add(wallet.data()["overallBalance"]);
+            walletIDs.add(wallet.id);
+            walletsList.add({
+              "id": wallet.id,
+              "color": walletColor,
+              "type": walletTypeName,
+              "typeID": walletTypeID,
+              "currency": walletCurrency,
+              "currencyID": walletCurrencyID,
+              "currencySign": currencySign,
+              "name": walletName,
+              "overAllBalance": overAllBalance != null ? overAllBalance : false,
+              "savedTo": savedTo != null ? savedTo : "",
+              "amount": 0.00,
+              "targetAmount": targetAmount != null ? targetAmount : 0.00,
+            });
+          }
         }
       });
 
@@ -252,19 +265,23 @@ class FirestoreData extends ChangeNotifier {
           _lastVisible = documentSnapshot.docs[documentSnapshot.docs.length-1];
           for (var transaction in documentSnapshot.docs) {
             String currency = "";
+            String currencyID = "";
             String categoryName = "";
-            String walletTransactionID = transaction.data()['wallet'];
+            String categoryID = "";
+            String walletID = transaction.data()['wallet'];
             String transactionType = transaction.data()['type'];
 
             for (var wallet in walletsList) {
-              if (wallet["id"] == walletTransactionID) {
+              if (wallet["id"] == walletID) {
                 currency = wallet["currency"];
+                currencyID = wallet["id"];
                 break;
               }
             }
             for (var category in categoriesList) {
               if (category["id"] == transaction.data()['category']) {
                 categoryName = category["name"];
+                categoryID = category["id"];
                 break;
               }
             }
@@ -276,9 +293,11 @@ class FirestoreData extends ChangeNotifier {
               "transactionID": transaction.id,
               "amount": amount,
               "walletName": transaction.data()['name'],
+              "walletID": walletID,
               "category": categoryName,
-              "walletID": walletTransactionID,
+              "categoryID": categoryID,
               "currency": currency,
+              "currencyID": currencyID,
               "transactionType": transactionType,
               "transactionDate": d,
             });
@@ -304,19 +323,38 @@ class FirestoreData extends ChangeNotifier {
     required String transType,
     required String catID,
     required String spentPerson,
-    required File file,
+    String? fPhoto,
+    File? file,
     required DateTime transDate,
     String transID = ""
   }) async {
     showSpinner = true;
-    final path = file.path;
-    final ext = p.extension(path);
-    final String fileName = DateTime.now().toString();
-    final destination = 'images/transactions/$fileName$ext';
+    Map<String,dynamic> trans = {};
+    String destination = "";
+    var query;
     try{
-      await FirebaseStorage.instance.ref(destination)
-        .putFile(file).whenComplete(() => {
-        _fireStore.collection("transactions").add({
+      if(file != null) {
+        final path = file.path;
+        final ext = p.extension(path);
+        final String fileName = DateTime.now().toString();
+        destination = 'images/transactions/$fileName$ext';
+        await FirebaseStorage.instance.ref(destination)
+          .putFile(file).whenComplete((){
+          trans = {
+            'uID' : _auth.currentUser!.uid,
+            'wallet' : walletID,
+            'amount' : amount,
+            'name' : transName,
+            'type' : transType,
+            'category' : catID,
+            'fDate' : transDate,
+            'spentPerson' : spentPerson,
+            'photo' : destination,
+            'created_at': FieldValue.serverTimestamp()
+          };
+        });
+      } else {
+        trans = {
           'uID' : _auth.currentUser!.uid,
           'wallet' : walletID,
           'amount' : amount,
@@ -324,29 +362,39 @@ class FirestoreData extends ChangeNotifier {
           'type' : transType,
           'category' : catID,
           'fDate' : transDate,
+          'photo' : fPhoto,
           'spentPerson' : spentPerson,
-          'photo' : destination,
           'created_at': FieldValue.serverTimestamp()
-        }).then((value) {
-            var count = 0;
-            Navigator.popUntil(context, (route) {
-              return count++ == 2;
-            });
-            cDialog(
-              context,
-              "Success",
-              (transID.isEmpty)? "It has been successfully added.":
-              "It has been successfully saved.",
-              "Cool",
-              Icon(
-                Icons.check_circle, size: 80,
-                color: ColorConstants.cyan,
-              )
-            );
-        })
+          };
+      }
+
+      if(transID.isNotEmpty)
+        query = _fireStore.collection("transactions").doc(transID).set(trans);
+      else
+        query = _fireStore.collection("transactions").add(trans);
+      await query.then((value) {
+        var count = 0;
+        Navigator.popUntil(context, (route) {
+          return count++ == 2;
+        });
+        showSpinner = false;
+        cDialog(
+          context,
+          "Success",
+          (transID.isEmpty)? "It has been successfully added.":
+          "It has been successfully saved.",
+          "Cool",
+          Icon(
+            Icons.check_circle, size: 80,
+            color: ColorConstants.cyan,
+          )
+        );
       });
-    } catch (e) {}
-    showSpinner = false;
+    } catch (e) {
+      print("test $e");
+      showSpinner = false;
+    }
+
   }
 
   Future<void> saveWallet({
@@ -361,7 +409,8 @@ class FirestoreData extends ChangeNotifier {
   }) async {
     showSpinner = true;
     try{
-      await _fireStore.collection("wallets").doc(walletID).set({
+      var query;
+      var wallet = {
         'uID': _auth.currentUser!.uid,
         'name': walletName,
         'currency': walletCurrency,
@@ -370,10 +419,28 @@ class FirestoreData extends ChangeNotifier {
         'overAllBalance': overAllBalance,
         'savedTo': savedTo,
         'created_at': FieldValue.serverTimestamp()
-      }).then((value) {
+      };
+      if(walletID!.isNotEmpty)
+        query = _fireStore.collection("wallets").doc(walletID).set(wallet);
+      else
+        query = _fireStore.collection("wallets").add(wallet);
+      await query.then((value) {
+        showSpinner = false;
         Navigator.pop(context);
+        cDialog(context,"Success",
+          (walletID.isEmpty)? "It has been successfully added.":
+          "It has been successfully saved.",
+          "Cool",
+          Icon(
+            Icons.check_circle, size: 80,
+            color: ColorConstants.cyan,
+          )
+        );
       });
-    } catch (e) {}
-    showSpinner = false;
+    } catch (e) {
+      print(e);
+      showSpinner = false;
+    }
+
   }
 }

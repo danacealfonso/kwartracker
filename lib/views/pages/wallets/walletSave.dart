@@ -49,6 +49,7 @@ class _WalletSavePageState extends State<WalletSavePage> {
       helpText: 'Select target date',
     );
     if (newDate != null) {
+      if(mounted)
       setState(() {
         _date = newDate;
       });
@@ -183,9 +184,7 @@ class _WalletSavePageState extends State<WalletSavePage> {
                   hintText: "Enter target amount",
                   controller: conTargetAmount,
                   onChanged: (value) {
-                    setState(() {
-                      targetAmount = value;
-                    });
+                    targetAmount = value;
                   },
                 ),
                 GestureDetector(
@@ -207,9 +206,7 @@ class _WalletSavePageState extends State<WalletSavePage> {
                   hintText: "Enter saved to",
                   controller: conSavedTo,
                   onChanged: (value) {
-                    setState(() {
-                      savedTo = value;
-                    });
+                    savedTo = value;
                   },
                 ),
               ],
@@ -226,15 +223,23 @@ class _WalletSavePageState extends State<WalletSavePage> {
                   cardSize: CardSize.large,
                   cardColor: cardColor,)
                 ),
-                CTextField(
+                (widget.walletID.isNotEmpty)? CTextField(
                   label: "Wallet Name",
                   hintText: "Enter wallet name",
                   controller: conName,
                   autofocus: true,
                   onChanged: (value) {
-                    setState(() {
-                      walletName = value;
-                    });
+                    walletName = value;
+                  },
+                ):CTextField(
+                  label: "Wallet Name",
+                  hintText: "Enter wallet name",
+                  autofocus: true,
+                  onChanged: (value) {
+                    if(mounted && value != null)
+                      setState(() {
+                        walletName = value;
+                      });
                   },
                 ),
                 CDropdownTextField(
@@ -242,7 +247,7 @@ class _WalletSavePageState extends State<WalletSavePage> {
                     hintText: "Select wallet currency",
                     text: walletCurrency,
                     onChanged: (value) {
-                      if (value != null )
+                      if(mounted && value != null)
                         setState(() {
                           walletCurrency = value[1];
                           walletCurrencyID = value[0];
@@ -255,7 +260,7 @@ class _WalletSavePageState extends State<WalletSavePage> {
                     hintText: "Select wallet type",
                     text: walletType,
                     onChanged: (value) {
-                      if (value != null )
+                      if(mounted && value != null)
                         setState(() {
                           walletType = value[1];
                           walletTypeID = value[0];
@@ -287,9 +292,10 @@ class _WalletSavePageState extends State<WalletSavePage> {
                       margin: EdgeInsets.only(right: 10, left: 10),
                       child: CSwitch(
                         value: fOverallBalance==null? true: fOverallBalance,
-                        onChanged: (bool val){
+                        onChanged: (bool value){
+                          if(mounted && value != null)
                           setState(() {
-                            fOverallBalance = val;
+                            fOverallBalance = value;
                           });
                         },
                       ),
@@ -313,7 +319,7 @@ class _WalletSavePageState extends State<WalletSavePage> {
                 title: title(),
                 action: actionButtons
             ),
-            body: CBody(child: content())
+            body: CBody(child: content(),hasScrollBody: true,)
         ),
       ),
     );

@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:kwartracker/model/firestoreData.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
 import 'package:kwartracker/views/pages/transactions/transactionAddDetails.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:kwartracker/views/widgets/cButton.dart';
 import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
+import 'package:provider/provider.dart';
 import '../../widgets/headerNav.dart';
 
 class TransactionChooseWalletPage extends StatefulWidget {
@@ -17,11 +19,9 @@ class TransactionChooseWalletPage extends StatefulWidget {
 
 class _TransactionChooseWalletPagePageState extends
   State<TransactionChooseWalletPage> {
-  final _fireStore = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
   String fWallet = "";
   String fWalletID = "";
-  final walletsList = <PopupMenuEntry>[];
+  List<PopupMenuEntry<dynamic>> walletsList = <PopupMenuEntry>[];
 
   var actionButtons = [
     TextButton(
@@ -33,29 +33,6 @@ class _TransactionChooseWalletPagePageState extends
   @override
   void initState() {
     super.initState();
-    _getData();
-  }
-
-  Future<Null> _getData() async {
-    walletsList.clear();
-    var walletsStream = _fireStore.collection("wallets")
-        .where("uID", isEqualTo: _auth.currentUser!.uid)
-        .orderBy("name")
-        .snapshots();
-
-    walletsStream.listen((snapshot) {
-      for (var wallet in snapshot.docs) {
-        String walletName = wallet.data()["name"];
-        String walletID = wallet.id;
-
-        List value = [walletID, walletName];
-
-        walletsList.add(PopupMenuItem<List>(
-            child: Text(walletName), value: value)
-        );
-      }
-    });
-    return null;
   }
 
   @override
@@ -65,6 +42,14 @@ class _TransactionChooseWalletPagePageState extends
         "Add Transaction",
       );
     }
+
+    walletsList = Provider.of<FirestoreData>(context)
+        .walletsList.map((item) {
+      return PopupMenuItem<List>(
+          child: Text(item["name"]),
+          value: [item["id"], item["name"]]
+      );
+    }).toList();
 
     Widget content() {
       return Container(
@@ -78,6 +63,7 @@ class _TransactionChooseWalletPagePageState extends
                 hintText: "Select wallet to add",
                 text: fWallet,
                 onChanged: (value) {
+                  if(value!=null)
                   setState(() {
                     fWallet = value[1];
                     fWalletID = value[0];
