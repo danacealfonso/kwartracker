@@ -252,7 +252,7 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
 
                 });
                 if(transaction.isEmpty)
-                firestoreData.showSpinner = true;
+                  firestoreData.showSpinner = true;
                 else
                   firestoreData.showSpinner = false;
                 return (transaction.isEmpty)? ModalProgressHUD(
@@ -281,9 +281,11 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
                                   cConfirmationDialog(context,
                                   "Are you sure you want to delete this?",
                                   () async {
+                                    firestoreData.showSpinner = true;
                                     await _fireStore.collection('transactions').doc(
                                       widget.transactionID.toString()
                                     ).delete().then((_) {
+                                      firestoreData.showSpinner = false;
                                       var count = 0;
                                       Navigator.popUntil(context, (route) {
                                         return count++ == 2;
@@ -429,7 +431,7 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
               title: title(),
               action: actionButtons
           ),
-          body: CBody(child: content())
+          body: CBody(child: content(), hasScrollBody: true,)
       ),
     );
   }

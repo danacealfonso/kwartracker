@@ -29,7 +29,11 @@ class CDropdownTextField extends StatelessWidget {
       List selected = await showMenu(
         initialValue: initialValue,
         context: context,
-        position: RelativeRect.fromLTRB(left, top, 0, 0),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Color(0xFFE4EAEF), width: 1),
+          borderRadius: new BorderRadius.circular(16)
+        ),
+        position: RelativeRect.fromLTRB(left, top, 30, 0),
         items: items,
         elevation: 8.0,
       );

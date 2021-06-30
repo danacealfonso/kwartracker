@@ -261,7 +261,7 @@ class _TransactionAddDetailsPageState extends
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width,
-                            height: 100,
+                            height: 180,
                             decoration: BoxDecoration(
                               color: ColorConstants.grey,
                               borderRadius: BorderRadius.circular(16),
@@ -308,7 +308,7 @@ class _TransactionAddDetailsPageState extends
             title: title(),
             action: actionButtons
           ),
-          body: CBody(child: content(),hasScrollBody: false,)
+          body: CBody(child: content(),hasScrollBody: true,)
         ),
       ),
     );

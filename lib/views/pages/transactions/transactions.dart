@@ -135,6 +135,7 @@ class _TransactionsPageState extends State<TransactionsPage>
                             borderRadius: new BorderRadius.circular(15)),
                         onPressed: (){
                           showModalBottomSheet(context: context,
+                              isScrollControlled:true,
                             builder: (context) {
                               return StatefulBuilder(
                                   builder: (BuildContext context, StateSetter setState) {
