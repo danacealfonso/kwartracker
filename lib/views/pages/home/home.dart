@@ -5,6 +5,7 @@ import 'package:kwartracker/model/firestoreData.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
 import 'package:kwartracker/views/pages/profile/profile.dart';
+import 'package:kwartracker/views/pages/signIn/signIn.dart';
 import 'package:kwartracker/views/pages/transactions/transactionChooseWallet.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
 import 'package:kwartracker/views/pages/wallets/wallets.dart';
@@ -36,6 +37,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
       final user = _auth.currentUser;
       if (user != null)
         globals.isLoggedIn = true;
+      else {
+        Navigator.pushAndRemoveUntil(context, MyRoute(
+          builder: (context) => SignInPage(), routeSettings:
+        RouteSettings(name: "/signIn"),
+        ), (route) => false);
+      }
 
     } catch (e) {
       print(e);

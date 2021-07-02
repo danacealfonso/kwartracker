@@ -14,6 +14,7 @@ AppBar headerNav({
         margin: EdgeInsets.all(20),
         child: FloatingActionButton(
           heroTag: null,
+          elevation: 0,
           onPressed: () {
             Navigator.pop(context,"test");
           },
@@ -35,7 +36,7 @@ AppBar headerNav({
             BoxShadow(
               color: Color(0x82FFFFFF),
               blurRadius: 8,
-              offset: const Offset(-4, -2),
+              offset: const Offset(-6, -6),
             ),
           ],
         )

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:kwartracker/util/colorConstants.dart';
@@ -26,12 +25,14 @@ class FirestoreData extends ChangeNotifier {
   List<Map<String, dynamic>> walletIDAmount = [];
   List<Map<String, dynamic>> walletsList = [];
   List<Map<String, dynamic>> categoriesList = [];
+  List<Map<String, dynamic>> categoriesParent = [];
+  List<Map<String, dynamic>> categoriesChild = [];
   List<Map<String, dynamic>> walletTypeData = [];
   List<Map<String, dynamic>> currenciesList = [];
 
   Future<Map<String, dynamic>> getTransaction(String transactionID) async {
     Map<String, dynamic> transaction = Map<String, dynamic>();
-    String photo = "";
+    String? photo;
     String currencyID = 'php';
     await _fireStore.collection('transactions')
       .doc(transactionID)
@@ -54,9 +55,6 @@ class FirestoreData extends ChangeNotifier {
         var fileName = "";
         if(documentSnapshot.data()!["photo"] != null) {
           var completePath = documentSnapshot.data()!["photo"];
-          var fileName = (completePath
-              .split('/')
-              .last);
           transaction.addAll({"photo": completePath});
         }
         transaction.addAll({"fileName": fileName});
@@ -82,7 +80,7 @@ class FirestoreData extends ChangeNotifier {
     {
       final ref = FirebaseStorage.instance
           .ref()
-          .child(photo);
+          .child(photo!);
       try {
         await ref.getDownloadURL().then((url) {
           transaction.addAll({"photoURL": url});
@@ -115,18 +113,29 @@ class FirestoreData extends ChangeNotifier {
 
       await _fireStore.collection("categories")
         .where("uID", isEqualTo: _auth.currentUser!.uid)
-        .orderBy("name").get().then((documentSnapshot) {
-        categoriesList.clear();
+        .orderBy("parentID").get().then((documentSnapshot) {
         if (documentSnapshot.docs.length > 0) {
+          categoriesParent.clear();
+          categoriesChild.clear();
+          categoriesList.clear();
           for (var category in documentSnapshot.docs) {
+            var categoryP;
             String categoryName = category.data()["name"];
-            String icon = category.data()["icon"];
             String categoryID = category.id;
+
+            if (category.data()["parentID"].toString().isEmpty) {
+              categoryP = category.data();
+              categoryP.addAll({"id": categoryID});
+              categoriesParent.add(categoryP);
+            } else
+              categoriesChild.add(category.data());
+
             categoriesList.add({
               "id": categoryID,
               "name":categoryName,
-              "icon": icon
+              "icon": category.data()["icon"]
             });
+
           }
         }
       });
@@ -170,10 +179,10 @@ class FirestoreData extends ChangeNotifier {
         for (var wallet in snapshot.docs) {
           String walletName = wallet.data()["name"];
           String walletTypeID = wallet.data()["type"];
-          String walletCurrencyID = wallet.data()["currency"];
-          bool overAllBalance = wallet.data()["overAllBalance"];
-          String savedTo = wallet.data()["savedTo"];
-          double targetAmount = wallet.data()["targetAmount"];
+          String? walletCurrencyID = wallet.data()["currency"];
+          bool? overAllBalance = wallet.data()["overAllBalance"];
+          String? savedTo = wallet.data()["savedTo"];
+          double? targetAmount = wallet.data()["targetAmount"];
           CardColor? walletColor;
           String? walletTypeName = "";
 
@@ -268,6 +277,7 @@ class FirestoreData extends ChangeNotifier {
             String currencyID = "";
             String categoryName = "";
             String categoryID = "";
+            Map<String,dynamic> categoryIcon = Map<String,dynamic>();
             String walletID = transaction.data()['wallet'];
             String transactionType = transaction.data()['type'];
 
@@ -282,6 +292,7 @@ class FirestoreData extends ChangeNotifier {
               if (category["id"] == transaction.data()['category']) {
                 categoryName = category["name"];
                 categoryID = category["id"];
+                categoryIcon = category["icon"];
                 break;
               }
             }
@@ -296,6 +307,7 @@ class FirestoreData extends ChangeNotifier {
               "walletID": walletID,
               "category": categoryName,
               "categoryID": categoryID,
+              "categoryIcon": categoryIcon,
               "currency": currency,
               "currencyID": currencyID,
               "transactionType": transactionType,
@@ -442,5 +454,47 @@ class FirestoreData extends ChangeNotifier {
       showSpinner = false;
     }
 
+  }
+
+  Future<void> saveCategory({
+    required BuildContext context,
+    String categoryID = "",
+    String categoryName = "",
+    Map<String, dynamic>?  categoryIcon,
+    String categoryParentID = "",
+  }) async {
+    showSpinner = true;
+    try{
+      var query;
+      var category = {
+        'uID': _auth.currentUser!.uid,
+        'name': categoryName,
+        'icon': categoryIcon,
+        'parentID': categoryParentID,
+        'created_at': FieldValue.serverTimestamp()
+      };
+      if(categoryID.isNotEmpty)
+        query = _fireStore.collection("categories").doc(categoryID)
+            .set(category);
+      else
+        query = _fireStore.collection("categories").add(category);
+      await query.then((value) {
+        showSpinner = false;
+        Navigator.pop(context);
+        cDialog(context,"Success",
+            (categoryID.isEmpty)? "It has been successfully added.":
+            "It has been successfully saved.",
+            "Cool",
+            Icon(
+              Icons.check_circle, size: 80,
+              color: ColorConstants.cyan,
+            )
+        );
+        getData(context: context);
+      });
+    } catch (e) {
+      print(e);
+      showSpinner = false;
+    }
   }
 }
