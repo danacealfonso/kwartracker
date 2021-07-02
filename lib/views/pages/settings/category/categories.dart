@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconpicker/Serialization/iconDataSerialization.dart';
-import 'package:kwartracker/model/firestoreData.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:kwartracker/views/widgets/cFloatingButton.dart';
 import 'package:kwartracker/views/widgets/headerNav.dart';
-import 'package:provider/provider.dart';
-import 'package:tree_view/tree_view.dart';
 import 'categoryAdd.dart';
 
 class CategoriesPage extends StatefulWidget {
@@ -77,67 +74,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
         }
       )
     ];
-    List<Parent> getCategories() {
-      List<Parent> parent = [];
-      parent.clear();
-      List<Map<String, dynamic>> categoriesParent =
-          Provider.of<FirestoreData>(context).categoriesParent;
-
-      for (var categoryParent in categoriesParent) {
-        parent.add(
-          Parent(
-            callback: (value) => print(value),
-            parent: Container(
-              margin: EdgeInsets.only(bottom: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  width: 2,
-                  color: ColorConstants.grey1
-                )
-              ),
-              padding: EdgeInsets.all(7),
-              child: Row(
-                children: [
-                  Container(
-                    height: 40,
-                    width: 40,
-                    padding: EdgeInsets.all(3),
-                    margin: EdgeInsets.only(right: 10),
-                    decoration: BoxDecoration(
-                      color: ColorConstants.cyan,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: Icon(
-                      deserializeIcon(categoryParent['icon']),
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ),
-                  Text(categoryParent['name'],
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: ColorConstants.black,
-                        fontWeight: FontWeight.w500
-                    ),
-                  ),
-                ],
-              )
-            ),
-            childList: ChildList(
-              children: Provider.of<FirestoreData>(context)
-                  .categoriesChild.map((item) {
-                if(item["parentID"] == categoryParent["id"])
-                  return categoryChildWidgets(item["icon"],item["name"]);
-                else
-                  return SizedBox();
-              }).toList(),
-            ),
-          )
-        );
-      }
-      return parent;
-    }
 
     Widget title() {
       return Text(
@@ -146,13 +82,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
     }
 
     Widget content() {
-      var treeView = TreeView(
-        parentList: getCategories(),
-      );
 
       return Container(
         padding: const EdgeInsets.all(10.0),
-        child: treeView,
+        child: SizedBox(),
       );
     }
 

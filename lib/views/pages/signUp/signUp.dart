@@ -77,17 +77,15 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
                       showSpinner = true;
                     });
                     try {
-                      final newUser = await _auth.createUserWithEmailAndPassword(
+                      await _auth.createUserWithEmailAndPassword(
                           email: email,
                           password: password
                       );
-                      if (newUser != null) {
-                        globals.isLoggedIn = true;
-                        Navigator.pushAndRemoveUntil(context, MyRoute(
-                          builder: (context) => HomePage(), routeSettings:
-                          RouteSettings(name: "/home"),
-                        ), (route) => false);
-                      }
+                      globals.isLoggedIn = true;
+                      Navigator.pushAndRemoveUntil(context, MyRoute(
+                        builder: (context) => HomePage(), routeSettings:
+                        RouteSettings(name: "/home"),
+                      ), (route) => false);
                       setState(() {
                         showSpinner = false;
                       });

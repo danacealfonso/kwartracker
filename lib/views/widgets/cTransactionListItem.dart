@@ -23,7 +23,7 @@ class CTransactionListItem extends StatelessWidget {
   final DateTime transactionDate;
   final String transactionID;
   final String walletName;
-  final String currency;
+  final String? currency;
   final double amount;
   final Map<String, dynamic>? categoryIcon;
 
@@ -34,7 +34,7 @@ class CTransactionListItem extends StatelessWidget {
 
     String currencyAbb =  "Php";
     if(currency!=null)
-      if(currency.toLowerCase() == "dollar")
+      if(currency!.toLowerCase() == "dollar")
         currencyAbb = "Usd";
 
     return Container(

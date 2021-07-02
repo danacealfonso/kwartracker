@@ -98,7 +98,8 @@ class _WalletSavePageState extends State<WalletSavePage> {
           walletType = item["type"];
           walletCurrencyID = item["currencyID"];
           walletCurrency = item["currency"];
-          fOverallBalance = item["fOverallBalance"];
+          fOverallBalance = (item["fOverallBalance"] == null)? true:
+            item["fOverallBalance"];
           savedTo = item["savedTo"];
           cardColor = item["color"];
           conName.text = walletName;
@@ -290,9 +291,9 @@ class _WalletSavePageState extends State<WalletSavePage> {
                     child: Container(
                       margin: EdgeInsets.only(right: 10, left: 10),
                       child: CSwitch(
-                        value: fOverallBalance==null? true: fOverallBalance,
+                        value: fOverallBalance,
                         onChanged: (bool value){
-                          if(mounted && value != null)
+                          if(mounted)
                           setState(() {
                             fOverallBalance = value;
                           });

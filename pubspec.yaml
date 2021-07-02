@@ -26,10 +26,10 @@ dependencies:
   carousel_slider: ^4.0.0
   flutter_iconpicker: ^3.0.2
   file_picker: ^3.0.3
-  tree_view: ^0.0.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  lints: ^1.0.1
 
 flutter:
   uses-material-design: true
