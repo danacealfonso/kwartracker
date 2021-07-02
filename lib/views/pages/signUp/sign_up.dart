@@ -1,27 +1,31 @@
+// Flutter imports:
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:kwartracker/util/globals.dart' as globals;
-import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/util/myRoute.dart';
-import 'package:kwartracker/views/pages/home/home.dart';
-import 'package:kwartracker/views/pages/signIn/signIn.dart';
-import 'package:kwartracker/views/widgets/cBody.dart';
-import 'package:kwartracker/views/widgets/cButton.dart';
-import 'package:kwartracker/views/widgets/cTextField.dart';
+
+// Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import '../../widgets/headerNav.dart';
+
+// Project imports:
+import 'package:kwartracker/util/color_constants.dart';
+import 'package:kwartracker/util/globals.dart' as globals;
+import 'package:kwartracker/util/my_route.dart';
+import 'package:kwartracker/views/pages/home/home.dart';
+import 'package:kwartracker/views/pages/signIn/sign_in.dart';
+import 'package:kwartracker/views/widgets/custom_body.dart';
+import 'package:kwartracker/views/widgets/custom_button.dart';
+import 'package:kwartracker/views/widgets/custom_text_field.dart';
+import '../../widgets/header_nav.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-//TODO: Registering Users with Firebase using FirebaseAuth
 class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool showSpinner = false;
-  final _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   late String email;
   late String password;
 
@@ -40,7 +44,7 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     Widget? leading() {
-      return Center();
+      return const Center();
     }
 
     Widget content() {
@@ -48,10 +52,10 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
         key: _formKey,
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
+            children: <Widget>[
+              const Padding(
                 padding: EdgeInsets.fromLTRB(0, 9, 0, 4),
-                child: Text("Create\nAccount",
+                child: Text('Create\nAccount',
                   style: TextStyle(
                       color: Color(0xFF414141),
                       fontSize: 42,
@@ -59,19 +63,19 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
                   ),
                 ),
               ),
-              CTextField(hintText: "Enter email address", label: "Email",
-                onChanged: (value) {
+              CustomTextField(hintText: 'Enter email address', label: 'Email',
+                onChanged: (dynamic value) {
                   email = value;
                 },
               ),
-              CTextField(hintText: "Enter password", label: "Password",
+              CustomTextField(hintText: 'Enter password', label: 'Password',
                 obscureText: true,
-                onChanged: (value) {
+                onChanged: (dynamic value) {
                   password = value;
                 },
               ),
-              CButton(
-                  text: "Sign Up",
+              CustomButton(
+                  text: 'Sign Up',
                   onPressed: () async {
                     setState(() {
                       showSpinner = true;
@@ -82,10 +86,10 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
                           password: password
                       );
                       globals.isLoggedIn = true;
-                      Navigator.pushAndRemoveUntil(context, MyRoute(
-                        builder: (context) => HomePage(), routeSettings:
-                        RouteSettings(name: "/home"),
-                      ), (route) => false);
+                      Navigator.pushAndRemoveUntil(context, MyRoute<dynamic>(
+                        builder: (BuildContext context) => HomePage(), routeSettings:
+                        const RouteSettings(name: '/home'),
+                      ), (Route<dynamic> route) => false);
                       setState(() {
                         showSpinner = false;
                       });
@@ -97,34 +101,34 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
                     }
                   }
               ),
-              Align(
+              const Align(
                 alignment: Alignment.center,
-                child: Text("or",
+                child: Text('or',
                   style: TextStyle(
                       color: Color(0xFF414141),
                       fontSize: 14
                   ),
                 ),
               ),
-              CButton(text:
-              "Sign up with Google",
+              CustomButton(text:
+              'Sign up with Google',
                   onPressed: () {},
                   backgroundColor: ColorConstants.blue
               ),
-              CButton(text:
-              "Sign up with Apple",
+              CustomButton(text:
+              'Sign up with Apple',
                   onPressed: () {},
                   backgroundColor: Colors.black
               ),
               Row(
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {},
-                        child: Text(
-                          "Sign in as guest",
+                        child: const Text(
+                          'Sign in as guest',
                           style: TextStyle(
                             color: ColorConstants.grey6,
                             decoration: TextDecoration.underline,
@@ -152,18 +156,18 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
           titleSpacing: 0.0,
           centerTitle: false
         ),
-        body: CBody(
+        body: CustomBody(
           child: Column(
-          children: [
+          children: <Widget>[
             Container(
-                padding: EdgeInsets.fromLTRB(30, 30, 20, 30),
+                padding: const EdgeInsets.fromLTRB(30, 30, 20, 30),
                 child: content()
             ),
-            Expanded(
+            const Expanded(
               child: Align(
                   alignment: FractionalOffset.bottomCenter,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
                     child: Divider(
                       height: 1,
                       thickness: 1,
@@ -175,11 +179,11 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
               child: Align(
                 alignment: FractionalOffset.bottomCenter,
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                   child: RichText(
                     text: TextSpan(
                       children: <TextSpan>[
-                        TextSpan(
+                        const TextSpan(
                           text: 'Already have an account?',
                           style: TextStyle(
                               color: ColorConstants.black,
@@ -188,7 +192,7 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
                         ),
                         TextSpan(
                           text: ' Sign In',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: ColorConstants.cyan,
                             decoration: TextDecoration.underline,
                             fontSize: 14,
@@ -196,10 +200,11 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               Navigator.push(context,
-                                  MyRoute(
-                                      builder: (context) => SignInPage(), routeSettings:
-                                  RouteSettings(name: "/signIn"),
-                                  )
+                                MyRoute<dynamic>(
+                                    builder: (BuildContext context) =>
+                                      SignInPage(), routeSettings:
+                                const RouteSettings(name: '/signIn'),
+                                )
                               );
                             }
                         ),

@@ -1,21 +1,28 @@
+// Dart imports:
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/model/firestoreData.dart';
-import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/views/widgets/cBody.dart';
-import 'package:kwartracker/views/widgets/cButton.dart';
-import 'package:kwartracker/views/widgets/cDatePickerTextField.dart';
-import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
-import 'package:kwartracker/views/widgets/cTextField.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:file_picker/file_picker.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
-import '../../widgets/headerNav.dart';
+
+// Project imports:
+import 'package:kwartracker/model/firestore_data.dart';
+import 'package:kwartracker/util/color_constants.dart';
+import 'package:kwartracker/views/widgets/custom_body.dart';
+import 'package:kwartracker/views/widgets/custom_button.dart';
+import 'package:kwartracker/views/widgets/custom_dropdown.dart';
+import 'package:kwartracker/views/widgets/custom_text_field.dart';
+import 'package:kwartracker/views/widgets/date_picker_text_field.dart';
+import '../../widgets/header_nav.dart';
 
 class TransactionAddDetailsPage extends StatefulWidget {
+  const TransactionAddDetailsPage(this.walletID);
   final String? walletID;
-  TransactionAddDetailsPage(this.walletID);
 
   @override
   _TransactionAddDetailsPageState createState() =>
@@ -24,34 +31,41 @@ class TransactionAddDetailsPage extends StatefulWidget {
 
 class _TransactionAddDetailsPageState extends
   State<TransactionAddDetailsPage> {
-  String fName = "";
-  String fType = "";
-  String fCategory = "";
-  String fCategoryID = "";
+  String fName = '';
+  String fType = '';
+  String fCategory = '';
+  String fCategoryID = '';
   bool enableAddButton = false;
-  String fPersonName = "";
+  String fPersonName = '';
   File? file;
   late final String fDate;
   late final String fPhoto;
-  List<PopupMenuEntry<dynamic>> categoryList = <PopupMenuEntry>[];
-  var txtAmount = TextEditingController();
-  var actionButtons = [
+  List<PopupMenuEntry<dynamic>> categoryList = <PopupMenuEntry<dynamic>>[];
+  TextEditingController txtAmount = TextEditingController();
+  List<Widget> actionButtons = <Widget>[
     TextButton(
         onPressed: () {  },
-        child: Text(""),
+        child: const Text(''),
     ),
   ];
 
   bool validateFields () {
-    var validate = true;
-    if (fName.isEmpty) validate = false;
-    if (fType.isEmpty) validate = false;
-    if (fCategory.isEmpty) validate = false;
-    if (fCategory.isEmpty) validate = false;
-    if (fType.isEmpty) validate = false;
-    if (txtAmount.text.isEmpty) validate = false;
-    if (file == null) validate = false;
-    if (widget.walletID == null) validate = false;
+    bool validate = true;
+    if(fName.isEmpty==true) {
+      validate = false;
+    }if(fType.isEmpty==true) {
+      validate = false;
+    }if(fCategory.isEmpty==true) {
+      validate = false;
+    }if(txtAmount.text.isEmpty==true) {
+      validate = false;
+    }if(file==null) {
+      validate = false;
+    }if(fName.isEmpty==true) {
+      validate = false;
+    }if(widget.walletID==null) {
+      validate = false;
+    }
 
     if (validate == true) {
       setState(() {
@@ -59,8 +73,8 @@ class _TransactionAddDetailsPageState extends
       });
     } else {
       ScaffoldMessenger.of(context)
-          .showSnackBar( SnackBar(
-        content: Text("Please fill up all the fields."),
+          .showSnackBar( const SnackBar(
+        content: Text('Please fill up all the fields.'),
         duration: Duration(milliseconds: 2000),
       ), );
     }
@@ -75,7 +89,7 @@ class _TransactionAddDetailsPageState extends
   }
 
   DateTime _date = DateTime.now();
-  void _selectDate() async {
+  Future<void> _selectDate() async {
     final DateTime? newDate = await showDatePicker(
       context: context,
       initialDate: _date,
@@ -90,17 +104,17 @@ class _TransactionAddDetailsPageState extends
     }
   }
 
-  Future selectFile() async {
-    final result = await FilePicker
+  Future<void> selectFile() async {
+    final FilePickerResult? result = await FilePicker
       .platform.pickFiles(
         allowMultiple: false,
         type: FileType.image,
       );
 
-    if (result == null) return;
-    final path = result.files.single.path!;
-    setState(() => file = File(path));
-
+    if (result != null) {
+      final String path = result.files.single.path!;
+      setState(() => file = File(path));
+    }
   }
 
   void saveAndUpload() {
@@ -119,8 +133,8 @@ class _TransactionAddDetailsPageState extends
 
     } else {
       ScaffoldMessenger.of(context)
-        .showSnackBar( SnackBar(
-        content: Text("Please fill up all the fields."),
+        .showSnackBar( const SnackBar(
+        content: Text('Please fill up all the fields.'),
         duration: Duration(milliseconds: 2000),
       ), );
     }
@@ -128,41 +142,44 @@ class _TransactionAddDetailsPageState extends
 
   @override
   Widget build(BuildContext context) {
-    final fileName = file != null ? file!.path.split('/').last : "";
+    final String fileName = file != null ? file!.path.split('/').last : '';
 
     Widget title() {
-      return Text(
-        "Add Transaction",
+      return const Text(
+        'Add Transaction',
       );
     }
 
     Widget content() {
       return Consumer<FirestoreData>(
-          builder: (context, firestoreData, child) {
-            categoryList = firestoreData.categoriesList.map((item) {
-              return PopupMenuItem<List>(
-                  child: Text(item["name"]),
-                  value: [item["id"], item["name"]]
+          builder: (BuildContext context,
+              FirestoreData firestoreData,
+              Widget? child) {
+            categoryList = firestoreData.categoriesList.map(
+              (Map<String, dynamic> item) {
+              return PopupMenuItem<dynamic>(
+                  child: Text(item['name']),
+                  value: <dynamic>[item['id'], item['name']]
               );
             }).toList();
 
             return Container(
               margin: const EdgeInsets.only(top: 30),
               child: ListView(
-                  padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
+                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
                   children: <Widget>[
-                    Center(child: Text("Enter amount"),),
+                    const Center(child: Text('Enter amount'),),
                     Center(child: TextField(
                         autofocus: true,
-                        keyboardType: TextInputType
+                        keyboardType: const TextInputType
                           .numberWithOptions(decimal: true),
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 40,
                             color: ColorConstants.black
                         ),
                         controller: txtAmount,
-                        decoration: new InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           focusedBorder: InputBorder.none,
                           enabledBorder: InputBorder.none,
@@ -170,40 +187,44 @@ class _TransactionAddDetailsPageState extends
                           disabledBorder: InputBorder.none,
                         )
                     ),),
-                    CTextField(
-                      hintText: "Enter transaction name",
-                      label: "Transaction name",
-                      onChanged: (value) {
+                    CustomTextField(
+                      hintText: 'Enter transaction name',
+                      label: 'Transaction name',
+                      onChanged: (dynamic value) {
                         fName = value;
                       },
                     ),
-                    CDropdownTextField(
-                        label: "Transaction type",
-                        hintText: "Select transaction type",
+                    CustomDropdown(
+                        label: 'Transaction type',
+                        hintText: 'Select transaction type',
                         text: fType,
-                        onChanged: (value) {
-                          if (value != null )
+                        onChanged: (dynamic value) {
+                          if (value != null ) {
                             setState(() {
                               fType = value[1];
                             });
+                          }
                         },
-                        items: [
-                          PopupMenuItem<List>(
-                              child: const Text('Income'), value: ['Income','Income']),
-                          PopupMenuItem<List>(
-                              child: const Text('Expense'), value: ['Expense','Expense']),
+                        items: const <PopupMenuEntry<dynamic>>[
+                          PopupMenuItem<dynamic>(
+                              child: Text('Income'),
+                              value: <String>['Income','Income']),
+                          PopupMenuItem<dynamic>(
+                              child: Text('Expense'),
+                              value: <String>['Expense','Expense']),
                         ]
                     ),
-                    CDropdownTextField(
-                        label: "Category",
-                        hintText: "Select Category",
+                    CustomDropdown(
+                        label: 'Category',
+                        hintText: 'Select Category',
                         text: fCategory.toString(),
-                        onChanged: (value) {
-                          if (value != null )
+                        onChanged: (dynamic value) {
+                          if (value != null ) {
                             setState(() {
                               fCategory = value[1];
                               fCategoryID = value[0];
                             });
+                          }
                         },
                         items: categoryList
                     ),
@@ -211,30 +232,31 @@ class _TransactionAddDetailsPageState extends
                       onTapDown: (TapDownDetails details) {
                         _selectDate.call();
                       },
-                      child: CDatePickerTextField(
-                          hintText: "Select Date",
-                          label: "Select date",
+                      child: DatePickerTextField(
+                          hintText: 'Select Date',
+                          label: 'Select date',
                           text: _date.toString(),
-                          onChanged: (value) {
+                          onChanged: (dynamic value) {
                             _date = value;
                           },
-                          items: []
+                          items:
+                          const <PopupMenuEntry<PopupMenuItem<dynamic>>>[]
                       ),
                     ),
-                    CTextField(
-                      label: "Spent with this person",
-                      hintText: "Enter name of person",
-                      onChanged: (value) {
+                    CustomTextField(
+                      label: 'Spent with this person',
+                      hintText: 'Enter name of person',
+                      onChanged: (dynamic value) {
                         fPersonName = value;
                       },
                     ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: Align(
                           alignment: Alignment.centerLeft,
                           child: Container(
-                            child: Text(
-                              "Upload photo",
+                            child: const Text(
+                              'Upload photo',
                               style: TextStyle(
                                   color: Color(0xFFBBC3C9),
                                   fontSize: 12
@@ -243,18 +265,18 @@ class _TransactionAddDetailsPageState extends
                           )
                       ),
                     ),
-                    (file == null)? Align(
+                    if (file == null) Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
                         width: 100,
-                        child: CButton(
-                            text: "Browse",
+                        child: CustomButton(
+                            text: 'Browse',
                             backgroundColor: ColorConstants.grey3,
                             onPressed: () { selectFile(); }
                         ),
                       ),
-                    ):Column(
-                      children: [
+                    ) else Column(
+                      children: <Widget>[
                         GestureDetector(
                           onTap: () {
                             selectFile();
@@ -275,7 +297,7 @@ class _TransactionAddDetailsPageState extends
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(fileName, style:
-                            TextStyle(fontSize: 12,
+                            const TextStyle(fontSize: 12,
                             fontStyle: FontStyle.italic,
                             color: ColorConstants.grey3)
                           ),
@@ -284,8 +306,8 @@ class _TransactionAddDetailsPageState extends
                     ),
                     Container(
                       width: double.infinity,
-                      child: CButton(
-                        text: "Add",
+                      child: CustomButton(
+                        text: 'Add',
                         onPressed: () {
                           saveAndUpload();
                         }
@@ -303,12 +325,12 @@ class _TransactionAddDetailsPageState extends
       child: ModalProgressHUD(
         inAsyncCall: Provider.of<FirestoreData>(context).showSpinner,
         child: Scaffold(
-          backgroundColor: Color(0xFF03BED6),
+          backgroundColor: const Color(0xFF03BED6),
           appBar: headerNav(
             title: title(),
             action: actionButtons
           ),
-          body: CBody(child: content(),hasScrollBody: true,)
+          body: CustomBody(child: content(),hasScrollBody: true,)
         ),
       ),
     );

@@ -1,11 +1,16 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_iconpicker/Serialization/iconDataSerialization.dart';
-import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/util/myRoute.dart';
-import 'package:kwartracker/views/widgets/cBody.dart';
-import 'package:kwartracker/views/widgets/cFloatingButton.dart';
-import 'package:kwartracker/views/widgets/headerNav.dart';
-import 'categoryAdd.dart';
+
+// Project imports:
+import 'package:kwartracker/util/color_constants.dart';
+import 'package:kwartracker/util/my_route.dart';
+import 'package:kwartracker/views/widgets/custom_body.dart';
+import 'package:kwartracker/views/widgets/custom_floating_button.dart';
+import 'package:kwartracker/views/widgets/header_nav.dart';
+import 'category_add.dart';
 
 class CategoriesPage extends StatefulWidget {
   @override
@@ -17,20 +22,20 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Widget categoryChildWidgets(Map<String, dynamic> categoryIcon,
       String categoryName) {
     return Container(
-            margin: EdgeInsets.only(left: 40, bottom: 10),
+            margin: const EdgeInsets.only(left: 40, bottom: 10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 border:
                 Border.all(width: 2, color: ColorConstants.grey1)
             ),
-            padding: EdgeInsets.all(7),
+            padding: const EdgeInsets.all(7),
             child: Row(
-              children: [
+              children: <Widget>[
                 Container(
                   height: 40,
                   width: 40,
-                  padding: EdgeInsets.all(3),
-                  margin: EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.all(3),
+                  margin: const EdgeInsets.only(right: 10),
                   decoration: BoxDecoration(
                     color: ColorConstants.cyan,
                     borderRadius: BorderRadius.circular(14),
@@ -43,7 +48,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 ),
                 Text(
                   categoryName,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 16,
                       color: ColorConstants.black,
                       fontWeight: FontWeight.w500),
@@ -56,8 +61,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
 
-    var actionButtons = [
-      CFloatingButton(
+    final List<Widget> actionButtons = <Widget>[
+      CustomFloatingButton(
         icon: Image.asset(
           'images/icons/ic_add.png',
           width: 10,
@@ -65,10 +70,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
           fit:BoxFit.fill
         ), onPressed: () {
           Navigator.push(context,
-              MyRoute(
-                  builder: (context) => CategoryAddPage(),
+              MyRoute<dynamic>(
+                  builder: (BuildContext context) => CategoryAddPage(),
                   routeSettings:
-                  RouteSettings(name: "/categoryAdd")
+                  const RouteSettings(name: '/categoryAdd')
               )
           );
         }
@@ -76,8 +81,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
     ];
 
     Widget title() {
-      return Text(
-        "Categories",
+      return const Text(
+        'Categories',
       );
     }
 
@@ -85,20 +90,20 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
       return Container(
         padding: const EdgeInsets.all(10.0),
-        child: SizedBox(),
+        child: const SizedBox(),
       );
     }
 
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Scaffold(
-          backgroundColor: Color(0xFF03BED6),
+          backgroundColor: const Color(0xFF03BED6),
           appBar: headerNav(
               title: title(),
               action: actionButtons
           ),
-          body: CBody(hasScrollBody:true,child: Container(
-              decoration: BoxDecoration(
+          body: CustomBody(hasScrollBody:true,child: Container(
+              decoration: const BoxDecoration(
                 color: Color(0xFFF1F3F6),
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(50),

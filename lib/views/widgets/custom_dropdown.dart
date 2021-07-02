@@ -1,18 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/util/colorConstants.dart';
 
-class CDropdownTextField extends StatelessWidget {
-  final String label;
-  final String text;
-  final String? hintText;
-  final ValueChanged? onChanged;
-  final List<PopupMenuEntry> items;
-  final TextEditingController? controller;
-  final initialValue;
+// Project imports:
+import 'package:kwartracker/util/color_constants.dart';
 
-  CDropdownTextField({
+class CustomDropdown extends StatelessWidget {
+  const CustomDropdown({
     required this.label,
-    this.text = "",
+    this.text = '',
     this.hintText,
     this.onChanged,
     required this.items,
@@ -20,18 +15,26 @@ class CDropdownTextField extends StatelessWidget {
     this.initialValue
   });
 
+  final String label;
+  final String text;
+  final String? hintText;
+  final ValueChanged? onChanged;
+  final List<PopupMenuEntry<dynamic>> items;
+  final TextEditingController? controller;
+  final String? initialValue;
+
   @override
   Widget build(BuildContext context) {
-    var controller = TextEditingController();
-    void _showPopupMenu(Offset offset) async {
-      double left = offset.dx;
-      double top = offset.dy;
-      List selected = await showMenu(
+    final TextEditingController controller = TextEditingController();
+    Future<void> _showPopupMenu(Offset offset) async {
+      final double left = offset.dx;
+      final double top = offset.dy;
+      final List<dynamic> selected = await showMenu(
         initialValue: initialValue,
         context: context,
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: Color(0xFFE4EAEF), width: 1),
-          borderRadius: new BorderRadius.circular(16)
+          side: const BorderSide(color: Color(0xFFE4EAEF), width: 1),
+          borderRadius: BorderRadius.circular(16)
         ),
         position: RelativeRect.fromLTRB(left, top, 30, 0),
         items: items,
@@ -39,16 +42,18 @@ class CDropdownTextField extends StatelessWidget {
       );
       onChanged!(selected);
     }
-    if(text.isNotEmpty) controller.text = text;
-    return Column(children: [
+    if(text.isNotEmpty) {
+      controller.text = text;
+    }
+    return Column(children: <Widget>[
       Padding(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 7),
         child: Align(
             alignment: Alignment.centerLeft,
             child: Container(
               child: Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                     color: Color(0xFFBBC3C9),
                     fontSize: 12
                 ),
@@ -64,10 +69,10 @@ class CDropdownTextField extends StatelessWidget {
           child: TextField(
             controller: controller,
             enabled: false,
-            decoration: new InputDecoration(
+            decoration: InputDecoration(
               disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                       color: Colors.white,
                       style: BorderStyle.solid,
                       width: 0
@@ -75,50 +80,50 @@ class CDropdownTextField extends StatelessWidget {
               ),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                       color: Colors.white,
                       style: BorderStyle.solid,
                       width: 1
                   )
               ),
               filled: true,
-              hintStyle: new TextStyle(
+              hintStyle: const TextStyle(
                   color: Color(0xFFBBC3C9),
                   fontSize: 14,
                   fontStyle: FontStyle.italic
               ),
               hintText: hintText,
-              fillColor: Color(0xFFF1F3F6),
+              fillColor: const Color(0xFFF1F3F6),
               suffixIcon: Container(
-                margin: EdgeInsets.only(right: 5),
+                margin: const EdgeInsets.only(right: 5),
                 width: 50,
                 height: 40,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                 color: ColorConstants.grey1,
                 borderRadius: BorderRadius.all(Radius.circular(14))
                 ),
-                child: Icon(Icons.expand_more),
+                child: const Icon(Icons.expand_more),
               ),
             )
           ),
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
+          boxShadow: const <BoxShadow>[
             BoxShadow(
               color: Colors.black26,
               blurRadius: 14,
-              offset: const Offset(4, 4),
+              offset: Offset(4, 4),
             ),
             BoxShadow(
               color: Colors.white,
               blurRadius: 14,
-              offset: const Offset(-6, -6),
+              offset: Offset(-6, -6),
             ),
-          ],
+          ]
         ),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10,
       )
     ],

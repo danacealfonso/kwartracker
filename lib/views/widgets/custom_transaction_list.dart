@@ -1,26 +1,33 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/model/firestoreData.dart';
-import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/views/widgets/cTransactionListItem.dart';
+
+// Package imports:
 import 'package:provider/provider.dart';
 
-class CTransactionList extends StatefulWidget {
-  final String walletID;
-  final bool buttonToTop;
-  final EdgeInsets paddingItem;
-  final ValueChanged<double>? onAmountChanged;
-  CTransactionList({Key? key,
-    this.walletID="",
+// Project imports:
+import 'package:kwartracker/model/firestore_data.dart';
+import 'package:kwartracker/util/color_constants.dart';
+import 'package:kwartracker/views/widgets/custom_transaction_list_item.dart';
+
+class CustomTransactionList extends StatefulWidget {
+  const CustomTransactionList({Key? key,
+    this.walletID='',
     this.paddingItem = EdgeInsets.zero,
     this.buttonToTop = true,
     this.onAmountChanged,
   }) : super(key: key);
 
+  final String walletID;
+  final bool buttonToTop;
+  final EdgeInsets paddingItem;
+  final ValueChanged<double>? onAmountChanged;
+
+
   @override
-  _CTransactionListState createState() => _CTransactionListState();
+  _CustomTransactionListState createState() => _CustomTransactionListState();
 }
 
-class _CTransactionListState extends State<CTransactionList> {
+class _CustomTransactionListState extends State<CustomTransactionList> {
   ScrollController? _scrollController;
   bool goToTopButton = false;
   @override
@@ -29,63 +36,66 @@ class _CTransactionListState extends State<CTransactionList> {
         .transactionList.clear();
     Provider.of<FirestoreData>(context, listen: false)
         .getData(walletID: widget.walletID,context: context);
-    _scrollController = new ScrollController()..addListener((){});
+    _scrollController = ScrollController()..addListener((){});
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
       return Consumer<FirestoreData>(
-        builder: (context, firestoreData, child) {
+        builder: (BuildContext context, FirestoreData firestoreData, Widget? child) {
           return NotificationListener<ScrollUpdateNotification>(
-              onNotification: (scroll) {
-                var metrics = scroll.metrics;
+              onNotification: (ScrollUpdateNotification scroll) {
+                final ScrollMetrics metrics = scroll.metrics;
                 if (!firestoreData.isLoading) {
                   if (metrics.atEdge) {
                     if (metrics.pixels == 0) {
-                      if(mounted)
+                      if(mounted) {
                         setState(() {
                           goToTopButton = false;
                         });
+                      }
                     } else {
-                      if(mounted)
+                      if(mounted) {
                         setState(() {
                           firestoreData.isLoading = true;
                         });
+                      }
                       firestoreData.getData(walletID: widget.walletID,
                         context: context);
                     }
                   }
                   if (metrics.pixels >= 10) {
-                    if(mounted)
+                    if(mounted) {
                       setState(() {
                         goToTopButton = true;
                       });
+                    }
                   }
                 }
                 //_scrollListener();
                 return true;
               },child: Stack(
-            children: [
+            children: <Widget>[
               ListView.builder(
                 shrinkWrap: false,
-                padding: EdgeInsets.only(bottom: 50),
+                padding: const EdgeInsets.only(bottom: 50),
                 controller: _scrollController,
                 itemCount: firestoreData.transactionList.length + 1,
-                itemBuilder: (context, int index) {
+                itemBuilder: (BuildContext context, int index) {
 
                   if (index < firestoreData.transactionList.length) {
-                    var doc = firestoreData.transactionList[index];
+                    final Map<String,dynamic> doc = firestoreData.transactionList[index];
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
+                      children: <Widget>[
                         Padding(
                             padding: widget.paddingItem,
-                            child: Divider()
+                            child: const Divider()
                         ),
                         Padding(
                           padding: widget.paddingItem,
-                          child: CTransactionListItem(
+                          child: CustomTransactionListItem(
                             amount: doc['amount'],
                             walletName: doc['walletName'],
                             category: doc['category'],
@@ -103,8 +113,8 @@ class _CTransactionListState extends State<CTransactionList> {
                     alignment: Alignment.bottomCenter,
                     child: Opacity(
                       opacity: firestoreData.isLoading ? 1.0 : 0.0,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top:15),
+                      child: const Padding(
+                        padding: EdgeInsets.only(top:15),
                         child: SizedBox(
                             width: 32.0,
                             height: 32.0,
@@ -118,18 +128,18 @@ class _CTransactionListState extends State<CTransactionList> {
                   );
                 },
               ),
-              (goToTopButton==true &&
+              if (goToTopButton==true &&
                   firestoreData.isLoading==false &&
-                  widget.buttonToTop==true)? Align(
+                  widget.buttonToTop==true) Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
-                  padding: EdgeInsets.only(bottom: 40),
+                  padding: const EdgeInsets.only(bottom: 40),
                   child: FloatingActionButton(
                       onPressed: () {
                         _scrollController!.animateTo(
                           0.0,
                           curve: Curves.easeOut,
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                         );
                       },
                       child: Image.asset(
@@ -140,25 +150,25 @@ class _CTransactionListState extends State<CTransactionList> {
                       )
                   ),
                 ),
-              ):SizedBox(),
+              ),
               Align(
                 alignment: Alignment.topCenter,
                 child: Container(
-                    child: SizedBox(
+                    child: const SizedBox(
                         width: double.infinity,
                         height: 5,
-                        child: const DecoratedBox(
-                          decoration: const BoxDecoration(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
                               color: ColorConstants.grey
                           ),
                         )
                     ),
                     width: double.infinity,
-                    decoration: (goToTopButton==true)? BoxDecoration(
+                    decoration: (goToTopButton==true)? const BoxDecoration(
                       border: Border(
                         bottom: BorderSide(width: 5, color: ColorConstants.grey),
                       ),
-                      boxShadow: [
+                      boxShadow: <BoxShadow>[
                         BoxShadow(
                             color: Colors.black12,
                             blurRadius: 2,
@@ -166,7 +176,7 @@ class _CTransactionListState extends State<CTransactionList> {
                         ),
                       ],
                     )
-                        : BoxDecoration(border: Border(
+                        : const BoxDecoration(border: Border(
                       bottom: BorderSide(width: 5, color: ColorConstants.grey),
                     ))
                 ),

@@ -1,54 +1,66 @@
+// Dart imports:
 import 'dart:io';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:kwartracker/model/firestoreData.dart';
-import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/views/widgets/cBody.dart';
-import 'package:kwartracker/views/widgets/cButton.dart';
-import 'package:kwartracker/views/widgets/cConfirmationDialog.dart';
-import 'package:kwartracker/views/widgets/cDatePickerTextField.dart';
-import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
-import 'package:kwartracker/views/widgets/cTextField.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../widgets/headerNav.dart';
+// Project imports:
+import 'package:kwartracker/model/firestore_data.dart';
+import 'package:kwartracker/util/color_constants.dart';
+import 'package:kwartracker/views/widgets/confirmation_dialog.dart';
+import 'package:kwartracker/views/widgets/custom_body.dart';
+import 'package:kwartracker/views/widgets/custom_button.dart';
+import 'package:kwartracker/views/widgets/custom_dropdown.dart';
+import 'package:kwartracker/views/widgets/custom_text_field.dart';
+import 'package:kwartracker/views/widgets/date_picker_text_field.dart';
+import '../../widgets/header_nav.dart';
 
 class TransactionEditPage extends StatefulWidget {
+  const TransactionEditPage(this.transactionID);
   final String? transactionID;
-  TransactionEditPage(this.transactionID);
-
+  
   @override
   _TransactionEditPageState createState() => _TransactionEditPageState();
 }
 
 class _TransactionEditPageState extends State<TransactionEditPage> {
   bool enableSaveButton = false;
-  String fName = "";
-  String fType = "";
-  String fCategory = "";
-  String fCategoryID = "";
-  String fWalletID = "";
-  String fWallet = "";
-  String fAmount = "";
-  String fPersonName = "";
+  String fName = '';
+  String fType = '';
+  String fCategory = '';
+  String fCategoryID = '';
+  String fWalletID = '';
+  String fWallet = '';
+  String fAmount = '';
+  String fPersonName = '';
   File? file;
-  String fDate = "";
-  String fPhoto = "";
-  Map<String, dynamic> transaction = Map<String, dynamic>();
-  List<PopupMenuEntry<dynamic>> categoryList = <PopupMenuEntry>[];
-  List<PopupMenuEntry<dynamic>> walletsList = <PopupMenuEntry>[];
-  var conAmount = TextEditingController();
-  var conPersonName = TextEditingController();
+  String fDate = '';
+  String fPhoto = '';
+  Map<String, dynamic> transaction = <String, dynamic>{};
+  List<PopupMenuEntry<dynamic>> categoryList = <PopupMenuEntry<dynamic>>[];
+  List<PopupMenuEntry<dynamic>> walletsList = <PopupMenuEntry<dynamic>>[];
+  TextEditingController conAmount = TextEditingController();
+  TextEditingController conPersonName = TextEditingController();
 
   bool validateFields () {
-    var validate = true;
-    if (fWallet.isEmpty) validate = false;
-    if (conAmount.text.isEmpty) validate = false;
-    if (fType.isEmpty) validate = false;
-    if (fCategory.isEmpty) validate = false;
-    if (widget.transactionID == null) validate = false;
+    bool validate = true;
+    if(fWallet.isEmpty==true) {
+      validate = false;
+    }if(conAmount.text.isEmpty==true) {
+      validate = false;
+    }if(fType.isEmpty==true) {
+      validate = false;
+    }if(fCategory.isEmpty==true) {
+      validate = false;
+    }if(widget.transactionID == null) {
+      validate = false;
+    }
 
     if (validate == true) {
       setState(() {
@@ -59,7 +71,7 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
   }
 
   DateTime _date = DateTime.now();
-  void _selectDate() async {
+  Future<void> _selectDate() async {
     final DateTime? newDate = await showDatePicker(
       context: context,
       initialDate: _date,
@@ -74,17 +86,17 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
     }
   }
 
-  Future selectFile() async {
-    final result = await FilePicker
+  Future<void> selectFile() async {
+    final FilePickerResult? result = await FilePicker
         .platform.pickFiles(
       allowMultiple: false,
       type: FileType.image,
     );
 
-    if (result == null) return;
-    final path = result.files.single.path!;
-    setState(() => file = File(path));
-
+    if (result != null) {
+      final String path = result.files.single.path!;
+      setState(() => file = File(path));
+    }
   }
 
   void saveAndUpload() {
@@ -105,8 +117,8 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
 
     } else {
       ScaffoldMessenger.of(context)
-          .showSnackBar( SnackBar(
-        content: Text("Please fill up all the fields."),
+          .showSnackBar( const SnackBar(
+        content: Text('Please fill up all the fields.'),
         duration: Duration(milliseconds: 2000),
       ), );
     }
@@ -117,24 +129,27 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
     super.initState();
 
     Provider.of<FirestoreData>(context,listen: false)
-        .getTransaction(widget.transactionID!).then((value) {
-      fWallet = (value["walletName"]!=null)? value["walletName"]: "";
-      fWalletID = (value["wallet"]!=null)? value["wallet"]: "";
-      conAmount.text = value["amount"].toString();
-      fType = value["type"];
-      fName = value["name"];
-      fCategoryID = value["category"];
-      fCategory = value["categoryName"];
-      fPhoto = value["photo"];
-      conPersonName.text = value["spentPerson"];
-      if(value["fDate"] != null) {
-        Timestamp t = value["fDate"];
+        .getTransaction(widget.transactionID!).then((
+        Map<String, dynamic> value) {
+      fWallet = (value['walletName']!=null)? value['walletName']: '';
+      fWalletID = (value['wallet']!=null)? value['wallet']: '';
+      conAmount.text = value['amount'].toString();
+      fType = value['type'];
+      fName = value['name'];
+      fCategoryID = value['category'];
+      fCategory = value['categoryName'];
+      fPhoto = value['photo'];
+      conPersonName.text = value['spentPerson'];
+      if(value['fDate'] != null) {
+        final Timestamp t = value['fDate'];
         _date = t.toDate();
       }
 
-      if (mounted) setState(() {
+      if (mounted) {
+        setState(() {
         transaction = value;
       });
+      }
 
     });
   }
@@ -142,13 +157,13 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
   @override
   Widget build(BuildContext context) {
     validateFields();
-    final fileName = file != null ? file!.path.split('/').last : "";
-    var actionButtons = [
+    final String fileName = file != null ? file!.path.split('/').last : '';
+    final List<Widget> actionButtons = <Widget>[
       TextButton(
         onPressed: () {
           if (enableSaveButton == true) {
-            cConfirmationDialog(context,
-              "Are you sure you want to update this?",
+            confirmationDialog(context,
+              'Are you sure you want to update this?',
                 () {
                 saveAndUpload();
               }
@@ -157,7 +172,7 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
         },
         child: Padding(
           padding: const EdgeInsets.only(right: 20),
-          child: Text("Save",
+          child: Text('Save',
               style: TextStyle(
                   fontSize: 16,
                   color: (enableSaveButton == true)? Colors.white
@@ -169,83 +184,86 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
     ];
 
     Widget title() {
-      return Text(
-          "Edit Transaction",
+      return const Text(
+          'Edit Transaction',
         );
     }
 
     Widget content() {
       return Consumer<FirestoreData>(
-          builder: (context, firestoreData, child) {
-            categoryList = firestoreData.categoriesList.map((item) {
-              return PopupMenuItem<List>(
-                  child: Container(width: 500, child: Text(item["name"])),
-                  value: [item["id"], item["name"]]
+          builder: (BuildContext context, FirestoreData firestoreData, Widget? child) {
+            categoryList = firestoreData.categoriesList.map((dynamic item) {
+              return PopupMenuItem<dynamic>(
+                  child: Container(width: 500, child: Text(item['name'])),
+                  value: <dynamic>[item['id'], item['name']]
               );
             }).toList();
 
-            walletsList = firestoreData.walletsList.map((item) {
-              return PopupMenuItem<List>(
-                child: Text(item["name"]),
-                value: [item["id"], item["name"]]
+            walletsList = firestoreData.walletsList.map((dynamic item) {
+              return PopupMenuItem<dynamic>(
+                child: Text(item['name']),
+                value: <dynamic>[item['id'], item['name']]
               );
             }).toList();
 
             return Container(
               margin: const EdgeInsets.only(top: 30),
               child: ListView(
-                  padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
+                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
                   children: <Widget>[
-                    CDropdownTextField(
-                        label: "Which wallet do you want it to add?",
-                        hintText: "Select wallet to add",
+                    CustomDropdown(
+                        label: 'Which wallet do you want it to add?',
+                        hintText: 'Select wallet to add',
                         text: fWallet,
-                        onChanged: (value) {
-                          if(value != null)
-                          setState(() {
+                        onChanged: (dynamic value) {
+                          if(value != null) {
+                            setState(() {
                             fWallet = value[1];
                             fWalletID = value[0];
                           });
+                          }
                         },
                         items: walletsList
                     ),
-                    CTextField(
-                      hintText: "Enter transaction amount",
-                      label: "Transaction amount",
+                    CustomTextField(
+                      hintText: 'Enter transaction amount',
+                      label: 'Transaction amount',
                       controller: conAmount,
-                      onChanged: (value) {
+                      onChanged: (dynamic value) {
                         fAmount = value;
                       },
                     ),
-                    CDropdownTextField(
-                        label: "Transaction type",
-                        hintText: "Select transaction type",
+                    CustomDropdown(
+                        label: 'Transaction type',
+                        hintText: 'Select transaction type',
                         text: fType,
-                        onChanged: (value) {
-                          if (value != null )
+                        onChanged: (dynamic value) {
+                          if (value != null ) {
                             setState(() {
                               fType = value[1];
                             });
+                          }
                         },
-                        items: [
-                          PopupMenuItem<List>(
-                            child: const Text('Income'),
-                            value: ['Income','Income']),
-                          PopupMenuItem<List>(
-                            child: const Text('Expense'),
-                            value: ['Expense','Expense']),
+                        items: const <PopupMenuEntry<dynamic>>[
+                          PopupMenuItem<dynamic>(
+                            child: Text('Income'),
+                            value: <String>['Income','Income']),
+                          PopupMenuItem<dynamic>(
+                            child:  Text('Expense'),
+                            value: <String>['Expense','Expense']),
                         ]
                     ),
-                    CDropdownTextField(
-                        label: "Category",
-                        hintText: "Select Category",
+                    CustomDropdown(
+                        label: 'Category',
+                        hintText: 'Select Category',
                         text: fCategory.toString(),
-                        onChanged: (value) {
-                          if (value != null )
+                        onChanged: (dynamic value) {
+                          if (value != null ) {
                             setState(() {
                               fCategory = value[1];
                               fCategoryID = value[0];
                             });
+                          }
                         },
                         items: categoryList
                     ),
@@ -253,31 +271,32 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
                       onTapDown: (TapDownDetails details) {
                         _selectDate.call();
                       },
-                      child: CDatePickerTextField(
-                          hintText: "Select Date",
-                          label: "Select date",
+                      child: DatePickerTextField(
+                          hintText: 'Select Date',
+                          label: 'Select date',
                           text: _date.toString(),
-                          onChanged: (value) {
+                          onChanged: (dynamic value) {
                             _date = value;
                           },
-                          items: []
+                          items: const
+                          <PopupMenuEntry<PopupMenuItem<dynamic>>>[]
                       ),
                     ),
-                    CTextField(
-                      label: "Spent with this person",
-                      hintText: "Enter name of person",
+                    CustomTextField(
+                      label: 'Spent with this person',
+                      hintText: 'Enter name of person',
                       controller: conPersonName,
-                      onChanged: (value) {
+                      onChanged: (dynamic value) {
                         fPersonName = value;
                       },
                     ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: Align(
                           alignment: Alignment.centerLeft,
                           child: Container(
-                            child: Text(
-                              "Upload photo",
+                            child: const Text(
+                              'Upload photo',
                               style: TextStyle(
                                   color: Color(0xFFBBC3C9),
                                   fontSize: 12
@@ -286,7 +305,7 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
                           )
                       ),
                     ),
-                    (transaction["photoURL"] != null)? Container(
+                    if (transaction['photoURL'] != null) Container(
                         width: MediaQuery.of(context).size.width,
                         height: 190,
                         decoration: BoxDecoration(
@@ -294,16 +313,16 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
                           borderRadius: BorderRadius.circular(16),
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(transaction["photoURL"]!),
+                            image: NetworkImage(transaction['photoURL']!),
                           ),
                         )
-                    ):SizedBox(),
+                    ),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
                         width: 100,
-                        child: CButton(
-                            text: "Replace",
+                        child: CustomButton(
+                            text: 'Replace',
                             backgroundColor: ColorConstants.grey3,
                             onPressed: () { selectFile(); }
                         ),
@@ -312,7 +331,7 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(fileName, style:
-                      TextStyle(fontSize: 12,
+                      const TextStyle(fontSize: 12,
                           fontStyle: FontStyle.italic,
                           color: ColorConstants.grey3)
                       ),
@@ -329,13 +348,13 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
       child: ModalProgressHUD(
         inAsyncCall: Provider.of<FirestoreData>(context).showSpinner,
         child: Scaffold(
-          backgroundColor: Color(0xFF03BED6),
+          backgroundColor: const Color(0xFF03BED6),
           appBar: headerNav(
               title: title(),
               action: actionButtons
           ),
-          body: CBody(child: Container(
-            decoration: BoxDecoration(
+          body: CustomBody(child: Container(
+            decoration: const BoxDecoration(
               color: Color(0xFFF1F3F6),
               borderRadius: BorderRadius.only(
               topRight: Radius.circular(50),

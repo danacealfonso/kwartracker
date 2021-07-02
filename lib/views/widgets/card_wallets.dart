@@ -1,17 +1,22 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:intl/intl.dart';
-import 'package:kwartracker/util/colorConstants.dart';
+
+// Project imports:
+import 'package:kwartracker/util/color_constants.dart';
 
 enum CardColor { green, cyan, red}
 enum CardSize { large, small}
 
-class CCardWallets extends StatelessWidget {
-  CCardWallets({
-    this.txtTypeWallet = "",
-    this.txtWallet = "",
+class CardWallets extends StatelessWidget {
+  const CardWallets({
+    this.txtTypeWallet = '',
+    this.txtWallet = '',
     this.availableBalance = 0.00,
     this.cardColor = CardColor.green,
-    this.currencyID = "php",
+    this.currencyID = 'php',
     this.cardSize = CardSize.small
   });
 
@@ -54,8 +59,8 @@ class CCardWallets extends StatelessWidget {
     double walletFont = 14;
     double aBalanceFont = 8;
     double amountFont = 14;
-    String currencySign = (currencyID.toLowerCase()=='usd')? "\$ ": "₱ ";
-    EdgeInsets cPadding = EdgeInsets.fromLTRB(15, 17, 15, 0);
+    final String currencySign = (currencyID.toLowerCase()=='usd')? '\$ ': '₱ ';
+    EdgeInsets cPadding = const EdgeInsets.fromLTRB(15, 17, 15, 0);
 
     if (cardSize == CardSize.large) {
       cWidth = 234;
@@ -66,11 +71,11 @@ class CCardWallets extends StatelessWidget {
       aBalanceFont = 12;
       walletFont = 20;
       amountFont = 20;
-      cPadding = EdgeInsets.fromLTRB(26, 27, 26, 0);
+      cPadding = const EdgeInsets.fromLTRB(26, 27, 26, 0);
     }
 
     return Container(
-      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+      margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
       width: cWidth,
       height: cHeight,
       child: Stack(
@@ -83,18 +88,18 @@ class CCardWallets extends StatelessWidget {
               highlightColor: Colors.transparent,
               onTap: () {},
               child: DecoratedBox(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(0),
+                  padding: const EdgeInsets.all(0),
                   child: Container(
                     width: sWidth,
                     height: sHeight,
                     child: Container(
-                      decoration: new BoxDecoration(
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(80),
-                        boxShadow: [
+                        boxShadow: <BoxShadow>[
                           BoxShadow(
                             color: cardShadow,
                             blurRadius: 13,
@@ -123,18 +128,18 @@ class CCardWallets extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(txtTypeWallet.toUpperCase(),
                     style: TextStyle(
-                      color: Color(0x80FFFFFF),
+                      color: const Color(0x80FFFFFF),
                       fontSize: typeFont,
                     ),
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.fromLTRB(0, 2, 0, 6),
+                  padding: const EdgeInsets.fromLTRB(0, 2, 0, 6),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(txtWallet,
                         style: TextStyle(
-                            color: Color(0xFFFFFFFF),
+                            color: const Color(0xFFFFFFFF),
                             fontSize: walletFont
                         )
                     ),
@@ -142,9 +147,9 @@ class CCardWallets extends StatelessWidget {
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("AVAILABLE BALANCE",
+                  child: Text('AVAILABLE BALANCE',
                       style: TextStyle(
-                          color: Color(0x80FFFFFF),
+                          color: const Color(0x80FFFFFF),
                           fontSize: aBalanceFont
                       )
                   ),
@@ -156,7 +161,7 @@ class CCardWallets extends StatelessWidget {
                         .currency(customPattern: '#,###.##')
                         .format(availableBalance),
                         style: TextStyle(
-                            color: Color(0xFFFFFFFF),
+                            color: const Color(0xFFFFFFFF),
                             fontSize: amountFont
                         )
                     ),

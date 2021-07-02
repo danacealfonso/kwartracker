@@ -1,23 +1,28 @@
-import 'package:firebase_core/firebase_core.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/views/pages/home/home.dart';
 import 'package:flutter/rendering.dart';
-import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/util/globals.dart' as globals;
-import 'package:kwartracker/views/pages/signIn/signIn.dart';
-import 'package:kwartracker/views/pages/signUp/signUp.dart';
-import 'package:kwartracker/views/pages/transactions/transactionAddDetails.dart';
-import 'package:kwartracker/views/pages/transactions/transactionChooseWallet.dart';
-import 'package:kwartracker/views/pages/transactions/transactionDetails.dart';
-import 'package:kwartracker/views/pages/transactions/transactions.dart';
-import 'package:kwartracker/views/pages/wallets/walletSave.dart';
-import 'package:kwartracker/views/pages/wallets/wallets.dart';
+
+// Package imports:
+import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'model/firestoreData.dart';
 
-var homeNavigatorKey = GlobalKey<NavigatorState>();
+// Project imports:
+import 'package:kwartracker/util/color_constants.dart';
+import 'package:kwartracker/util/globals.dart' as globals;
+import 'package:kwartracker/views/pages/home/home.dart';
+import 'package:kwartracker/views/pages/signIn/sign_in.dart';
+import 'package:kwartracker/views/pages/signUp/sign_up.dart';
+import 'package:kwartracker/views/pages/transactions/transaction_add_details.dart';
+import 'package:kwartracker/views/pages/transactions/transaction_choose_wallet.dart';
+import 'package:kwartracker/views/pages/transactions/transaction_details.dart';
+import 'package:kwartracker/views/pages/transactions/transactions.dart';
+import 'package:kwartracker/views/pages/wallets/wallet_save.dart';
+import 'package:kwartracker/views/pages/wallets/wallets.dart';
+import 'model/firestore_data.dart';
 
-void main() async {
+GlobalKey<NavigatorState> homeNavigatorKey = GlobalKey<NavigatorState>();
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(KwartrackerApp());
@@ -26,28 +31,28 @@ void main() async {
 class KwartrackerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+    return ChangeNotifierProvider<FirestoreData>(
       create: (_) => FirestoreData(),
       child: MaterialApp(
         title: 'Kwartracker App',
         initialRoute: (globals.isLoggedIn) ? '/': '/signIn',
-        routes: {
-          '/': (context) => HomePage(),
-          '/signIn': (context) => SignInPage(),
-          '/signUp': (context) => SignUpPage(),
-          '/transactions': (context) => TransactionsPage(),
-          '/transactionChooseWallet': (context) => TransactionChooseWalletPage(),
-          '/transactionAddDetails': (context) => TransactionAddDetailsPage(null),
-          '/wallets': (context) => WalletsPage(),
-          '/walletSave': (context) => WalletSavePage(),
-          '/transactionDetailsPage': (context) => TransactionDetailsPage(null),
+        routes: <String, Widget Function(BuildContext)>{
+          '/': (BuildContext context) => HomePage(),
+          '/signIn': (BuildContext context) => SignInPage(),
+          '/signUp': (BuildContext context) => SignUpPage(),
+          '/transactions': (BuildContext context) => TransactionsPage(),
+          '/transactionChooseWallet': (BuildContext context) => TransactionChooseWalletPage(),
+          '/transactionAddDetails': (BuildContext context) => const TransactionAddDetailsPage(null),
+          '/wallets': (BuildContext context) => const WalletsPage(),
+          '/walletSave': (BuildContext context) => const WalletSavePage(),
+          '/transactionDetailsPage': (BuildContext context) => const TransactionDetailsPage(null),
         },
         debugShowCheckedModeBanner: false,
-        //TODO: Flutter Themes
+
         theme: ThemeData(
           primaryColor: ColorConstants.cyan,
-          accentColor: Color(0xFF03BED6),
-          primaryTextTheme: TextTheme(
+          accentColor: const Color(0xFF03BED6),
+          primaryTextTheme: const TextTheme(
               headline6: TextStyle(
                   color: Colors.white
               )

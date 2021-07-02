@@ -1,25 +1,31 @@
+// Dart imports:
 import 'dart:ui';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/model/firestoreData.dart';
-import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/util/myRoute.dart';
+
+// Package imports:
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+
+// Project imports:
+import 'package:kwartracker/model/firestore_data.dart';
+import 'package:kwartracker/util/color_constants.dart';
+import 'package:kwartracker/util/globals.dart' as globals;
+import 'package:kwartracker/util/my_route.dart';
 import 'package:kwartracker/views/pages/profile/profile.dart';
-import 'package:kwartracker/views/pages/signIn/signIn.dart';
-import 'package:kwartracker/views/pages/transactions/transactionChooseWallet.dart';
+import 'package:kwartracker/views/pages/signIn/sign_in.dart';
+import 'package:kwartracker/views/pages/transactions/transaction_choose_wallet.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
 import 'package:kwartracker/views/pages/wallets/wallets.dart';
-import 'package:kwartracker/views/widgets/cBody.dart';
-import 'package:kwartracker/views/widgets/cButton.dart';
-import 'package:kwartracker/views/widgets/cCardWallets.dart';
-import 'package:kwartracker/views/widgets/cDrawer.dart';
-import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
-import 'package:kwartracker/views/widgets/cProgressBar.dart';
-import 'package:kwartracker/views/widgets/cTransactionList.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kwartracker/util/globals.dart' as globals;
-import 'package:provider/provider.dart';
-import '../../widgets/headerNav.dart';
+import 'package:kwartracker/views/widgets/card_wallets.dart';
+import 'package:kwartracker/views/widgets/custom_body.dart';
+import 'package:kwartracker/views/widgets/custom_button.dart';
+import 'package:kwartracker/views/widgets/custom_drawer.dart';
+import 'package:kwartracker/views/widgets/custom_dropdown.dart';
+import 'package:kwartracker/views/widgets/custom_progress_bar.dart';
+import 'package:kwartracker/views/widgets/custom_transaction_list.dart';
+import '../../widgets/header_nav.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -28,20 +34,20 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   DrawerState drawerState = DrawerState.close;
-  final _auth = FirebaseAuth.instance;
-  String fDate = "";
-  String fDateID = "";
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String fDate = '';
+  String fDateID = '';
 
-  void getCurrentUser() async {
+  Future<void> getCurrentUser() async {
     try {
-      final user = _auth.currentUser;
-      if (user != null)
+      final User? user = _auth.currentUser;
+      if (user != null) {
         globals.isLoggedIn = true;
-      else {
-        Navigator.pushAndRemoveUntil(context, MyRoute(
-          builder: (context) => SignInPage(), routeSettings:
-        RouteSettings(name: "/signIn"),
-        ), (route) => false);
+      } else {
+        Navigator.pushAndRemoveUntil(context, MyRoute<dynamic>(
+          builder: (BuildContext context) => SignInPage(), routeSettings:
+        const RouteSettings(name: '/signIn'),
+        ), (Route<dynamic> route) => false);
       }
 
     } catch (e) {
@@ -50,36 +56,36 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   }
 
   Widget title() {
-    return Column(children: [
+    return Column(children: const <Widget>[
       Text(
-        "Hello",
+        'Hello',
       ),
       Text(
-        "Samantha",
+        'Samantha',
       ),
     ]);
   }
   Widget button(String iconPath,VoidCallback onPressed) {
     return Container(
-      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
       width: 36,
       height: 26,
       child: MaterialButton(
-        padding: EdgeInsets.all(0),
+        padding: const EdgeInsets.all(0),
         minWidth: 0,
         shape: RoundedRectangleBorder(
-            side: BorderSide(color: Color(0xFFE4EAEF), width: 1),
-            borderRadius: new BorderRadius.circular(8)),
+            side: const BorderSide(color: Color(0xFFE4EAEF), width: 1),
+            borderRadius: BorderRadius.circular(8)),
         onPressed: onPressed,
         child: ImageIcon(AssetImage(iconPath),
             size: 8, color: ColorConstants.cyan),
-        color: Color(0xFFF2F4F6),
+        color: const Color(0xFFF2F4F6),
       ),
     );
   }
   Widget leading() {
     return IconButton(
-      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+      padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
       icon: Image.asset(
           'images/icons/ic_menu.ico',
           width: 28,
@@ -96,13 +102,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     );
   }
 
-  List<Widget> actionButtons(BuildContext context) => [
+  List<Widget> actionButtons(BuildContext context) => <Widget>[
     TextButton(
         onPressed: () {
           Navigator.push(context,
-              MyRoute(
-                builder: (context) => ProfilePage(), routeSettings:
-              RouteSettings(name: "/profile"),
+              MyRoute<dynamic>(
+                builder: (BuildContext context) => ProfilePage(), routeSettings:
+              const RouteSettings(name: '/profile'),
               )
           );
         },
@@ -123,28 +129,28 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
       child: Container(
         height: 350.0,
         child: Container(
-            padding: EdgeInsets
+            padding: const EdgeInsets
                 .fromLTRB(
                 30, 40, 30, 0),
-            decoration: new BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius: new BorderRadius
+                borderRadius: BorderRadius
                     .only(
-                    topLeft: const Radius
+                    topLeft: Radius
                         .circular(
                         60.0),
-                    topRight: const Radius
+                    topRight: Radius
                         .circular(
                         60.0)
                 )
             ),
             child: Column(
-              children: [
+              children: <Widget>[
                 Row(
-                  children: [
-                    Expanded(
+                  children: <Widget>[
+                    const Expanded(
                       child: Text(
-                          "Default date range",
+                          'Default date range',
                           style: TextStyle(
                               color: ColorConstants
                                   .black,
@@ -157,7 +163,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                     Row(
                       crossAxisAlignment: CrossAxisAlignment
                           .end,
-                      children: [
+                      children: <Widget>[
                         Container(
                             height: 30,
                             width: 30,
@@ -183,33 +189,27 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                     ),
                   ],
                 ),
-                CDropdownTextField(
-                    label: "Select Date Range",
+                CustomDropdown(
+                    label: 'Select Date Range',
                     text: fDate,
-                    onChanged: (
-                        value) {
+                    onChanged: (dynamic value) {
                       setState(() {
-                        fDate =
-                        value[1];
-                        fDateID =
-                        value[0];
+                        fDate = value[1];
+                        fDateID = value[0];
                       });
                     },
-                    items: <
-                        PopupMenuEntry>[
-                      PopupMenuItem<
-                          List>(
+                    items: const <PopupMenuEntry<dynamic>>[
+                      PopupMenuItem<dynamic>(
                           child: Text(
                               'This week'),
-                          value: [
+                          value: <String>[
                             'This week',
                             'This week'
                           ]),
-                      PopupMenuItem<
-                          List>(
+                      PopupMenuItem<dynamic>(
                           child: Text(
                               'This month'),
-                          value: [
+                          value: <String>[
                             'This month',
                             'This month'
                           ])
@@ -218,8 +218,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                 Container(
                   width: double
                       .infinity,
-                  child: CButton(
-                      text: "Apply",
+                  child: CustomButton(
+                      text: 'Apply',
                       onPressed: () {}
                   ),
                 ),
@@ -232,27 +232,29 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
 
   Widget content() {
     return Consumer<FirestoreData>(
-      builder: (context, firestoreData, child) {
+      builder: (BuildContext context,
+          FirestoreData firestoreData,
+          Widget? child) {
         final List<Widget> imageSliders = firestoreData
-          .walletsList.map((item) {
-          int index = firestoreData.walletsList.indexOf(item);
+          .walletsList.map((Map<String, dynamic> item) {
+          final int index = firestoreData.walletsList.indexOf(item);
           return GestureDetector(
             onTap: () {
               Navigator.push(context,
-                MyRoute(
-                  builder: (context) => WalletsPage(cardIndex: index,),
-                  routeSettings:  RouteSettings(name: '/wallets')
+                MyRoute<dynamic>(
+                  builder: (BuildContext context) => WalletsPage(cardIndex: index,),
+                  routeSettings:  const RouteSettings(name: '/wallets')
                 )
               );
             },
             child: Container(
-              child: CCardWallets(
-                txtTypeWallet: item["type"],
-                txtWallet: item["name"],
-                availableBalance: item["amount"],
+              child: CardWallets(
+                txtTypeWallet: item['type'],
+                txtWallet: item['name'],
+                availableBalance: item['amount'],
                 cardSize: CardSize.small,
-                cardColor: item["color"],
-                currencyID: item["currencyID"],
+                cardColor: item['color'],
+                currencyID: item['currencyID'],
               ),
             ),
           );
@@ -260,42 +262,42 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+          children: <Widget>[
             Container(
               margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-              padding: EdgeInsets.fromLTRB(30, 30, 20, 20),
+              padding: const EdgeInsets.fromLTRB(30, 30, 20, 20),
               decoration: BoxDecoration(
-                color: Color(0xFFF2F4F6),
+                color: const Color(0xFFF2F4F6),
                 border: Border.all(
-                  color: Color(0x00000029),
+                  color: const Color(0x00000029),
                   width: 1,
                 ),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(30),
                   topLeft: Radius.circular(30),
                   bottomRight: Radius.circular(30),
                   bottomLeft: Radius.circular(30),
                 ),
-                boxShadow: [
+                boxShadow: const <BoxShadow>[
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 8,
-                    offset: const Offset(6, 6),
+                    offset: Offset(6, 6),
                   ),
                   BoxShadow(
                     color: Color(0xA8FFFFFF),
                     blurRadius: 10,
-                    offset: const Offset(-6, -6),
+                    offset: Offset(-6, -6),
                   ),
                 ],
               ),
               child: Column(
-                children: [
+                children: <Widget>[
                   Row(
-                      children: [
-                        Expanded(
+                      children: <Widget>[
+                        const Expanded(
                           child: Text(
-                              "March 01 - March 30, 2020",
+                              'March 01 - March 30, 2020',
                               style: TextStyle(
                                   color: ColorConstants.black,
                                   fontSize: 12
@@ -304,10 +306,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                         ),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            button("images/icons/ic_date_cyan.png", () {
+                          children: <Widget>[
+                            button('images/icons/ic_date_cyan.png', () {
                               showModalBottomSheet(context: context,
-                                builder: (context) {
+                                builder: (BuildContext context) {
                                   return StatefulBuilder(
                                       builder: (BuildContext context,
                                           StateSetter setState) {
@@ -318,22 +320,21 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 barrierColor: Colors.white.withOpacity(0),
                               );
                             }),
-                            button(
-                                "images/icons/ic_graph_cyan.png", () {}),
+                            button('images/icons/ic_graph_cyan.png', () {}),
                           ],
                         ),
                       ]
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 8),
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 8),
                     child: Row(
-                      children: [
+                      children: <Widget>[
                         Expanded(child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Total Balance"),
+                          children: const <Widget>[
+                            Text('Total Balance'),
                             Text(
-                              "₱ 40,000",
+                              '₱ 40,000',
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -344,16 +345,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                         )),
                         Container(
                             height: 40,
-                            child: VerticalDivider(
+                            child: const VerticalDivider(
                                 color: Colors.grey
                             )
                         ),
                         Expanded(child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Total Expenses"),
+                          children: const <Widget>[
+                            Text('Total Expenses'),
                             Text(
-                                "₱ 5,000",
+                                '₱ 5,000',
                                 style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -366,18 +367,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                       ],
                     ),
                   ),
-                  CProgressBar(max: 100, current: 90),
+                  const CustomProgressBar(max: 100, current: 90),
                 ]
               ),
             ),
             Container(
               margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-              padding: EdgeInsets.fromLTRB(0, 24, 0, 0),
+              padding: const EdgeInsets.fromLTRB(0, 24, 0, 0),
               child: Row(
-                children: [
-                  Expanded(
+                children: <Widget>[
+                  const Expanded(
                     child: Text(
-                        "Wallet",
+                        'Wallet',
                         style: TextStyle(
                             color: ColorConstants.black1,
                             fontSize: 16,
@@ -388,16 +389,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                   GestureDetector(
                     onTap: () {
                       Navigator.push(context,
-                        MyRoute(
-                          builder: (context) => WalletsPage(),
-                          routeSettings:  RouteSettings(name: '/wallets')
+                        MyRoute<dynamic>(
+                          builder: (BuildContext context) => const WalletsPage(),
+                          routeSettings:  const RouteSettings(name: '/wallets')
                         )
                       );
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [Text(
-                          "View All",
+                      children: const <Widget>[Text(
+                          'View All',
                           style: TextStyle(
                               color: ColorConstants.grey6,
                               fontSize: 12,
@@ -414,19 +415,19 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
             Container(
               height: 140,
               child: ListView(
-                padding: EdgeInsets.fromLTRB(25, 8, 25, 10),
+                padding: const EdgeInsets.fromLTRB(25, 8, 25, 10),
                 scrollDirection: Axis.horizontal,
                 children: imageSliders,
               ),
             ),
             Container(
               margin: const EdgeInsets.only(left: 30.0, right: 30.0),
-              padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
+              padding: const EdgeInsets.fromLTRB(0, 4, 0, 0),
               child: Row(
-                children: [
-                  Expanded(
+                children: <Widget>[
+                  const Expanded(
                     child: Text(
-                        "Transactions",
+                        'Transactions',
                         style: TextStyle(
                             color: ColorConstants.black1,
                             fontSize: 16,
@@ -437,9 +438,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                   GestureDetector(
                     onTap: () {
                       Navigator.push(context,
-                        MyRoute(
-                          builder: (context) => TransactionsPage(),
-                          routeSettings:  RouteSettings(
+                        MyRoute<dynamic>(
+                          builder: (BuildContext context) => TransactionsPage(),
+                          routeSettings:  const RouteSettings(
                             name: '/transactions'
                           )
                         )
@@ -447,23 +448,24 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [Text(
-                          "View All",
+                      children: const <Widget>[
+                        Text(
+                          'View All',
                           style: TextStyle(
                               color: ColorConstants.grey6,
                               fontSize: 12,
                               decoration: TextDecoration.underline,
                               fontWeight: FontWeight.w500
                           )
-                      )
+                        )
                       ],
                     ),
                   ),
                 ]
               ),
             ),
-            Expanded(
-              child: CTransactionList(
+            const Expanded(
+              child: CustomTransactionList(
                 buttonToTop: false,
                 paddingItem: EdgeInsets.only(left: 30, right: 30),
               ),
@@ -487,7 +489,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: Stack(
-        children: [
+        children: <Widget>[
           AnimatedPositioned(
             top: 0,
             left: offsetLeftDrawer,
@@ -496,8 +498,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
             child: Container(
               width: MediaQuery.of(context).size.width * .77,
               height: MediaQuery.of(context).size.height,
-              child: CDrawer(drawerState: drawerState,
-                drawerStateChange: (value){
+              child: CustomDrawer(drawerState: drawerState,
+                drawerStateChange: (dynamic value){
                   setState(() {
                     drawerState = value;
                   });
@@ -514,26 +516,26 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: Scaffold(
-                backgroundColor: Color(0xFF03BED6),
+                backgroundColor: const Color(0xFF03BED6),
                 appBar: headerNav(
                   title: title(),
                   action: actionButtons(context),
                   leading: leading(),
                   toolBarHeight: 90
                 ),
-                body: CBody(child: content(),hasScrollBody: true,),
+                body: CustomBody(child: content(),hasScrollBody: true,),
                 floatingActionButton: FloatingActionButton(
                   heroTag: null,
                   onPressed: () {
                     Navigator.push(context,
-                      MyRoute(
-                        builder: (context) => TransactionChooseWalletPage(),
+                      MyRoute<dynamic>(
+                        builder: (BuildContext context) => TransactionChooseWalletPage(),
                         routeSettings:
-                      RouteSettings(name: "/transactionAddWallet"),
+                      const RouteSettings(name: '/transactionAddWallet'),
                       )
                     );
                   },
-                  child: Icon(Icons.add, color: Colors.white, size: 29,),
+                  child: const Icon(Icons.add, color: Colors.white, size: 29,),
                   backgroundColor: ColorConstants.cyan,
                   tooltip: 'Capture Picture',
                   elevation: 5,

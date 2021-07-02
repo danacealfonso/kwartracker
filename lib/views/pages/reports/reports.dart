@@ -1,7 +1,9 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/views/widgets/cBody.dart';
 
-import '../../widgets/headerNav.dart';
+// Project imports:
+import 'package:kwartracker/views/widgets/custom_body.dart';
+import '../../widgets/header_nav.dart';
 
 class ReportsPage extends StatefulWidget {
   @override
@@ -9,7 +11,7 @@ class ReportsPage extends StatefulWidget {
 }
 
 class _ReportsPageState extends State<ReportsPage> {
-  var actionButtons = [
+  List<Widget> actionButtons = <Widget>[
     TextButton(
         onPressed: null,
         child: Image.asset(
@@ -23,31 +25,20 @@ class _ReportsPageState extends State<ReportsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var actionButtons = [
-      TextButton(
-          onPressed: null,
-          child: Image.asset(
-              'images/users/profile_pic.png',
-              width: 70,
-              height: 85,
-              fit:BoxFit.fill
-          )
-      )
-    ];
 
     Widget title() {
-      return Column(children: [
+      return Column(children: const <Widget>[
         Text(
-          "Hello",
+          'Hello',
         ),
         Text(
-          "Samantha",
+          'Samantha',
         ),
       ]);
     }
     Widget content() {
       return Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Color(0xFFF1F3F6),
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(50),
@@ -56,8 +47,8 @@ class _ReportsPageState extends State<ReportsPage> {
           ),
           child: Container(
             padding: const EdgeInsets.all(10.0),
-            child: Center(
-                child: Text("Reports")
+            child: const Center(
+                child: Text('Reports')
             ),
           )
       );
@@ -66,12 +57,12 @@ class _ReportsPageState extends State<ReportsPage> {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Scaffold(
-          backgroundColor: Color(0xFF03BED6),
+          backgroundColor: const Color(0xFF03BED6),
           appBar: headerNav(
               title: title(),
               action: actionButtons
           ),
-          body: CBody(child: content())
+          body: CustomBody(child: content())
       ),
     );
   }

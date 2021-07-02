@@ -1,12 +1,15 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/util/colorConstants.dart';
 
-class CFloatingButton extends StatelessWidget {
-  CFloatingButton({
+// Project imports:
+import 'package:kwartracker/util/color_constants.dart';
+
+class CustomFloatingButton extends StatelessWidget {
+  const CustomFloatingButton({
     required this.onPressed,
     this.textColor = Colors.white,
     this.backgroundColor = Colors.cyan,
-    this.leadingIconPath = "",
+    this.leadingIconPath = '',
     required this.icon,
   });
   final String leadingIconPath;
@@ -23,7 +26,7 @@ class CFloatingButton extends StatelessWidget {
         return Container(
           width: 40,
           height: 40,
-          margin: EdgeInsets.all(20),
+          margin: const EdgeInsets.all(20),
           child: FloatingActionButton(
             heroTag: null,
             backgroundColor: ColorConstants.grey,
@@ -32,16 +35,16 @@ class CFloatingButton extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
-            boxShadow: [
+            boxShadow: const <BoxShadow>[
               BoxShadow(
                 color: Colors.black12,
                 blurRadius: 8,
-                offset: const Offset(6, 6),
+                offset: Offset(6, 6),
               ),
               BoxShadow(
                 color: Color(0x82FFFFFF),
                 blurRadius: 8,
-                offset: const Offset(-6, -6),
+                offset: Offset(-6, -6),
               ),
             ],
           )

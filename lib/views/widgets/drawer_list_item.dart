@@ -1,7 +1,8 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
-class CDrawerListItem extends StatelessWidget {
-  CDrawerListItem({
+class DrawerListItem extends StatelessWidget {
+  const DrawerListItem({
     required this.title,
     required this.leadingIconPath,
     this.textStyle,
@@ -15,9 +16,9 @@ class CDrawerListItem extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Container(
-      padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
       child: Row(
-        children: [
+        children: <Widget>[
           Image.asset(
             leadingIconPath,
             width: 11,
@@ -25,14 +26,13 @@ class CDrawerListItem extends StatelessWidget {
             fit:BoxFit.fill
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+            padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
             child: Text(title,
-                //TODO: Ternary Operator
-              style: textStyle == null ? TextStyle(
+              style: textStyle ?? const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w500
-              ): textStyle
+              )
             )
           )
         ]

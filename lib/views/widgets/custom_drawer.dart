@@ -1,42 +1,48 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/util/myRoute.dart';
-import 'package:kwartracker/views/widgets/cDrawerListItem.dart';
+
+// Package imports:
+import 'package:firebase_auth/firebase_auth.dart';
+
+// Project imports:
+import 'package:kwartracker/util/color_constants.dart';
+import 'package:kwartracker/util/globals.dart' as globals;
+import 'package:kwartracker/util/my_route.dart';
 import 'package:kwartracker/views/pages/profile/profile.dart';
 import 'package:kwartracker/views/pages/reports/reports.dart';
 import 'package:kwartracker/views/pages/settings/settings.dart';
-import 'package:kwartracker/views/pages/signIn/signIn.dart';
+import 'package:kwartracker/views/pages/signIn/sign_in.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
 import 'package:kwartracker/views/pages/wallets/wallets.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kwartracker/util/globals.dart' as globals;
-import 'cDrawerListItem.dart';
+import 'package:kwartracker/views/widgets/drawer_list_item.dart';
+import 'drawer_list_item.dart';
 
-class CDrawer extends StatelessWidget {
-  final _auth = FirebaseAuth.instance;
-  final DrawerState drawerState;
-  final ValueChanged? drawerStateChange;
-  CDrawer({Key? key, required this.drawerState, this.drawerStateChange})
+class CustomDrawer extends StatelessWidget {
+  CustomDrawer({Key? key, required this.drawerState, this.drawerStateChange})
     : super(key: key);
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final DrawerState drawerState;
+  final ValueChanged? drawerStateChange;
+
   Widget drawerList(BuildContext context) {
-    CWidgets cWidgets = CWidgets(context);
+    final CWidgets cWidgets = CWidgets(context);
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.fromLTRB(0,58,0,0),
           child: Row(
-            children: [
+            children: <Widget>[
               IconButton(
-                padding: new EdgeInsets.all(0.0),
+                padding: const EdgeInsets.all(0.0),
                 iconSize: 80,
                 icon: Image.asset(
                     'images/users/profile_pic.png'
                 ),
                 onPressed: () {},
               ),
-              Text(
+              const Text(
                 'Samantha Tagli',
                 style: TextStyle(
                     color: Colors.white,
@@ -47,7 +53,6 @@ class CDrawer extends StatelessWidget {
             ],
           ),
         ),
-        //TODO: GestureDetector
         GestureDetector(
             onTap: () {
               drawerStateChange!(DrawerState.close);
@@ -57,8 +62,8 @@ class CDrawer extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16.0),
                 ),
-                child: CDrawerListItem(
-                    title: "Home",
+                child: const DrawerListItem(
+                    title: 'Home',
                     leadingIconPath: 'images/icons/ic_home.png',
                     textStyle: TextStyle(
                         color: ColorConstants.cyan,
@@ -71,21 +76,20 @@ class CDrawer extends StatelessWidget {
         GestureDetector(
           onTap: () {
             drawerStateChange!(DrawerState.close);
-            cWidgets.navPush(TransactionsPage(), "/transactions");
+            cWidgets.navPush(TransactionsPage(), '/transactions');
           },
-          //TODO: Custom Flutter Widgets
-          child: CDrawerListItem(
-            title: "Transactions",
+          child: const DrawerListItem(
+            title: 'Transactions',
             leadingIconPath: 'images/icons/ic_transaction.png',
           ),
         ),
         GestureDetector(
           onTap: () {
             drawerStateChange!(DrawerState.close);
-            cWidgets.navPush(WalletsPage(), "/wallets");
+            cWidgets.navPush(const WalletsPage(), '/wallets');
           },
-          child: CDrawerListItem(
-            title: "Wallets",
+          child: const DrawerListItem(
+            title: 'Wallets',
             leadingIconPath: 'images/icons/ic_wallet.png',
           ),
         ),
@@ -94,8 +98,8 @@ class CDrawer extends StatelessWidget {
             drawerStateChange!(DrawerState.close);
             cWidgets.navPush(ReportsPage(), '/reports');
           },
-          child: CDrawerListItem(
-            title: "Reports",
+          child: const DrawerListItem(
+            title: 'Reports',
             leadingIconPath: 'images/icons/ic_report.png',
           ),
         ),
@@ -104,8 +108,8 @@ class CDrawer extends StatelessWidget {
             drawerStateChange!(DrawerState.close);
             cWidgets.navPush(ProfilePage(), '/profile');
           },
-          child: CDrawerListItem(
-            title: "My Profile",
+          child: const DrawerListItem(
+            title: 'My Profile',
             leadingIconPath: 'images/icons/ic_profile.png',
           ),
         ),
@@ -114,8 +118,8 @@ class CDrawer extends StatelessWidget {
             drawerStateChange!(DrawerState.close);
             cWidgets.navPush(SettingsPage(),'/settings');
           },
-          child: CDrawerListItem(
-            title: "Settings",
+          child: const DrawerListItem(
+            title: 'Settings',
             leadingIconPath: 'images/icons/ic_settings.png',
           ),
         ),
@@ -128,13 +132,13 @@ class CDrawer extends StatelessWidget {
                     onTap: () {
                       _auth.signOut();
                       globals.isLoggedIn = false;
-                      Navigator.pushAndRemoveUntil(context, MyRoute(
-                        builder: (context) => SignInPage(), routeSettings:
-                        RouteSettings(name: "/signIn"),
-                      ), (route) => false);
+                      Navigator.pushAndRemoveUntil(context, MyRoute<dynamic>(
+                        builder: (BuildContext context) => SignInPage(), routeSettings:
+                        const RouteSettings(name: '/signIn'),
+                      ), (Route<dynamic> route) => false);
                     },
-                    child: CDrawerListItem(
-                      title: "Logout",
+                    child: const DrawerListItem(
+                      title: 'Logout',
                       leadingIconPath: 'images/icons/ic_logout.png',
                     ),
                   )
@@ -149,12 +153,12 @@ class CDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       width: (DrawerState.open == drawerState) ? 300: 0,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       curve: Curves.fastOutSlowIn,
       child: Drawer(
         child: Container(
             color: ColorConstants.cyan,
-            padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+            padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
             child: drawerList(context)
         ),
       ),
@@ -163,22 +167,18 @@ class CDrawer extends StatelessWidget {
 }
 
 abstract class CustomWidgets {
-  void navPush(page, name);
+  void navPush(dynamic page, String name);
 }
-//TODO: Enums
 enum DrawerState { open, close, }
-//TODO: OOP - Abstract
-//TODO: OOP - Inheritance
-//TODO: OOP - Polymorphism
 class CWidgets extends CustomWidgets {
   CWidgets(this.context);
   final BuildContext context;
 
   @override
-  void navPush(page, name) {
+  void navPush(dynamic page, String name) {
     Navigator.push(context,
-      MyRoute(
-        builder: (context) => page,
+      MyRoute<dynamic>(
+        builder: (BuildContext context) => page,
         routeSettings:  RouteSettings(name: name)
       )
     );

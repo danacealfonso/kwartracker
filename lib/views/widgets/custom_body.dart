@@ -1,24 +1,27 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/util/colorConstants.dart';
 
-class CBody extends StatefulWidget {
-  //TODO: Final vs Const
-  final Widget child;
-  final bool hasScrollBody;
-  CBody({Key? key,
+// Project imports:
+import 'package:kwartracker/util/color_constants.dart';
+
+class CustomBody extends StatefulWidget {
+  const CustomBody({Key? key,
     required this.child,
     this.hasScrollBody = false,
   }) : super(key: key);
 
+  final Widget child;
+  final bool hasScrollBody;
+
+
   @override
-  _CBodyState createState() => _CBodyState();
+  _CustomBodyState createState() => _CustomBodyState();
 }
 
-class _CBodyState extends State<CBody> with TickerProviderStateMixin {
+class _CustomBodyState extends State<CustomBody> with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _animation;
 
-  //TODO: Custom Flutter Animations with the Animation Controller
   @override
   void initState() {
     super.initState();
@@ -46,8 +49,8 @@ class _CBodyState extends State<CBody> with TickerProviderStateMixin {
     return SlideTransition(
       position: _animation,
       child: Container(
-        padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+        decoration: const BoxDecoration(
           color: ColorConstants.grey,
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(50),
@@ -55,7 +58,7 @@ class _CBodyState extends State<CBody> with TickerProviderStateMixin {
           ),
         ),
         child: CustomScrollView(
-          slivers: [
+          slivers: <Widget>[
             SliverFillRemaining(
               hasScrollBody: widget.hasScrollBody,
               child: widget.child

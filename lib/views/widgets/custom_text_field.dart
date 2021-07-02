@@ -1,14 +1,17 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/util/colorConstants.dart';
 
-class CTextField extends StatelessWidget {
-  CTextField({
-    this.label = "",
-    this.hintText = "",
+// Project imports:
+import 'package:kwartracker/util/color_constants.dart';
+
+class CustomTextField extends StatelessWidget {
+  const CustomTextField({
+    this.label = '',
+    this.hintText = '',
     this.onChanged,
     this.obscureText = false,
     this.controller,
-    this.initialValue = "",
+    this.initialValue = '',
     this.autofocus = false,
     this.keyboardType
   });
@@ -24,24 +27,25 @@ class CTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(controller!=null)
+    if(controller!=null) {
       onChanged!(controller!.text);
-    return Column(children: [
-      (label.isNotEmpty)? Padding(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
+    }
+    return Column(children: <Widget>[
+      if (label.isNotEmpty) Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 7),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Container(
             child: Text(
               label,
-              style: TextStyle(
+              style: const TextStyle(
                 color: ColorConstants.grey6,
                 fontSize: 12
               ),
             ),
           )
         ),
-      ) : SizedBox(),
+      ),
       Container(
         height: 56,
         child: TextField(
@@ -50,10 +54,10 @@ class CTextField extends StatelessWidget {
           obscureText: obscureText,
           keyboardType: keyboardType,
           onChanged: onChanged,
-          decoration: new InputDecoration(
+          decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Colors.white,
                 style: BorderStyle.solid,
                 width: 0
@@ -61,39 +65,39 @@ class CTextField extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Colors.white,
                 style: BorderStyle.solid,
                 width: 1
               )
             ),
             filled: true,
-            hintStyle: new TextStyle(
+            hintStyle: const TextStyle(
               color: Color(0xFFBBC3C9),
               fontSize: 14,
               fontStyle: FontStyle.italic
             ),
             hintText: hintText,
-            fillColor: Color(0xFFF1F3F6),
+            fillColor: const Color(0xFFF1F3F6),
           )
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
+          boxShadow: const <BoxShadow>[
             BoxShadow(
               color: Colors.black26,
               blurRadius: 14,
-              offset: const Offset(4, 4),
+              offset: Offset(4, 4),
             ),
             BoxShadow(
               color: Colors.white,
               blurRadius: 14,
-              offset: const Offset(-6, -6),
+              offset: Offset(-6, -6),
             ),
           ],
         ),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10,
       )
     ],

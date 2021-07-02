@@ -1,3 +1,4 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 AppBar headerNav({
@@ -7,16 +8,15 @@ AppBar headerNav({
   double toolBarHeight = 90,
   bool centerTitle = true,
   double titleSpacing = 40}){
-  //TODO: IF Conditionals
-  if (leading == null) leading = Builder(
+  leading ??= Builder(
     builder: (BuildContext context) {
       return Container(
-        margin: EdgeInsets.all(20),
+        margin: const EdgeInsets.all(20),
         child: FloatingActionButton(
           heroTag: null,
           elevation: 0,
           onPressed: () {
-            Navigator.pop(context,"test");
+            Navigator.pop(context,'test');
           },
           child: Image.asset(
               'images/icons/ic_back.png',
@@ -27,16 +27,16 @@ AppBar headerNav({
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
-          boxShadow: [
+          boxShadow: const <BoxShadow>[
             BoxShadow(
               color: Colors.black12,
               blurRadius: 8,
-              offset: const Offset(6, 6),
+              offset: Offset(6, 6),
             ),
             BoxShadow(
               color: Color(0x82FFFFFF),
               blurRadius: 8,
-              offset: const Offset(-6, -6),
+              offset: Offset(-6, -6),
             ),
           ],
         )

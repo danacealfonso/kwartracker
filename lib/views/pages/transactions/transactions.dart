@@ -1,17 +1,24 @@
+// Dart imports:
 import 'dart:ui';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/model/firestoreData.dart';
-import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/util/myRoute.dart';
-import 'package:kwartracker/views/pages/transactions/transactionChooseWallet.dart';
-import 'package:kwartracker/views/widgets/cButton.dart';
-import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
-import 'package:kwartracker/views/widgets/cFloatingButton.dart';
-import 'package:kwartracker/views/widgets/cTextField.dart';
-import 'package:kwartracker/views/widgets/cTransactionList.dart';
-import 'package:kwartracker/views/widgets/cBody.dart';
+
+// Package imports:
 import 'package:provider/provider.dart';
-import '../../widgets/headerNav.dart';
+
+// Project imports:
+import 'package:kwartracker/model/firestore_data.dart';
+import 'package:kwartracker/util/color_constants.dart';
+import 'package:kwartracker/util/my_route.dart';
+import 'package:kwartracker/views/pages/transactions/transaction_choose_wallet.dart';
+import 'package:kwartracker/views/widgets/custom_body.dart';
+import 'package:kwartracker/views/widgets/custom_button.dart';
+import 'package:kwartracker/views/widgets/custom_dropdown.dart';
+import 'package:kwartracker/views/widgets/custom_floating_button.dart';
+import 'package:kwartracker/views/widgets/custom_text_field.dart';
+import 'package:kwartracker/views/widgets/custom_transaction_list.dart';
+import '../../widgets/header_nav.dart';
 
 class TransactionsPage extends StatefulWidget {
   @override
@@ -20,19 +27,19 @@ class TransactionsPage extends StatefulWidget {
 
 class _TransactionsPageState extends State<TransactionsPage>
     with TickerProviderStateMixin {
-  String fDate = "";
-  String fDateID = "";
-  List<PopupMenuEntry<dynamic>> categoryList = <PopupMenuEntry>[];
-  List<PopupMenuEntry<dynamic>> walletTypeList = <PopupMenuEntry>[];
-  String fCategory = "";
-  String fCategoryID = "";
-  String fType = "";
-  String fTypeID = "";
+  String fDate = '';
+  String fDateID = '';
+  List<PopupMenuEntry<dynamic>> categoryList = <PopupMenuEntry<dynamic>>[];
+  List<PopupMenuEntry<dynamic>> walletTypeList = <PopupMenuEntry<dynamic>>[];
+  String fCategory = '';
+  String fCategoryID = '';
+  String fType = '';
+  String fTypeID = '';
 
   @override
   Widget build(BuildContext context) {
-    var actionButtons = [
-      CFloatingButton(
+    final List<Widget> actionButtons = <Widget>[
+      CustomFloatingButton(
         icon: Image.asset(
             'images/icons/ic_add.png',
             width: 10,
@@ -40,10 +47,10 @@ class _TransactionsPageState extends State<TransactionsPage>
             fit:BoxFit.fill
         ), onPressed: () {
           Navigator.push(context,
-            MyRoute(
-              builder: (context) => TransactionChooseWalletPage(),
+            MyRoute<dynamic>(
+              builder: (BuildContext context) => TransactionChooseWalletPage(),
               routeSettings:
-              RouteSettings(name: "/transactionAddWallet")
+              const RouteSettings(name: '/transactionAddWallet')
             )
           );
         }
@@ -51,44 +58,46 @@ class _TransactionsPageState extends State<TransactionsPage>
     ];
 
     Widget title() {
-      return Text(
-          "Transactions",
+      return const Text(
+          'Transactions',
         );
     }
 
     Widget content() {
       return Consumer<FirestoreData>(
-        builder: (context, firestoreData, child) {
+        builder: (BuildContext context, FirestoreData firestoreData, Widget? child) {
 
-          categoryList = firestoreData.categoriesList.map((item) {
-            return PopupMenuItem<List>(
-                child: Text(item["name"]), value: [item["id"],item["name"]]);
+          categoryList = firestoreData.categoriesList.map((dynamic item) {
+            return PopupMenuItem<dynamic>(
+                child: Text(item['name']), value: 
+            <dynamic>[item['id'],item['name']]);
           }).toList();
 
-          walletTypeList = firestoreData.walletTypeData.map((item) {
-            return PopupMenuItem<List>(
-                child: Text(item["name"]), value: [item["id"],item["name"]]);
+          walletTypeList = firestoreData.walletTypeData.map((dynamic item) {
+            return PopupMenuItem<dynamic>(
+                child: Text(item['name']), value: 
+            <dynamic>[item['id'],item['name']]);
           }).toList();
 
           return Container(
             height: double.infinity,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
+              children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.fromLTRB(30,0,30,10),
-                  child: Row(children: [
+                  child: Row(children: <Widget>[
                     Expanded(child:
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
-                      child: Stack(children: [
-                        CTextField(hintText: "Search transaction",),
+                      child: Stack(children: <Widget>[
+                        const CustomTextField(hintText: 'Search transaction',),
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
                             height: 25,
                             width: 25,
-                            margin: EdgeInsets.fromLTRB(0, 15, 15, 0),
+                            margin: const EdgeInsets.fromLTRB(0, 15, 15, 0),
                             child: Image.asset(
                                 'images/icons/ic_search.png',
                                 width: 16,
@@ -101,16 +110,16 @@ class _TransactionsPageState extends State<TransactionsPage>
                     )
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 10),
+                      margin: const EdgeInsets.only(left: 10),
                       height: 58,
                       width: 58,
                       child: MaterialButton(
                         shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(15)),
+                            borderRadius: BorderRadius.circular(15)),
                         onPressed: (){
                           showModalBottomSheet(context: context,
                               isScrollControlled:true,
-                            builder: (context) {
+                            builder: (BuildContext context) {
                               return StatefulBuilder(
                                   builder: (BuildContext context, StateSetter setState) {
                                     return BackdropFilter(
@@ -118,21 +127,21 @@ class _TransactionsPageState extends State<TransactionsPage>
                                       child: Container(
                                           height: 500.0,
                                           child: Container(
-                                              padding: EdgeInsets.fromLTRB(30, 40, 30, 30),
-                                              decoration: new BoxDecoration(
+                                              padding: const EdgeInsets.fromLTRB(30, 40, 30, 30),
+                                              decoration: const BoxDecoration(
                                                 color: Colors.white,
-                                                borderRadius: new BorderRadius.only(
-                                                  topLeft: const Radius.circular(60.0),
-                                                  topRight: const Radius.circular(60.0)
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(60.0),
+                                                  topRight: Radius.circular(60.0)
                                                 )
                                               ),
                                               child: Column(
-                                                children: [
+                                                children: <Widget>[
                                                   Row(
-                                                    children: [
-                                                      Expanded(
+                                                    children: <Widget>[
+                                                      const Expanded(
                                                         child: Text(
-                                                            "Default date range",
+                                                            'Default date range',
                                                             style: TextStyle(
                                                                 color: ColorConstants.black,
                                                                 fontSize: 18,
@@ -142,7 +151,7 @@ class _TransactionsPageState extends State<TransactionsPage>
                                                       ),
                                                       Row(
                                                         crossAxisAlignment: CrossAxisAlignment.end,
-                                                        children: [
+                                                        children: <Widget>[
                                                           Container(
                                                             height: 30,
                                                             width: 30,
@@ -163,10 +172,10 @@ class _TransactionsPageState extends State<TransactionsPage>
                                                       ),
                                                     ],
                                                   ),
-                                                  CDropdownTextField(
-                                                      label: "Select Date Range",
+                                                  CustomDropdown(
+                                                      label: 'Select Date Range',
                                                       text: fDate,
-                                                      onChanged: (value) {
+                                                      onChanged: (dynamic value) {
                                                         if (value != null) {
                                                           setState(() {
                                                             fDate = value[1];
@@ -174,18 +183,20 @@ class _TransactionsPageState extends State<TransactionsPage>
                                                           });
                                                         }
                                                       },
-                                                      items: <PopupMenuEntry>[
-                                                        PopupMenuItem<List>(
-                                                            child: Text('This week'), value: ['This week', 'This week']),
-                                                        PopupMenuItem<List>(
-                                                            child: Text('This month'), value: ['This month', 'This month'])
+                                                      items: const <PopupMenuEntry<dynamic>>[
+                                                        PopupMenuItem<dynamic>(
+                                                            child: Text('This week'),
+                                                            value: <String>['This week', 'This week']),
+                                                        PopupMenuItem<dynamic>(
+                                                            child: Text('This month'),
+                                                            value: <String>['This month', 'This month'])
                                                       ]
                                                   ),
-                                                  CDropdownTextField(
-                                                      label: "Wallet Type",
-                                                      hintText: "Select wallet type",
+                                                  CustomDropdown(
+                                                      label: 'Wallet Type',
+                                                      hintText: 'Select wallet type',
                                                       text: fType,
-                                                      onChanged: (value) {
+                                                      onChanged: (dynamic value) {
                                                         if (value != null) {
                                                           setState(() {
                                                             fType = value[1];
@@ -195,23 +206,24 @@ class _TransactionsPageState extends State<TransactionsPage>
                                                       },
                                                       items: walletTypeList
                                                   ),
-                                                  CDropdownTextField(
-                                                      label: "Category",
-                                                      hintText: "Select Category",
+                                                  CustomDropdown(
+                                                      label: 'Category',
+                                                      hintText: 'Select Category',
                                                       text: fCategory.toString(),
-                                                      onChanged: (value) {
-                                                        if (value != null )
+                                                      onChanged: (dynamic value) {
+                                                        if (value != null ) {
                                                           setState(() {
                                                             fCategory = value[1];
                                                             fCategoryID = value[0];
                                                           });
+                                                        }
                                                       },
                                                       items: categoryList
                                                   ),
                                                   Container(
                                                     width: double.infinity,
-                                                    child: CButton(
-                                                        text: "Apply",
+                                                    child: CustomButton(
+                                                        text: 'Apply',
                                                         onPressed: () {}
                                                     ),
                                                   ),
@@ -236,7 +248,9 @@ class _TransactionsPageState extends State<TransactionsPage>
                     )
                   ],),
                 ),
-                Flexible(child: CTransactionList(paddingItem: EdgeInsets.fromLTRB(30, 0, 30, 0),)),
+                const Flexible(child:
+                CustomTransactionList(paddingItem:
+                EdgeInsets.fromLTRB(30, 0, 30, 0),)),
               ],
             ),
           );
@@ -246,12 +260,12 @@ class _TransactionsPageState extends State<TransactionsPage>
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Scaffold(
-          backgroundColor: Color(0xFF03BED6),
+          backgroundColor: const Color(0xFF03BED6),
           appBar: headerNav(
               title: title(),
               action: actionButtons
           ),
-          body: CBody(child: content(), hasScrollBody: true)
+          body: CustomBody(child: content(), hasScrollBody: true)
       ),
     );
   }

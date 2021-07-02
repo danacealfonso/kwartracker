@@ -1,14 +1,19 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_iconpicker/Models/IconPack.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
-import 'package:kwartracker/model/firestoreData.dart';
-import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/views/widgets/cBody.dart';
-import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
-import 'package:kwartracker/views/widgets/cSwitch.dart';
-import 'package:kwartracker/views/widgets/cTextField.dart';
-import 'package:kwartracker/views/widgets/headerNav.dart';
 import 'package:provider/provider.dart';
+
+// Project imports:
+import 'package:kwartracker/model/firestore_data.dart';
+import 'package:kwartracker/util/color_constants.dart';
+import 'package:kwartracker/views/widgets/custom_body.dart';
+import 'package:kwartracker/views/widgets/custom_dropdown.dart';
+import 'package:kwartracker/views/widgets/custom_switch.dart';
+import 'package:kwartracker/views/widgets/custom_text_field.dart';
+import 'package:kwartracker/views/widgets/header_nav.dart';
 
 class CategoryAddPage extends StatefulWidget {
   @override
@@ -16,16 +21,16 @@ class CategoryAddPage extends StatefulWidget {
 }
 
 class _CategoryAddPageState extends State<CategoryAddPage> {
-  String fName = "";
-  String parentCategory = "";
-  String parentCategoryID = "";
+  String fName = '';
+  String parentCategory = '';
+  String parentCategoryID = '';
   bool fParent = false;
   bool enableSaveButton = false;
   Map<String, dynamic>? serIcon;
-  List<PopupMenuEntry<dynamic>> categoryList = <PopupMenuEntry>[];
+  List<PopupMenuEntry<dynamic>> categoryList = <PopupMenuEntry<dynamic>>[];
 
-  _pickIcon() async {
-    IconData? icon = await FlutterIconPicker
+  Future<void> _pickIcon() async {
+    final IconData? icon = await FlutterIconPicker
         .showIconPicker(context, iconPackMode: IconPack.cupertino
     );
 
@@ -39,16 +44,24 @@ class _CategoryAddPageState extends State<CategoryAddPage> {
   }
 
   bool validateFields() {
-    var validate = true;
-    if (fName.isEmpty) validate = false;
+    bool validate = true;
+    if (fName.isEmpty) {
+      validate = false;
+    }
 
-    if (serIcon == null) validate = false;
+    if (serIcon == null) {
+      validate = false;
+    }
 
-    if (fParent==false)
-      if (parentCategoryID.isEmpty) validate = false;
+    if (fParent==false) {
+      if (parentCategoryID.isEmpty) {
+        validate = false;
+      }
+    }
 
-    if (validate == true)
+    if (validate == true) {
       enableSaveButton = true;
+    }
 
     return validate;
   }
@@ -56,9 +69,9 @@ class _CategoryAddPageState extends State<CategoryAddPage> {
   @override
   Widget build(BuildContext context) {
     validateFields();
-    Widget title() => Text("Add Category");
+    Widget title() => const Text('Add Category');
 
-    var actionButtons = [
+    final List<Widget> actionButtons = <Widget>[
       TextButton(
         onPressed: () {
           if (enableSaveButton == true) {
@@ -73,7 +86,7 @@ class _CategoryAddPageState extends State<CategoryAddPage> {
         },
         child: Padding(
           padding: const EdgeInsets.only(right: 20),
-          child: Text("Save",
+          child: Text('Save',
               style: TextStyle(
                   fontSize: 16,
                   color: (enableSaveButton == true)? Colors.white
@@ -86,30 +99,32 @@ class _CategoryAddPageState extends State<CategoryAddPage> {
 
     Widget content() {
       return Consumer<FirestoreData>(
-        builder: (context, firestoreData, child) {
+        builder: (BuildContext context,
+            FirestoreData firestoreData,
+            Widget? child) {
           return Container(
             padding: const EdgeInsets.all(30.0),
-            child: Column(children: [
+            child: Column(children: <Widget>[
               MaterialButton(
-                padding: EdgeInsets.only(left: 20,right: 20),
+                padding: const EdgeInsets.only(left: 20,right: 20),
                 height: 100,
                 minWidth: 100,
                 textColor: Colors.white,
                 shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30)),
+                    borderRadius: BorderRadius.circular(30)),
                 onPressed: _pickIcon,
                 child: serIcon != null?
                 Icon(
                   deserializeIcon(serIcon!),
                   size: 50,
                 ) :
-                Icon(null),
+                const Icon(null),
                 color: ColorConstants.cyan,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 10.0),
                 child: Text(
-                  "Select icon",
+                  'Select icon',
                   style: TextStyle(
                       color: ColorConstants.black2,
                       fontSize: 12,
@@ -117,20 +132,20 @@ class _CategoryAddPageState extends State<CategoryAddPage> {
                   ),
                 ),
               ),
-              CTextField(
-                hintText: "Enter category name",
-                label: "Category name",
-                onChanged: (value) {
+              CustomTextField(
+                hintText: 'Enter category name',
+                label: 'Category name',
+                onChanged: (dynamic value) {
                   fName = value;
                 },
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 7),
                 child: Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
-                      child: Text(
-                        "Make parent category?",
+                      child: const Text(
+                        'Make parent category?',
                         style: TextStyle(
                             color: ColorConstants.grey6,
                             fontSize: 12
@@ -139,44 +154,48 @@ class _CategoryAddPageState extends State<CategoryAddPage> {
                     )
                 ),
               ),
-              Row(children: [
-                Text("Yes"),
+              Row(children: <Widget>[
+                const Text('Yes'),
                 RotatedBox(
                   quarterTurns: 2,
                   child: Container(
-                    margin: EdgeInsets.only(right: 10, left: 10),
-                    child: CSwitch(
+                    margin: const EdgeInsets.only(right: 10, left: 10),
+                    child: CustomSwitch(
                       value: fParent,
                       onChanged: (bool? value){
-                        if(mounted && value != null)
+                        if(mounted && value != null) {
                           setState(() {
                             fParent = value;
                           });
+                        }
                       },
                     ),
                   ),
                 ),
-                Text("No"),
+                const Text('No'),
               ],),
-              fParent == false ? CDropdownTextField(
-                  label: "Wallet Type",
-                  hintText: "Select wallet type",
+              if (fParent == false) CustomDropdown(
+                  label: 'Wallet Type',
+                  hintText: 'Select wallet type',
                   text: parentCategory,
-                  onChanged: (value) {
-                    if(mounted && value != null)
+                  onChanged: (dynamic value) {
+                    if(mounted && value != null) {
                       setState(() {
                         parentCategory = value[1];
                         parentCategoryID = value[0];
                       });
+                    }
                   },
-                  items: firestoreData.categoriesParent.map((item) {
-                    return PopupMenuItem<List>(
-                        child: Text(item["name"]),
-                        value: [item["id"], item["name"]]
+                  items: firestoreData.categoriesParent.map(
+                    (Map<String, dynamic> item) {
+                    return PopupMenuItem<dynamic>(
+                        child: Text(item['name']),
+                        value: <dynamic>[item['id'], item['name']]
                     );
                   }).toList()
-              ) : SizedBox(),
-            ],),
+                ),
+              ],
+            ),
           );
         }
       );
@@ -185,13 +204,13 @@ class _CategoryAddPageState extends State<CategoryAddPage> {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Scaffold(
-          backgroundColor: Color(0xFF03BED6),
+          backgroundColor: const Color(0xFF03BED6),
           appBar: headerNav(
               title: title(),
               action: actionButtons
           ),
-          body: CBody(child: Container(
-            decoration: BoxDecoration(
+          body: CustomBody(child: Container(
+            decoration: const BoxDecoration(
               color: Color(0xFFF1F3F6),
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(50),

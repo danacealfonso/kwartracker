@@ -1,10 +1,14 @@
+// Dart imports:
 import 'dart:ui';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/views/widgets/cButton.dart';
 
-Future<void> cConfirmationDialog(BuildContext context,
+// Project imports:
+import 'package:kwartracker/util/color_constants.dart';
+import 'custom_button.dart';
+
+Future<void> confirmationDialog(BuildContext context,
     String text, VoidCallback onConfirm) async {
   return showDialog<void>(
     barrierColor: Colors.transparent,
@@ -15,16 +19,16 @@ Future<void> cConfirmationDialog(BuildContext context,
         filter: ImageFilter.blur(
             sigmaX: 20, sigmaY: 20),
         child: AlertDialog(
-          contentPadding: EdgeInsets.all(40),
+          contentPadding: const EdgeInsets.all(40),
           backgroundColor: ColorConstants.grey,
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(30.0))
           ),
           content: Container(
             height: 180,
             child: Column(
-              children: [
-                Text("Confirmation",
+              children: <Widget>[
+                const Text('Confirmation',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                   fontSize: 30,
@@ -33,24 +37,24 @@ Future<void> cConfirmationDialog(BuildContext context,
                 ),),
                 Text(text,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                     fontSize: 16,
                     color: ColorConstants.black,
                 )),
                 Container(
-                  margin: EdgeInsets.only(top: 30),
+                  margin: const EdgeInsets.only(top: 30),
                   height: 64,
-                  child: Row(children: [
+                  child: Row(children: <Widget>[
                     Expanded(child:
                       Padding(
                         padding: const EdgeInsets.only(right: 5.0),
-                        child: CButton(text: "Delete", onPressed: onConfirm),
+                        child: CustomButton(text: 'Delete', onPressed: onConfirm),
                       )
                     ),
                     Expanded(child:
                     Padding(
                       padding: const EdgeInsets.only(left: 5.0,),
-                      child: CButton(text: "Cancel", onPressed: (){
+                      child: CustomButton(text: 'Cancel', onPressed: (){
                         Navigator.pop(context);
                       },backgroundColor: ColorConstants.grey3,),
                     ))

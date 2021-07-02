@@ -1,20 +1,25 @@
-import 'package:intl/intl.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/util/myRoute.dart';
-import 'package:kwartracker/views/pages/transactions/transactionDetails.dart';
+
+// Package imports:
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
+import 'package:intl/intl.dart';
 
-class CTransactionListItem extends StatelessWidget {
+// Project imports:
+import 'package:kwartracker/util/color_constants.dart';
+import 'package:kwartracker/util/my_route.dart';
+import 'package:kwartracker/views/pages/transactions/transaction_details.dart';
 
-  CTransactionListItem({
+class CustomTransactionListItem extends StatelessWidget {
+
+  const CustomTransactionListItem({
     required this.category,
     this.transactionType = 'income',
     required this.transactionDate,
     required this.transactionID,
     required this.walletName,
     required this.amount,
-    this.currency = "php",
+    this.currency = 'php',
     this.categoryIcon
   });
 
@@ -29,45 +34,47 @@ class CTransactionListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var newAmount = NumberFormat.currency(customPattern: '#,###.##')
+    final String newAmount = NumberFormat.currency(customPattern: '#,###.##')
         .format(amount);
 
-    String currencyAbb =  "Php";
-    if(currency!=null)
-      if(currency!.toLowerCase() == "dollar")
-        currencyAbb = "Usd";
+    String currencyAbb =  'Php';
+    if(currency!=null) {
+      if (currency!.toLowerCase() == 'dollar') {
+        currencyAbb = 'Usd';
+      }
+    }
 
     return Container(
-      margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+      margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
       child: Row(
         children: <Widget>[
           Container(
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-            color: Color(0xFFE4EAEF),
+            color: const Color(0xFFE4EAEF),
             border: Border.all(
-              color: Color(0x00000029),
+              color: const Color(0x00000029),
               width: 1,
             ),
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topRight: Radius.circular(14),
               topLeft: Radius.circular(14),
               bottomRight: Radius.circular(14),
               bottomLeft: Radius.circular(14),
             ),
           ),
-            padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-            child: Column(children: [
+            padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+            child: Column(children: <Widget>[
               Text(DateFormat.MMM().format(transactionDate),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 8,
                   color: ColorConstants.black1,
                   fontWeight: FontWeight.w700
                 ),
               ),
               Text(transactionDate.day.toString(),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   color: ColorConstants.cyan,
                   fontWeight: FontWeight.w700
@@ -77,15 +84,15 @@ class CTransactionListItem extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.fromLTRB(10, 5, 20, 0),
+              padding: const EdgeInsets.fromLTRB(10, 5, 20, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Row(
-                    children: [
+                    children: <Widget>[
                       Container(
-                        padding: EdgeInsets.all(3),
-                        margin: EdgeInsets.only(right: 5),
+                        padding: const EdgeInsets.all(3),
+                        margin: const EdgeInsets.only(right: 5),
                         decoration: BoxDecoration(
                           color: ColorConstants.cyan,
                           borderRadius: BorderRadius.circular(3),
@@ -97,16 +104,16 @@ class CTransactionListItem extends StatelessWidget {
                         ),
                       ),
                       Text(category,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 8 ,
                             fontWeight: FontWeight.w700,
                             color: ColorConstants.cyan
                         )),
                     ],
                   ),
-                  Row(children: [
+                  Row(children: <Widget>[
                     Expanded(child: Text(walletName,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12 ,
                         color: ColorConstants.black1
                       ))),
@@ -117,18 +124,17 @@ class CTransactionListItem extends StatelessWidget {
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              (transactionType.toUpperCase()=='INCOME')?
-              Text(
-                "+ $currencyAbb ${newAmount.toString()}",
-                style: TextStyle(
+            children: <Widget>[
+              if (transactionType.toUpperCase()=='INCOME') Text(
+                '+ $currencyAbb ${newAmount.toString()}',
+                style: const TextStyle(
                     color: ColorConstants.cyan6,
                     fontSize: 12,
                     fontWeight: FontWeight.w500
                 )
-              ): Text(
-                "- $currencyAbb ${newAmount.toString()}",
-                style: TextStyle(
+              ) else Text(
+                '- $currencyAbb ${newAmount.toString()}',
+                style: const TextStyle(
                   color: ColorConstants.red,
                   fontSize: 12,
                   fontWeight: FontWeight.w500
@@ -137,21 +143,21 @@ class CTransactionListItem extends StatelessWidget {
             ],
           ),
           Container(
-            margin: EdgeInsets.only(left: 20),
+            margin: const EdgeInsets.only(left: 20),
             height: 20,
             width: 20,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-                boxShadow: [
+                boxShadow: const <BoxShadow>[
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 10,
-                    offset: const Offset(6, 6),
+                    offset: Offset(6, 6),
                   ),
                   BoxShadow(
                     color: Color(0xFFFFFFFF),
                     blurRadius: 10,
-                    offset: const Offset(-6, -6),
+                    offset: Offset(-6, -6),
                   ),
                 ],
               ),
@@ -161,9 +167,11 @@ class CTransactionListItem extends StatelessWidget {
               backgroundColor: ColorConstants.grey,
               onPressed: () {
                 Navigator.push(context,
-                  MyRoute(
-                    builder: (context) => TransactionDetailsPage(transactionID),
-                    routeSettings: RouteSettings(name: "/transactionDetailsPage"),
+                  MyRoute<dynamic>(
+                    builder: (BuildContext context) =>
+                      TransactionDetailsPage(transactionID),
+                    routeSettings:
+                    const RouteSettings(name: '/transactionDetailsPage'),
                   )
                 );
               },

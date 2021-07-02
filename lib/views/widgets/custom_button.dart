@@ -1,12 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
-class CButton extends StatelessWidget {
-  CButton({
+class CustomButton extends StatelessWidget {
+  const CustomButton({
     required this.text,
     required this.onPressed,
     this.textColor = Colors.white,
     this.backgroundColor = Colors.cyan,
-    this.leadingIconPath = "",
+    this.leadingIconPath = '',
   });
 
   final String text;
@@ -19,17 +20,16 @@ class CButton extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Padding(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: MaterialButton(
           height: 55,
           shape: RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(15)),
+          borderRadius: BorderRadius.circular(15)),
           onPressed: onPressed,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              (leadingIconPath.isNotEmpty)?
-              Padding(
+            children: <Widget>[
+              if (leadingIconPath.isNotEmpty) Padding(
                 padding: const EdgeInsets.only(right: 12),
                 child: Image.asset(
                     leadingIconPath,
@@ -37,7 +37,7 @@ class CButton extends StatelessWidget {
                     height: 20,
                     fit:BoxFit.fill
                 ),
-              ):SizedBox(),
+              ) else const SizedBox(),
               Text(
                 text,
                 style: TextStyle(

@@ -1,30 +1,37 @@
+// Flutter imports:
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kwartracker/util/colorConstants.dart';
 
-class CSwitch extends StatefulWidget {
-  final bool value;
-  final ValueChanged<bool>? onChanged;
+// Project imports:
+import 'package:kwartracker/util/color_constants.dart';
 
-  CSwitch({
+class CustomSwitch extends StatefulWidget {
+  const CustomSwitch({
     Key? key,
     this.value = true,
     this.onChanged})
       : super(key: key);
 
+  final bool value;
+  final ValueChanged<bool>? onChanged;
+
   @override
-  _CSwitchState createState() => _CSwitchState();
+  _CustomSwitchState createState() => _CustomSwitchState();
 }
 
-class _CSwitchState extends State<CSwitch>
+class _CustomSwitchState extends State<CustomSwitch>
     with SingleTickerProviderStateMixin {
-  late Animation _circleAnimation;
+  late Animation<Alignment> _circleAnimation;
   late AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 60));
+    _animationController = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 60)
+    );
+
     _circleAnimation = AlignmentTween(
         begin: widget.value ? Alignment.centerRight : Alignment.centerLeft,
         end: widget.value ? Alignment.centerLeft :Alignment.centerRight).animate(CurvedAnimation(
@@ -35,7 +42,7 @@ class _CSwitchState extends State<CSwitch>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _animationController,
-      builder: (context, child) {
+      builder: (BuildContext context, Widget? child) {
         return GestureDetector(
           onTap: () {
             if (_animationController.isCompleted) {
@@ -53,16 +60,16 @@ class _CSwitchState extends State<CSwitch>
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16.0),
               color: ColorConstants.grey,
-              boxShadow: [
+              boxShadow: const <BoxShadow>[
                 BoxShadow(
                   color: Colors.black26,
                   blurRadius: 14,
-                  offset: const Offset(-6, -6),
+                  offset: Offset(-6, -6),
                 ),
                 BoxShadow(
                   color: Colors.white,
                   blurRadius: 14,
-                  offset: const Offset(4, 4),
+                  offset: Offset(4, 4),
                 ),
               ],
             ),

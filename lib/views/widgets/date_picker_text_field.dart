@@ -1,8 +1,11 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/util/colorConstants.dart';
 
-class CDatePickerTextField extends StatelessWidget {
-  CDatePickerTextField({
+// Project imports:
+import 'package:kwartracker/util/color_constants.dart';
+
+class DatePickerTextField extends StatelessWidget {
+  const DatePickerTextField({
     required this.label,
     this.text,
     this.hintText,
@@ -15,22 +18,24 @@ class CDatePickerTextField extends StatelessWidget {
   final String? text;
   final String? hintText;
   final ValueChanged? onChanged;
-  final List<PopupMenuEntry> items;
-  final initialValue;
+  final List<PopupMenuEntry<PopupMenuItem<dynamic>>> items;
+  final String? initialValue;
 
   @override
   Widget build(BuildContext context) {
-    var txt = TextEditingController();
-    if (text != null) txt.text = text!;
-    return Column(children: [
+    final TextEditingController txt = TextEditingController();
+    if (text != null) {
+      txt.text = text!;
+    }
+    return Column(children: <Widget>[
       Padding(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 7),
         child: Align(
             alignment: Alignment.centerLeft,
             child: Container(
               child: Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                     color: Color(0xFFBBC3C9),
                     fontSize: 12
                 ),
@@ -43,10 +48,10 @@ class CDatePickerTextField extends StatelessWidget {
             controller: txt,
             enabled: false,
             onChanged: onChanged,
-            decoration: new InputDecoration(
+            decoration: InputDecoration(
               disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                       color: Colors.white,
                       style: BorderStyle.solid,
                       width: 0
@@ -54,49 +59,49 @@ class CDatePickerTextField extends StatelessWidget {
               ),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                       color: Colors.white,
                       style: BorderStyle.solid,
                       width: 1
                   )
               ),
               filled: true,
-              hintStyle: new TextStyle(
+              hintStyle: const TextStyle(
                   color: Color(0xFFBBC3C9),
                   fontSize: 14,
                   fontStyle: FontStyle.italic
               ),
               hintText: hintText,
-              fillColor: Color(0xFFF1F3F6),
+              fillColor: const Color(0xFFF1F3F6),
               suffixIcon: Container(
-                margin: EdgeInsets.only(right: 5),
+                margin: const EdgeInsets.only(right: 5),
                 width: 50,
                 height: 40,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     color: ColorConstants.grey1,
                     borderRadius: BorderRadius.all(Radius.circular(14))
                 ),
-                child: Icon(Icons.date_range),
+                child: const Icon(Icons.date_range),
               ),
             )
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
+          boxShadow: const <BoxShadow>[
             BoxShadow(
               color: Colors.black26,
               blurRadius: 14,
-              offset: const Offset(4, 4),
+              offset: Offset(4, 4),
             ),
             BoxShadow(
               color: Colors.white,
               blurRadius: 14,
-              offset: const Offset(-6, -6),
+              offset: Offset(-6, -6),
             ),
           ],
         ),
       ),
-      SizedBox(
+      const SizedBox(
         height: 10,
       )
     ],

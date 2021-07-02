@@ -1,45 +1,50 @@
+// Flutter imports:
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kwartracker/model/firestoreData.dart';
-import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/views/widgets/cBody.dart';
-import 'package:kwartracker/views/widgets/cCardWallets.dart';
-import 'package:kwartracker/views/widgets/cDatePickerTextField.dart';
-import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
-import 'package:kwartracker/views/widgets/cSwitch.dart';
-import 'package:kwartracker/views/widgets/cTextField.dart';
+
+// Package imports:
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
-import '../../widgets/headerNav.dart';
+
+// Project imports:
+import 'package:kwartracker/model/firestore_data.dart';
+import 'package:kwartracker/util/color_constants.dart';
+import 'package:kwartracker/views/widgets/card_wallets.dart';
+import 'package:kwartracker/views/widgets/custom_body.dart';
+import 'package:kwartracker/views/widgets/custom_dropdown.dart';
+import 'package:kwartracker/views/widgets/custom_switch.dart';
+import 'package:kwartracker/views/widgets/custom_text_field.dart';
+import 'package:kwartracker/views/widgets/date_picker_text_field.dart';
+import '../../widgets/header_nav.dart';
 
 class WalletSavePage extends StatefulWidget {
+  const WalletSavePage({this.walletID = ''});
   final String walletID;
-  WalletSavePage({this.walletID = ""});
 
   @override
   _WalletSavePageState createState() => _WalletSavePageState();
 }
 
 class _WalletSavePageState extends State<WalletSavePage> {
-  String walletName = "";
-  String walletType = "";
-  String walletTypeID = "";
-  String walletCurrencyID = "";
-  String targetAmount = "";
-  String walletCurrency = "";
-  String savedTo = "";
+  String walletName = '';
+  String walletType = '';
+  String walletTypeID = '';
+  String walletCurrencyID = '';
+  String targetAmount = '';
+  String walletCurrency = '';
+  String savedTo = '';
   bool fOverallBalance = true;
   bool enableSaveButton = false;
   CardColor cardColor = CardColor.cyan;
-  List <PopupMenuEntry>walletTypeList = <PopupMenuEntry>[];
-  List<PopupMenuEntry>currencyList = <PopupMenuEntry>[];
-  var walletTypeListFS = {};
-  var conName = TextEditingController();
-  var conSavedTo = TextEditingController();
-  var conTargetAmount = TextEditingController();
+  List<PopupMenuEntry<dynamic>>walletTypeList = <PopupMenuEntry<dynamic>>[];
+  List<PopupMenuEntry<dynamic>>currencyList = <PopupMenuEntry<dynamic>>[];
+  Map<String,dynamic> walletTypeListFS = <String,dynamic>{};
+  TextEditingController conName = TextEditingController();
+  TextEditingController conSavedTo = TextEditingController();
+  TextEditingController conTargetAmount = TextEditingController();
 
   DateTime _date = DateTime.now();
-  void _selectDate() async {
+  Future<void> _selectDate() async {
     final DateTime? newDate = await showDatePicker(
       context: context,
       initialDate: _date,
@@ -48,26 +53,42 @@ class _WalletSavePageState extends State<WalletSavePage> {
       helpText: 'Select target date',
     );
     if (newDate != null) {
-      if(mounted)
-      setState(() {
+      if(mounted) {
+        setState(() {
         _date = newDate;
       });
+      }
     }
   }
 
   bool validateFields() {
-    var validate = true;
-    if (walletName.isEmpty) validate = false;
-    if (walletTypeID.isEmpty) validate = false;
-    if (walletCurrencyID.isEmpty) validate = false;
+    bool validate = true;
 
-    if (walletType.toLowerCase()=='goal'){
-      if (targetAmount.isEmpty) validate = false;
-      if (savedTo.isEmpty) validate = false;
+    if(walletName.isEmpty==true) {
+      validate = false;
+    }
+    if (walletName.isEmpty) {
+      validate = false;
+    }
+    if (walletTypeID.isEmpty) {
+      validate = false;
+    }
+    if (walletCurrencyID.isEmpty) {
+      validate = false;
     }
 
-    if (validate == true)
+    if (walletType.toLowerCase()=='goal'){
+      if (targetAmount.isEmpty) {
+        validate = false;
+      }
+      if (savedTo.isEmpty) {
+        validate = false;
+      }
+    }
+
+    if (validate == true) {
       enableSaveButton = true;
+    }
 
     return validate;
   }
@@ -78,30 +99,29 @@ class _WalletSavePageState extends State<WalletSavePage> {
     currencyList.clear();
     walletTypeListFS.clear();
 
-    currencyList = <PopupMenuEntry>[
-      PopupMenuItem<List>(
+    currencyList = const <PopupMenuEntry<dynamic>>[
+      PopupMenuItem<dynamic>(
           child: Text('₱ (Php) Philippine Peso'),
-          value: ['php', '₱ (Php) Philippine Peso']),
-      PopupMenuItem<List>(
+          value: <String>['php', '₱ (Php) Philippine Peso']),
+      PopupMenuItem<dynamic>(
           child: Text('\$ (Usd) US Dollar'),
-          value: ['usd', '\$ (Usd) US Dollar'])
+          value: <String>['usd', '\$ (Usd) US Dollar'])
     ];
 
     if (widget.walletID.isNotEmpty) {
-      List getWallet = Provider.of<FirestoreData>(context, listen: false)
-          .walletsList;
-      getWallet.forEach((item) {
-        if (item["id"] == widget.walletID) {
-          targetAmount = item["targetAmount"].toString();
-          walletName = item["name"];
-          walletTypeID = item["typeID"];
-          walletType = item["type"];
-          walletCurrencyID = item["currencyID"];
-          walletCurrency = item["currency"];
-          fOverallBalance = (item["fOverallBalance"] == null)? true:
-            item["fOverallBalance"];
-          savedTo = item["savedTo"];
-          cardColor = item["color"];
+      Provider.of<FirestoreData>(context, listen: false)
+          .walletsList.forEach((dynamic item) {
+        if (item['id'] == widget.walletID) {
+          targetAmount = item['targetAmount'].toString();
+          walletName = item['name'];
+          walletTypeID = item['typeID'];
+          walletType = item['type'];
+          walletCurrencyID = item['currencyID'];
+          walletCurrency = item['currency'];
+          fOverallBalance = (item['fOverallBalance'] == null)? true:
+            item['fOverallBalance'];
+          savedTo = item['savedTo'];
+          cardColor = item['color'];
           conName.text = walletName;
           conSavedTo.text = savedTo;
           conTargetAmount.text = targetAmount;
@@ -117,12 +137,12 @@ class _WalletSavePageState extends State<WalletSavePage> {
     validateFields();
     Widget title() {
       return Text(
-        (widget.walletID.isNotEmpty)? "Edit Wallet":
-        "Add Wallet",
+        (widget.walletID.isNotEmpty)? 'Edit Wallet':
+        'Add Wallet',
       );
     }
 
-    var actionButtons = [
+    final List<Widget> actionButtons = <Widget>[
       TextButton(
         onPressed: () {
           if (enableSaveButton == true) {
@@ -142,7 +162,7 @@ class _WalletSavePageState extends State<WalletSavePage> {
         },
         child: Padding(
           padding: const EdgeInsets.only(right: 20),
-          child: Text("Save",
+          child: Text('Save',
             style: TextStyle(
               fontSize: 16,
               color: (enableSaveButton == true)? Colors.white
@@ -155,18 +175,18 @@ class _WalletSavePageState extends State<WalletSavePage> {
 
     Widget content() {
       return Consumer<FirestoreData>(
-        builder: (context, firestoreData, child) {
-          walletTypeList = firestoreData.walletTypeData.map((item) {
-            walletTypeListFS.putIfAbsent(item["id"], () => item["color"]);
-            return PopupMenuItem<List>(
-                child: Text(item["name"]),
-                value: [item["id"], item["name"]]
+        builder: (BuildContext context, FirestoreData firestoreData, Widget? child) {
+          walletTypeList = firestoreData.walletTypeData.map((dynamic item) {
+            walletTypeListFS.putIfAbsent(item['id'], () => item['color']);
+            return PopupMenuItem<dynamic>(
+                child: Text(item['name']),
+                value: <dynamic>[item['id'], item['name']]
             );
           }).toList();
 
-          for (CardColor cColor in CardColor.values) {
+          for (final CardColor cColor in CardColor.values) {
             if(cardColor != cColor) {
-              var cColorLast = cColor.toString().split('.').last;
+              final String cColorLast = cColor.toString().split('.').last;
               if (cColorLast == walletTypeListFS[walletTypeID]) {
                 cardColor = cColor;
                 break;
@@ -176,14 +196,14 @@ class _WalletSavePageState extends State<WalletSavePage> {
 
           Widget goalFields() {
             return Column(
-              children: [
-                CTextField(
-                  label: "Target Amount",
-                  keyboardType: TextInputType
+              children: <Widget>[
+                CustomTextField(
+                  label: 'Target Amount',
+                  keyboardType: const TextInputType
                       .numberWithOptions(decimal: true),
-                  hintText: "Enter target amount",
+                  hintText: 'Enter target amount',
                   controller: conTargetAmount,
-                  onChanged: (value) {
+                  onChanged: (dynamic value) {
                     targetAmount = value;
                   },
                 ),
@@ -191,21 +211,21 @@ class _WalletSavePageState extends State<WalletSavePage> {
                   onTapDown: (TapDownDetails details) {
                     _selectDate.call();
                   },
-                  child: CDatePickerTextField(
-                      hintText: "Target Date",
-                      label: "target date",
+                  child: DatePickerTextField(
+                      hintText: 'Target Date',
+                      label: 'target date',
                       text: _date.toString(),
-                      onChanged: (value) {
+                      onChanged: (dynamic value) {
                         _date = value;
                       },
-                      items: []
+                      items: const <PopupMenuEntry<PopupMenuItem<dynamic>>>[]
                   ),
                 ),
-                CTextField(
-                  label: "Saved to",
-                  hintText: "Enter saved to",
+                CustomTextField(
+                  label: 'Saved to',
+                  hintText: 'Enter saved to',
                   controller: conSavedTo,
-                  onChanged: (value) {
+                  onChanged: (dynamic value) {
                     savedTo = value;
                   },
                 ),
@@ -214,68 +234,71 @@ class _WalletSavePageState extends State<WalletSavePage> {
           }
 
           return ListView(
-              padding: EdgeInsets.fromLTRB(30,30,30,30),
+              padding: const EdgeInsets.fromLTRB(30,30,30,30),
               children: <Widget>[
-                Center(child: CCardWallets(
+                Center(child: CardWallets(
                   txtWallet: walletName.toString(),
                   txtTypeWallet: walletType,
                   currencyID: walletCurrencyID,
                   cardSize: CardSize.large,
                   cardColor: cardColor,)
                 ),
-                (widget.walletID.isNotEmpty)? CTextField(
-                  label: "Wallet Name",
-                  hintText: "Enter wallet name",
+                if (widget.walletID.isNotEmpty) CustomTextField(
+                  label: 'Wallet Name',
+                  hintText: 'Enter wallet name',
                   controller: conName,
                   autofocus: true,
-                  onChanged: (value) {
+                  onChanged: (dynamic value) {
                     walletName = value;
                   },
-                ):CTextField(
-                  label: "Wallet Name",
-                  hintText: "Enter wallet name",
+                ) else CustomTextField(
+                  label: 'Wallet Name',
+                  hintText: 'Enter wallet name',
                   autofocus: true,
-                  onChanged: (value) {
-                    if(mounted && value != null)
+                  onChanged: (dynamic value) {
+                    if(mounted && value != null) {
                       setState(() {
                         walletName = value;
                       });
+                    }
                   },
                 ),
-                CDropdownTextField(
-                    label: "Currency",
-                    hintText: "Select wallet currency",
+                CustomDropdown(
+                    label: 'Currency',
+                    hintText: 'Select wallet currency',
                     text: walletCurrency,
-                    onChanged: (value) {
-                      if(mounted && value != null)
+                    onChanged: (dynamic value) {
+                      if(mounted && value != null) {
                         setState(() {
                           walletCurrency = value[1];
                           walletCurrencyID = value[0];
                         });
+                      }
                     },
                     items: currencyList
                 ),
-                CDropdownTextField(
-                    label: "Wallet Type",
-                    hintText: "Select wallet type",
+                CustomDropdown(
+                    label: 'Wallet Type',
+                    hintText: 'Select wallet type',
                     text: walletType,
-                    onChanged: (value) {
-                      if(mounted && value != null)
+                    onChanged: (dynamic value) {
+                      if(mounted && value != null) {
                         setState(() {
                           walletType = value[1];
                           walletTypeID = value[0];
                         });
+                      }
                     },
                     items: walletTypeList
                 ),
-                (walletType.toLowerCase()=='goal')? goalFields(): SizedBox(),
+                if (walletType.toLowerCase()=='goal') goalFields(),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 7),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 7),
                   child: Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
-                        child: Text(
-                          "Include in overall total balance?",
+                        child: const Text(
+                          'Include in overall total balance?',
                           style: TextStyle(
                               color: ColorConstants.grey6,
                               fontSize: 12
@@ -284,24 +307,25 @@ class _WalletSavePageState extends State<WalletSavePage> {
                       )
                   ),
                 ),
-                Row(children: [
-                  Text("Yes"),
+                Row(children: <Widget>[
+                  const Text('Yes'),
                   RotatedBox(
                     quarterTurns: 2,
                     child: Container(
-                      margin: EdgeInsets.only(right: 10, left: 10),
-                      child: CSwitch(
+                      margin: const EdgeInsets.only(right: 10, left: 10),
+                      child: CustomSwitch(
                         value: fOverallBalance,
                         onChanged: (bool value){
-                          if(mounted)
-                          setState(() {
+                          if(mounted) {
+                            setState(() {
                             fOverallBalance = value;
                           });
+                          }
                         },
                       ),
                     ),
                   ),
-                  Text("No"),
+                  const Text('No'),
                 ],)
               ]
           );
@@ -314,12 +338,12 @@ class _WalletSavePageState extends State<WalletSavePage> {
       child: ModalProgressHUD(
         inAsyncCall: Provider.of<FirestoreData>(context).showSpinner,
         child: Scaffold(
-            backgroundColor: Color(0xFF03BED6),
+            backgroundColor: const Color(0xFF03BED6),
             appBar: headerNav(
                 title: title(),
                 action: actionButtons
             ),
-            body: CBody(child: content(),hasScrollBody: true,)
+            body: CustomBody(child: content(),hasScrollBody: true,)
         ),
       ),
     );

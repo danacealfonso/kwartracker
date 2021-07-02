@@ -1,8 +1,11 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kwartracker/views/widgets/cBody.dart';
-import 'package:kwartracker/views/widgets/cButton.dart';
-import '../../widgets/headerNav.dart';
+
+// Project imports:
+import 'package:kwartracker/views/widgets/custom_body.dart';
+import 'package:kwartracker/views/widgets/custom_button.dart';
+import '../../widgets/header_nav.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -10,16 +13,16 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String text = "...";
+  String text = '...';
 
-  static const platform =
-  const MethodChannel("com.danace.kwartracker/pltChannel");
+  static const MethodChannel platform =
+  MethodChannel('com.danace.kwartracker/pltChannel');
 
   Future<void> klikBtn() async {
     String? textResult;
 
     try{
-      final String result = await platform.invokeMethod("helloWorld");
+      final String result = await platform.invokeMethod('helloWorld');
       textResult = result;
     }on PlatformException catch(e){
       print(e);
@@ -32,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    var actionButtons = [
+    final List<Widget> actionButtons = <Widget>[
       TextButton(
           onPressed: null,
           child: Image.asset(
@@ -45,13 +48,13 @@ class _ProfilePageState extends State<ProfilePage> {
     ];
 
     Widget title() {
-      return Text(
-          "My Profile",
+      return const Text(
+          'My Profile',
         );
     }
     Widget content() {
       return Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Color(0xFFF1F3F6),
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(50),
@@ -62,9 +65,9 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Column(
-                children: [
-                  Text(text, style: TextStyle(fontSize: 20),),
-                  CButton(text: 'batt', onPressed: () {
+                children: <Widget>[
+                  Text(text, style: const TextStyle(fontSize: 20),),
+                  CustomButton(text: 'check', onPressed: () {
                     klikBtn();
                   },
                   ),
@@ -78,12 +81,12 @@ class _ProfilePageState extends State<ProfilePage> {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Scaffold(
-          backgroundColor: Color(0xFF03BED6),
+          backgroundColor: const Color(0xFF03BED6),
           appBar: headerNav(
               title: title(),
               action: actionButtons
           ),
-          body: CBody(child: content())
+          body: CustomBody(child: content())
       ),
     );
   }
