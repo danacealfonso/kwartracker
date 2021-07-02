@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kwartracker/util/colorConstants.dart';
+import 'package:flutter/services.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:kwartracker/views/widgets/cButton.dart';
-import 'package:kwartracker/views/widgets/cDialog.dart';
 import '../../widgets/headerNav.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -11,17 +10,25 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  var actionButtons = [
-    TextButton(
-        onPressed: null,
-        child: Image.asset(
-            'images/users/profile_pic.png',
-            width: 70,
-            height: 85,
-            fit:BoxFit.fill
-        )
-    )
-  ];
+  String text = "...";
+
+  static const platform =
+  const MethodChannel("com.danace.kwartracker/pltChannel");
+
+  Future<void> klikBtn() async {
+    String? textResult;
+
+    try{
+      final String result = await platform.invokeMethod("helloWorld");
+      textResult = result;
+    }on PlatformException catch(e){
+      print(e);
+    }
+
+    setState(() {
+      text = textResult!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +61,10 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Container(
             padding: const EdgeInsets.all(10.0),
             child: Center(
-                child: CButton(text: 'dialog', onPressed: () {
-
-                },)
+              child: CButton(text: 'batt', onPressed: () {
+                klikBtn();
+              },
+              )
             ),
           )
       );

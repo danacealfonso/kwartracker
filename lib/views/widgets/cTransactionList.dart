@@ -40,7 +40,6 @@ class _CTransactionListState extends State<CTransactionList> {
           return NotificationListener<ScrollUpdateNotification>(
               onNotification: (scroll) {
                 var metrics = scroll.metrics;
-
                 if (!firestoreData.isLoading) {
                   if (metrics.atEdge) {
                     if (metrics.pixels == 0) {
@@ -53,7 +52,8 @@ class _CTransactionListState extends State<CTransactionList> {
                         setState(() {
                           firestoreData.isLoading = true;
                         });
-                      firestoreData.getData(walletID: widget.walletID,context: context);
+                      firestoreData.getData(walletID: widget.walletID,
+                        context: context);
                     }
                   }
                   if (metrics.pixels >= 10) {
@@ -68,6 +68,7 @@ class _CTransactionListState extends State<CTransactionList> {
               },child: Stack(
             children: [
               ListView.builder(
+                shrinkWrap: false,
                 padding: EdgeInsets.only(bottom: 50),
                 controller: _scrollController,
                 itemCount: firestoreData.transactionList.length + 1,
@@ -92,6 +93,7 @@ class _CTransactionListState extends State<CTransactionList> {
                             currency: doc['currency'],
                             transactionType: doc['transactionType'],
                             transactionDate: doc['transactionDate'],
+                            categoryIcon: doc['categoryIcon'],
                           ),
                         ),
                       ],

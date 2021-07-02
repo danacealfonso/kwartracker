@@ -1,9 +1,9 @@
-import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
 import 'package:kwartracker/views/pages/transactions/transactionDetails.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 
 class CTransactionListItem extends StatelessWidget {
 
@@ -15,6 +15,7 @@ class CTransactionListItem extends StatelessWidget {
     required this.walletName,
     required this.amount,
     this.currency = "php",
+    this.categoryIcon
   });
 
   final String category;
@@ -24,6 +25,7 @@ class CTransactionListItem extends StatelessWidget {
   final String walletName;
   final String currency;
   final double amount;
+  final Map<String, dynamic>? categoryIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +39,11 @@ class CTransactionListItem extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-      width: 40,
-      height: 40,
       child: Row(
         children: <Widget>[
           Container(
+            width: 40,
+            height: 40,
             decoration: BoxDecoration(
             color: Color(0xFFE4EAEF),
             border: Border.all(
@@ -54,20 +56,8 @@ class CTransactionListItem extends StatelessWidget {
               bottomRight: Radius.circular(14),
               bottomLeft: Radius.circular(14),
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 8,
-                offset: const Offset(6, 6),
-              ),
-              BoxShadow(
-                color: Color(0xA8FFFFFF),
-                blurRadius: 10,
-                offset: const Offset(-6, -6),
-              ),
-            ],
           ),
-            padding: EdgeInsets.fromLTRB(11, 8, 11, 0),
+            padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
             child: Column(children: [
               Text(DateFormat.MMM().format(transactionDate),
                 style: TextStyle(
@@ -87,32 +77,23 @@ class CTransactionListItem extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.fromLTRB(10, 8, 20, 0),
+              padding: EdgeInsets.fromLTRB(10, 5, 20, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      (transactionType.toLowerCase()!='income')?
                       Container(
-                        padding: EdgeInsets.all(2),
+                        padding: EdgeInsets.all(3),
                         margin: EdgeInsets.only(right: 5),
                         decoration: BoxDecoration(
                           color: ColorConstants.cyan,
                           borderRadius: BorderRadius.circular(3),
                         ),
                         child: Icon(
-                          Icons.receipt_outlined,
+                          deserializeIcon(categoryIcon!),
                           color: Colors.white,
                           size: 8,
-                        ),
-                      ) : Padding(
-                        padding: const EdgeInsets.only(right: 5.0),
-                        child: Image.asset(
-                            'images/icons/ic_savings.png',
-                            width: 12,
-                            height: 12,
-                            fit:BoxFit.fill
                         ),
                       ),
                       Text(category,
@@ -164,7 +145,7 @@ class CTransactionListItem extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black12,
-                    blurRadius: 8,
+                    blurRadius: 10,
                     offset: const Offset(6, 6),
                   ),
                   BoxShadow(

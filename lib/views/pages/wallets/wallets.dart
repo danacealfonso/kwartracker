@@ -5,6 +5,7 @@ import 'package:kwartracker/util/colorConstants.dart';
 import 'package:kwartracker/util/myRoute.dart';
 import 'package:kwartracker/views/pages/transactions/transactionAddDetails.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
+import 'package:kwartracker/views/widgets/cFloatingButton.dart';
 import 'package:kwartracker/views/widgets/cProgressBar.dart';
 import 'package:kwartracker/views/widgets/cTransactionList.dart';
 import 'package:kwartracker/views/pages/wallets/walletSave.dart';
@@ -26,50 +27,6 @@ class _WalletsPageState extends State<WalletsPage> {
   bool overAllBalance = false;
   List showGoal = [];
   List targetAmount = [];
-  var actionButtons = [
-    Builder(
-      builder: (BuildContext context) {
-        return Container(
-            width: 40,
-            height: 40,
-            margin: EdgeInsets.all(20),
-            child: FloatingActionButton(
-              heroTag: null,
-              backgroundColor: ColorConstants.grey,
-              onPressed: () {
-                Navigator.push(context,
-                    MyRoute(
-                        builder: (context) => WalletSavePage(),
-                        routeSettings: RouteSettings(name: "/walletAdd"),
-                    )
-                  );
-                },
-                child: Image.asset(
-                    'images/icons/ic_add.png',
-                    width: 10,
-                    height: 10,
-                    fit:BoxFit.fill
-                )
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 8,
-                  offset: const Offset(6, 6),
-                ),
-                BoxShadow(
-                  color: Color(0x82FFFFFF),
-                  blurRadius: 8,
-                  offset: const Offset(-4, -2),
-                ),
-              ],
-            )
-        );
-      },
-    )
-  ];
 
   Widget title() {
     return Text(
@@ -88,6 +45,25 @@ class _WalletsPageState extends State<WalletsPage> {
 
   @override
   Widget build(BuildContext context) {
+    var actionButtons = [
+      CFloatingButton(
+        icon: Image.asset(
+          'images/icons/ic_add.png',
+          width: 10,
+          height: 10,
+          fit:BoxFit.fill
+        ),
+        onPressed: () {
+          Navigator.push(context,
+            MyRoute(
+              builder: (context) => WalletSavePage(),
+              routeSettings: RouteSettings(name: "/walletAdd"),
+            )
+          );
+        }
+      )
+    ];
+
     Widget content() {
       return Consumer<FirestoreData>(
         builder: (context, firestoreData, child) {
