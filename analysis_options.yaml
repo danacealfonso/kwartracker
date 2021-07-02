@@ -24,7 +24,6 @@ analyzer:
     # see https://github.com/dart-lang/sdk/issues/28463
     - "lib/i18n/messages_*.dart"
     - "lib/src/http/**"
-​
 linter:
   rules:
     # these rules are documented on and in the same order as

@@ -9,7 +9,7 @@ import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:kwartracker/views/widgets/cButton.dart';
 import 'package:kwartracker/views/widgets/cTextField.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../widgets/headerNav.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -77,17 +77,15 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
                       showSpinner = true;
                     });
                     try {
-                      final newUser = await _auth.createUserWithEmailAndPassword(
+                      await _auth.createUserWithEmailAndPassword(
                           email: email,
                           password: password
                       );
-                      if (newUser != null) {
-                        globals.isLoggedIn = true;
-                        Navigator.pushAndRemoveUntil(context, MyRoute(
-                          builder: (context) => HomePage(), routeSettings:
-                          RouteSettings(name: "/home"),
-                        ), (route) => false);
-                      }
+                      globals.isLoggedIn = true;
+                      Navigator.pushAndRemoveUntil(context, MyRoute(
+                        builder: (context) => HomePage(), routeSettings:
+                        RouteSettings(name: "/home"),
+                      ), (route) => false);
                       setState(() {
                         showSpinner = false;
                       });

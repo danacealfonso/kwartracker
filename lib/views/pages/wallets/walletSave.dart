@@ -8,7 +8,7 @@ import 'package:kwartracker/views/widgets/cDatePickerTextField.dart';
 import 'package:kwartracker/views/widgets/cDropdownTextField.dart';
 import 'package:kwartracker/views/widgets/cSwitch.dart';
 import 'package:kwartracker/views/widgets/cTextField.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/headerNav.dart';
 
@@ -98,7 +98,8 @@ class _WalletSavePageState extends State<WalletSavePage> {
           walletType = item["type"];
           walletCurrencyID = item["currencyID"];
           walletCurrency = item["currency"];
-          fOverallBalance = item["fOverallBalance"];
+          fOverallBalance = (item["fOverallBalance"] == null)? true:
+            item["fOverallBalance"];
           savedTo = item["savedTo"];
           cardColor = item["color"];
           conName.text = walletName;
@@ -290,9 +291,9 @@ class _WalletSavePageState extends State<WalletSavePage> {
                     child: Container(
                       margin: EdgeInsets.only(right: 10, left: 10),
                       child: CSwitch(
-                        value: fOverallBalance==null? true: fOverallBalance,
+                        value: fOverallBalance,
                         onChanged: (bool value){
-                          if(mounted && value != null)
+                          if(mounted)
                           setState(() {
                             fOverallBalance = value;
                           });

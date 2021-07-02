@@ -10,7 +10,7 @@ import 'package:kwartracker/views/pages/transactions/transactionEdit.dart';
 import 'package:kwartracker/views/widgets/cBody.dart';
 import 'package:kwartracker/views/widgets/cConfirmationDialog.dart';
 import 'package:kwartracker/views/widgets/cDialog.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../widgets/headerNav.dart';

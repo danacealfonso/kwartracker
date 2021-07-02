@@ -10,7 +10,7 @@ import 'package:kwartracker/views/widgets/cTextField.dart';
 import 'package:kwartracker/util/myRoute.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../widgets/headerNav.dart';
 
 class SignInPage extends StatefulWidget {
