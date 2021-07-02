@@ -61,9 +61,14 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Container(
             padding: const EdgeInsets.all(10.0),
             child: Center(
-              child: CButton(text: 'batt', onPressed: () {
-                klikBtn();
-              },
+              child: Column(
+                children: [
+                  Text(text, style: TextStyle(fontSize: 20),),
+                  CButton(text: 'batt', onPressed: () {
+                    klikBtn();
+                  },
+                  ),
+                ],
               )
             ),
           )
