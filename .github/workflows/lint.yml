@@ -1,10 +1,10 @@
 on: push
 
-name: Sample Workflow
+name: Flutter
 
 jobs:
   build:
-    name: Example
+    name: Flutter check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
