@@ -7,7 +7,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:kwartracker/model/firestore_data.dart';
+import 'package:kwartracker/provider/firestore_data.dart';
 import 'package:kwartracker/util/color_constants.dart';
 import 'package:kwartracker/views/widgets/card_wallets.dart';
 import 'package:kwartracker/views/widgets/custom_body.dart';

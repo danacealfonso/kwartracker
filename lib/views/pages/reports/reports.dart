@@ -1,5 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:kwartracker/util/color_constants.dart';
 
 // Project imports:
 import 'package:kwartracker/views/widgets/custom_body.dart';
@@ -37,7 +39,56 @@ class _ReportsPageState extends State<ReportsPage> {
       ]);
     }
     Widget content() {
-      return Container(
+      return Column(
+        children: <Widget>[
+
+          SvgPicture.asset(
+            'icons/ic_menu.svg',
+            color: Colors.black,
+            width: 100,
+            height: 100,
+            allowDrawingOutsideViewBox: true,
+          ),
+          Container(
+              margin: const EdgeInsets.only(top: 100, bottom: 10),
+              decoration: BoxDecoration(
+                  border:
+                  Border.all(width: 2, color: ColorConstants.grey1)
+              ),
+              padding: const EdgeInsets.all(7),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    height: 40,
+                    width: 40,
+                    padding: const EdgeInsets.all(3),
+                    margin: const EdgeInsets.only(right: 10),
+                    decoration: BoxDecoration(
+                      color: ColorConstants.cyan,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: const Icon(
+                      null,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+                ],
+              )
+          ),
+        ],
+      );
+    }
+
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Scaffold(
+        backgroundColor: const Color(0xFF03BED6),
+        appBar: headerNav(
+          title: title(),
+          action: actionButtons
+        ),
+        body: CustomBody(child: Container(
           decoration: const BoxDecoration(
             color: Color(0xFFF1F3F6),
             borderRadius: BorderRadius.only(
@@ -47,23 +98,11 @@ class _ReportsPageState extends State<ReportsPage> {
           ),
           child: Container(
             padding: const EdgeInsets.all(10.0),
-            child: const Center(
-                child: Text('Reports')
+            child: content()
             ),
           )
-      );
-    }
-
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Scaffold(
-          backgroundColor: const Color(0xFF03BED6),
-          appBar: headerNav(
-              title: title(),
-              action: actionButtons
-          ),
-          body: CustomBody(child: content())
-      ),
+        )
+      )
     );
   }
 }

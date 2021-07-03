@@ -143,7 +143,9 @@ class FirestoreData extends ChangeNotifier {
               categoryP.addAll(<String, dynamic>{'id': categoryID});
               categoriesParent.add(categoryP);
             } else {
-              categoriesChild.add(category.data());
+              final Map<String, dynamic> categoryC = category.data();
+              categoryC.addAll(<String, dynamic>{'id': categoryID});
+              categoriesChild.add(categoryC);
             }
 
             categoriesList.add(<String, dynamic>{

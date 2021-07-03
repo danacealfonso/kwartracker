@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:kwartracker/model/firestore_data.dart';
+import 'package:kwartracker/provider/firestore_data.dart';
 import 'package:kwartracker/util/color_constants.dart';
 import 'package:kwartracker/util/globals.dart' as globals;
 import 'package:kwartracker/util/my_route.dart';

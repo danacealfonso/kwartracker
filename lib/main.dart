@@ -18,7 +18,7 @@ import 'package:kwartracker/views/pages/transactions/transaction_details.dart';
 import 'package:kwartracker/views/pages/transactions/transactions.dart';
 import 'package:kwartracker/views/pages/wallets/wallet_save.dart';
 import 'package:kwartracker/views/pages/wallets/wallets.dart';
-import 'model/firestore_data.dart';
+import 'provider/firestore_data.dart';
 
 GlobalKey<NavigatorState> homeNavigatorKey = GlobalKey<NavigatorState>();
 

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import 'package:kwartracker/model/firestore_data.dart';
+import 'package:kwartracker/provider/firestore_data.dart';
 import 'package:kwartracker/util/color_constants.dart';
 import 'package:kwartracker/util/my_route.dart';
 import 'package:kwartracker/views/pages/transactions/transaction_choose_wallet.dart';
