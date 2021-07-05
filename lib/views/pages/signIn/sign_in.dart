@@ -31,14 +31,9 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
 
   Widget title() {
     return Transform(
-      transform:  Matrix4.translationValues(-30.0, 0.0, 0.0),
-      child: Image.asset(
-        'images/Logo.png',
-        width: 180,
-        height: 40,
-        fit:BoxFit.fill
-      )
-    );
+        transform: Matrix4.translationValues(-30.0, 0.0, 0.0),
+        child: Image.asset('images/Logo.png',
+            width: 180, height: 40, fit: BoxFit.fill));
   }
 
   @override
@@ -55,27 +50,31 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
       final TextEditingController controllerPass = TextEditingController();
       controllerPass.text = 'test123';
       password = 'test123';
-      
+
       return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             const Padding(
               padding: EdgeInsets.fromLTRB(0, 9, 0, 4),
-              child: Text('Welcome\nBack',
+              child: Text(
+                'Welcome\nBack',
                 style: TextStyle(
                     color: Color(0xFF414141),
                     fontSize: 42,
-                    fontWeight: FontWeight.w500
-                ),
+                    fontWeight: FontWeight.w500),
               ),
             ),
-            CustomTextField(hintText: 'Enter email address', label: 'Email',
+            CustomTextField(
+              hintText: 'Enter email address',
+              label: 'Email',
               controller: controller,
               onChanged: (dynamic value) {
                 email = value;
               },
             ),
-            CustomTextField(hintText: 'Enter password', label: 'Password',
+            CustomTextField(
+              hintText: 'Enter password',
+              label: 'Password',
               initialValue: 'test123',
               controller: controllerPass,
               obscureText: true,
@@ -84,174 +83,152 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
               },
             ),
             CustomButton(
-              text: 'Sign In',
-              onPressed: () async {
-                setState(() {
-                  showSpinner = true;
-                });
-                try {
-                  await _auth.signInWithEmailAndPassword(
-                      email: email,
-                      password: password
-                  );
-                  globals.isLoggedIn = true;
-                  Navigator.pushAndRemoveUntil(context, MyRoute<dynamic>(
-                      builder: (BuildContext context) => HomePage(), routeSettings:
-                  const RouteSettings(name: '/home'),
-                  ), (Route<dynamic> route) => false);
+                text: 'Sign In',
+                onPressed: () async {
                   setState(() {
-                    showSpinner = false;
+                    showSpinner = true;
                   });
-                } catch (e) {
-                  setState(() {
-                    showSpinner = false;
-                  });
-                  Fluttertoast.showToast(
-                      msg: e.toString(),
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.red,
-                      textColor: Colors.white,
-                      fontSize: 16.0
-                  );
-                }
-              }
-            ),
+                  try {
+                    await _auth.signInWithEmailAndPassword(
+                        email: email, password: password);
+                    globals.isLoggedIn = true;
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MyRoute<dynamic>(
+                          builder: (BuildContext context) => HomePage(),
+                          routeSettings: const RouteSettings(name: '/home'),
+                        ),
+                        (Route<dynamic> route) => false);
+                    setState(() {
+                      showSpinner = false;
+                    });
+                  } catch (e) {
+                    setState(() {
+                      showSpinner = false;
+                    });
+                    Fluttertoast.showToast(
+                        msg: e.toString(),
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }
+                }),
             const Align(
               alignment: Alignment.center,
-              child:Text('or',
-                style: TextStyle(
-                    color: Color(0xFF414141),
-                    fontSize: 14
-                ),
+              child: Text(
+                'or',
+                style: TextStyle(color: Color(0xFF414141), fontSize: 14),
               ),
             ),
-            CustomButton(text:
-              'Sign in with Google',
-              onPressed: (){},
+            CustomButton(
+              text: 'Sign in with Google',
+              onPressed: () {},
               backgroundColor: ColorConstants.blue,
               leadingIconPath: 'images/icons/ic_google.png',
             ),
-            CustomButton(text:
-              'Sign in with Apple',
-              onPressed: (){},
+            CustomButton(
+              text: 'Sign in with Apple',
+              onPressed: () {},
               backgroundColor: Colors.black,
               leadingIconPath: 'images/icons/ic_apple.png',
             ),
             Row(
               children: <Widget>[
                 Expanded(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextButton(
-                      onPressed: () { },
-                      child: const Text(
-                        'Recover Password',
-                        style: TextStyle(
-                          color: ColorConstants.grey6,
-                          decoration: TextDecoration.underline,
-                          fontSize: 14
-                        )
-                      ),
-                    )
-                  )
-                ),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: const Text('Recover Password',
+                              style: TextStyle(
+                                  color: ColorConstants.grey6,
+                                  decoration: TextDecoration.underline,
+                                  fontSize: 14)),
+                        ))),
                 Expanded(
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () { },
-                      child: const Text(
-                        'Sign in as guest',
-                        style: TextStyle(
-                          color: ColorConstants.grey6,
-                          decoration: TextDecoration.underline,
-                          fontSize: 14
-                        )
-                      ),
+                      onPressed: () {},
+                      child: const Text('Sign in as guest',
+                          style: TextStyle(
+                              color: ColorConstants.grey6,
+                              decoration: TextDecoration.underline,
+                              fontSize: 14)),
                     ),
                   ),
                 )
               ],
             ),
-          ]
-      );
+          ]);
     }
 
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: Scaffold(
-        backgroundColor: ColorConstants.cyan,
-        appBar: headerNav(
-          title: title(),
-          leading: leading(),
-          titleSpacing: 0.0,
-          centerTitle: false
-        ),
-        body: CustomBody(
-          hasScrollBody: false,
-          child: Column(
-            children: <Widget>[
-              Container(
-                  padding: const EdgeInsets.fromLTRB(30, 30, 20, 30),
-                  child: content()
-              ),
-              const Expanded(
-                child: Align(
+          backgroundColor: ColorConstants.cyan,
+          appBar: headerNav(
+              title: title(),
+              leading: leading(),
+              titleSpacing: 0.0,
+              centerTitle: false),
+          body: CustomBody(
+              hasScrollBody: false,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                      padding: const EdgeInsets.fromLTRB(30, 30, 20, 30),
+                      child: content()),
+                  const Expanded(
+                    child: Align(
+                        alignment: FractionalOffset.bottomCenter,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          child: Divider(
+                            height: 1,
+                            thickness: 1,
+                          ),
+                        )),
+                  ),
+                  Expanded(
+                      child: Align(
                     alignment: FractionalOffset.bottomCenter,
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                      child: Divider(
-                        height: 1,
-                        thickness: 1,
-                      ),
-                    )
-                ),
-              ),
-              Expanded(
-                child: Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                    child: RichText(
-                      text: TextSpan(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                      child: RichText(
+                          text: TextSpan(
                         children: <TextSpan>[
                           const TextSpan(
-                            text: 'No account yet?',
-                            style: TextStyle(
-                                color: ColorConstants.black,
-                                fontSize: 14
-                            )
-                          ),
+                              text: 'No account yet?',
+                              style: TextStyle(
+                                  color: ColorConstants.black, fontSize: 14)),
                           TextSpan(
-                            text: ' Sign Up',
-                            style: const TextStyle(
-                              color: ColorConstants.cyan,
-                              decoration: TextDecoration.underline,
-                              fontSize: 14,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.push(context,
-                                  MyRoute<dynamic>(
-                                    builder: (BuildContext context) =>
-                                        SignUpPage(), routeSettings:
-                                  const RouteSettings(name: '/signUp'),
-                                  )
-                                );
-                              }
-                          ),
+                              text: ' Sign Up',
+                              style: const TextStyle(
+                                color: ColorConstants.cyan,
+                                decoration: TextDecoration.underline,
+                                fontSize: 14,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.push(
+                                      context,
+                                      MyRoute<dynamic>(
+                                        builder: (BuildContext context) =>
+                                            SignUpPage(),
+                                        routeSettings: const RouteSettings(
+                                            name: '/signUp'),
+                                      ));
+                                }),
                         ],
-                      )
+                      )),
                     ),
-                  ),
-                )
-              ),
-            ],
-          )
-        )
-      ),
+                  )),
+                ],
+              ))),
     );
   }
 }

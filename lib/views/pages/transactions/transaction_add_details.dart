@@ -29,8 +29,7 @@ class TransactionAddDetailsPage extends StatefulWidget {
       _TransactionAddDetailsPageState();
 }
 
-class _TransactionAddDetailsPageState extends
-  State<TransactionAddDetailsPage> {
+class _TransactionAddDetailsPageState extends State<TransactionAddDetailsPage> {
   String fName = '';
   String fType = '';
   String fCategory = '';
@@ -44,26 +43,32 @@ class _TransactionAddDetailsPageState extends
   TextEditingController txtAmount = TextEditingController();
   List<Widget> actionButtons = <Widget>[
     TextButton(
-        onPressed: () {  },
-        child: const Text(''),
+      onPressed: () {},
+      child: const Text(''),
     ),
   ];
 
-  bool validateFields () {
+  bool validateFields() {
     bool validate = true;
-    if(fName.isEmpty==true) {
+    if (fName.isEmpty == true) {
       validate = false;
-    }if(fType.isEmpty==true) {
+    }
+    if (fType.isEmpty == true) {
       validate = false;
-    }if(fCategory.isEmpty==true) {
+    }
+    if (fCategory.isEmpty == true) {
       validate = false;
-    }if(txtAmount.text.isEmpty==true) {
+    }
+    if (txtAmount.text.isEmpty == true) {
       validate = false;
-    }if(file==null) {
+    }
+    if (file == null) {
       validate = false;
-    }if(fName.isEmpty==true) {
+    }
+    if (fName.isEmpty == true) {
       validate = false;
-    }if(widget.walletID==null) {
+    }
+    if (widget.walletID == null) {
       validate = false;
     }
 
@@ -72,11 +77,12 @@ class _TransactionAddDetailsPageState extends
         enableAddButton = true;
       });
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar( const SnackBar(
-        content: Text('Please fill up all the fields.'),
-        duration: Duration(milliseconds: 2000),
-      ), );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please fill up all the fields.'),
+          duration: Duration(milliseconds: 2000),
+        ),
+      );
     }
 
     return validate;
@@ -84,7 +90,6 @@ class _TransactionAddDetailsPageState extends
 
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -105,11 +110,10 @@ class _TransactionAddDetailsPageState extends
   }
 
   Future<void> selectFile() async {
-    final FilePickerResult? result = await FilePicker
-      .platform.pickFiles(
-        allowMultiple: false,
-        type: FileType.image,
-      );
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.image,
+    );
 
     if (result != null) {
       final String path = result.files.single.path!;
@@ -130,13 +134,13 @@ class _TransactionAddDetailsPageState extends
         transType: fType,
         amount: double.parse(txtAmount.text),
       );
-
     } else {
-      ScaffoldMessenger.of(context)
-        .showSnackBar( const SnackBar(
-        content: Text('Please fill up all the fields.'),
-        duration: Duration(milliseconds: 2000),
-      ), );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please fill up all the fields.'),
+          duration: Duration(milliseconds: 2000),
+        ),
+      );
     }
   }
 
@@ -151,137 +155,132 @@ class _TransactionAddDetailsPageState extends
     }
 
     Widget content() {
-      return Consumer<FirestoreData>(
-          builder: (BuildContext context,
-              FirestoreData firestoreData,
-              Widget? child) {
-            categoryList = firestoreData.categoriesList.map(
-              (Map<String, dynamic> item) {
-              return PopupMenuItem<dynamic>(
-                  child: Text(item['name']),
-                  value: <dynamic>[item['id'], item['name']]
-              );
-            }).toList();
+      return Consumer<FirestoreData>(builder:
+          (BuildContext context, FirestoreData firestoreData, Widget? child) {
+        categoryList =
+            firestoreData.categoriesList.map((Map<String, dynamic> item) {
+          return PopupMenuItem<dynamic>(
+              child: Text(item['name']),
+              value: <dynamic>[item['id'], item['name']]);
+        }).toList();
 
-            return Container(
-              margin: const EdgeInsets.only(top: 30),
-              child: ListView(
-                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
-                  children: <Widget>[
-                    const Center(child: Text('Enter amount'),),
-                    Center(child: TextField(
-                        autofocus: true,
-                        keyboardType: const TextInputType
-                          .numberWithOptions(decimal: true),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            fontSize: 40,
-                            color: ColorConstants.black
-                        ),
-                        controller: txtAmount,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                        )
-                    ),),
-                    CustomTextField(
-                      hintText: 'Enter transaction name',
-                      label: 'Transaction name',
+        return Container(
+          margin: const EdgeInsets.only(top: 30),
+          child: ListView(
+              padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
+              children: <Widget>[
+                const Center(
+                  child: Text('Enter amount'),
+                ),
+                Center(
+                  child: TextField(
+                      autofocus: true,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 40, color: ColorConstants.black),
+                      controller: txtAmount,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                      )),
+                ),
+                CustomTextField(
+                  hintText: 'Enter transaction name',
+                  label: 'Transaction name',
+                  onChanged: (dynamic value) {
+                    fName = value;
+                  },
+                ),
+                CustomDropdown(
+                    label: 'Transaction type',
+                    hintText: 'Select transaction type',
+                    text: fType,
+                    onChanged: (dynamic value) {
+                      if (value != null) {
+                        setState(() {
+                          fType = value[1];
+                        });
+                      }
+                    },
+                    items: const <PopupMenuEntry<dynamic>>[
+                      PopupMenuItem<dynamic>(
+                          child: Text('Income'),
+                          value: <String>['Income', 'Income']),
+                      PopupMenuItem<dynamic>(
+                          child: Text('Expense'),
+                          value: <String>['Expense', 'Expense']),
+                    ]),
+                CustomDropdown(
+                    label: 'Category',
+                    hintText: 'Select Category',
+                    text: fCategory.toString(),
+                    onChanged: (dynamic value) {
+                      if (value != null) {
+                        setState(() {
+                          fCategory = value[1];
+                          fCategoryID = value[0];
+                        });
+                      }
+                    },
+                    items: categoryList),
+                GestureDetector(
+                  onTapDown: (TapDownDetails details) {
+                    _selectDate.call();
+                  },
+                  child: DatePickerTextField(
+                      hintText: 'Select Date',
+                      label: 'Select date',
+                      text: _date.toString(),
                       onChanged: (dynamic value) {
-                        fName = value;
+                        _date = value;
                       },
-                    ),
-                    CustomDropdown(
-                        label: 'Transaction type',
-                        hintText: 'Select transaction type',
-                        text: fType,
-                        onChanged: (dynamic value) {
-                          if (value != null ) {
-                            setState(() {
-                              fType = value[1];
-                            });
-                          }
-                        },
-                        items: const <PopupMenuEntry<dynamic>>[
-                          PopupMenuItem<dynamic>(
-                              child: Text('Income'),
-                              value: <String>['Income','Income']),
-                          PopupMenuItem<dynamic>(
-                              child: Text('Expense'),
-                              value: <String>['Expense','Expense']),
-                        ]
-                    ),
-                    CustomDropdown(
-                        label: 'Category',
-                        hintText: 'Select Category',
-                        text: fCategory.toString(),
-                        onChanged: (dynamic value) {
-                          if (value != null ) {
-                            setState(() {
-                              fCategory = value[1];
-                              fCategoryID = value[0];
-                            });
-                          }
-                        },
-                        items: categoryList
-                    ),
-                    GestureDetector(
-                      onTapDown: (TapDownDetails details) {
-                        _selectDate.call();
-                      },
-                      child: DatePickerTextField(
-                          hintText: 'Select Date',
-                          label: 'Select date',
-                          text: _date.toString(),
-                          onChanged: (dynamic value) {
-                            _date = value;
-                          },
-                          items:
-                          const <PopupMenuEntry<PopupMenuItem<dynamic>>>[]
-                      ),
-                    ),
-                    CustomTextField(
-                      label: 'Spent with this person',
-                      hintText: 'Enter name of person',
-                      onChanged: (dynamic value) {
-                        fPersonName = value;
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            child: const Text(
-                              'Upload photo',
-                              style: TextStyle(
-                                  color: Color(0xFFBBC3C9),
-                                  fontSize: 12
-                              ),
-                            ),
-                          )
-                      ),
-                    ),
-                    if (file == null) Align(
+                      items: const <PopupMenuEntry<PopupMenuItem<dynamic>>>[]),
+                ),
+                CustomTextField(
+                  label: 'Spent with this person',
+                  hintText: 'Enter name of person',
+                  onChanged: (dynamic value) {
+                    fPersonName = value;
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  child: Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
-                        width: 100,
-                        child: CustomButton(
-                            text: 'Browse',
-                            backgroundColor: ColorConstants.grey3,
-                            onPressed: () { selectFile(); }
+                        child: const Text(
+                          'Upload photo',
+                          style:
+                              TextStyle(color: Color(0xFFBBC3C9), fontSize: 12),
                         ),
-                      ),
-                    ) else Column(
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
+                      )),
+                ),
+                if (file == null)
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      width: 100,
+                      child: CustomButton(
+                          text: 'Browse',
+                          backgroundColor: ColorConstants.grey3,
+                          onPressed: () {
                             selectFile();
-                          },
-                          child: Container(
+                          }),
+                    ),
+                  )
+                else
+                  Column(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          selectFile();
+                        },
+                        child: Container(
                             width: MediaQuery.of(context).size.width,
                             height: 180,
                             decoration: BoxDecoration(
@@ -291,33 +290,29 @@ class _TransactionAddDetailsPageState extends
                                 fit: BoxFit.cover,
                                 image: FileImage(file!),
                               ),
-                            )
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(fileName, style:
-                            const TextStyle(fontSize: 12,
-                            fontStyle: FontStyle.italic,
-                            color: ColorConstants.grey3)
-                          ),
-                        )
-                      ],
-                    ),
-                    Container(
-                      width: double.infinity,
-                      child: CustomButton(
-                        text: 'Add',
-                        onPressed: () {
-                          saveAndUpload();
-                        }
+                            )),
                       ),
-                    ),
-                  ]
-              ),
-            );
-          }
-      );
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(fileName,
+                            style: const TextStyle(
+                                fontSize: 12,
+                                fontStyle: FontStyle.italic,
+                                color: ColorConstants.grey3)),
+                      )
+                    ],
+                  ),
+                Container(
+                  width: double.infinity,
+                  child: CustomButton(
+                      text: 'Add',
+                      onPressed: () {
+                        saveAndUpload();
+                      }),
+                ),
+              ]),
+        );
+      });
     }
 
     return Container(
@@ -325,13 +320,12 @@ class _TransactionAddDetailsPageState extends
       child: ModalProgressHUD(
         inAsyncCall: Provider.of<FirestoreData>(context).showSpinner,
         child: Scaffold(
-          backgroundColor: const Color(0xFF03BED6),
-          appBar: headerNav(
-            title: title(),
-            action: actionButtons
-          ),
-          body: CustomBody(child: content(),hasScrollBody: true,)
-        ),
+            backgroundColor: const Color(0xFF03BED6),
+            appBar: headerNav(title: title(), action: actionButtons),
+            body: CustomBody(
+              child: content(),
+              hasScrollBody: true,
+            )),
       ),
     );
   }

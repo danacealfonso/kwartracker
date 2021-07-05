@@ -16,18 +16,12 @@ class _ReportsPageState extends State<ReportsPage> {
   List<Widget> actionButtons = <Widget>[
     TextButton(
         onPressed: null,
-        child: Image.asset(
-            'images/users/profile_pic.png',
-            width: 70,
-            height: 85,
-            fit:BoxFit.fill
-        )
-    )
+        child: Image.asset('images/users/profile_pic.png',
+            width: 70, height: 85, fit: BoxFit.fill))
   ];
 
   @override
   Widget build(BuildContext context) {
-
     Widget title() {
       return Column(children: const <Widget>[
         Text(
@@ -38,10 +32,10 @@ class _ReportsPageState extends State<ReportsPage> {
         ),
       ]);
     }
+
     Widget content() {
       return Column(
         children: <Widget>[
-
           SvgPicture.asset(
             'icons/ic_menu.svg',
             color: Colors.black,
@@ -52,9 +46,7 @@ class _ReportsPageState extends State<ReportsPage> {
           Container(
               margin: const EdgeInsets.only(top: 100, bottom: 10),
               decoration: BoxDecoration(
-                  border:
-                  Border.all(width: 2, color: ColorConstants.grey1)
-              ),
+                  border: Border.all(width: 2, color: ColorConstants.grey1)),
               padding: const EdgeInsets.all(7),
               child: Row(
                 children: <Widget>[
@@ -74,35 +66,27 @@ class _ReportsPageState extends State<ReportsPage> {
                     ),
                   ),
                 ],
-              )
-          ),
+              )),
         ],
       );
     }
 
     return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Scaffold(
-        backgroundColor: const Color(0xFF03BED6),
-        appBar: headerNav(
-          title: title(),
-          action: actionButtons
-        ),
-        body: CustomBody(child: Container(
-          decoration: const BoxDecoration(
-            color: Color(0xFFF1F3F6),
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(50),
-              topLeft: Radius.circular(50),
-            ),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(10.0),
-            child: content()
-            ),
-          )
-        )
-      )
-    );
+        width: MediaQuery.of(context).size.width,
+        child: Scaffold(
+            backgroundColor: const Color(0xFF03BED6),
+            appBar: headerNav(title: title(), action: actionButtons),
+            body: CustomBody(
+                child: Container(
+              decoration: const BoxDecoration(
+                color: Color(0xFFF1F3F6),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(50),
+                  topLeft: Radius.circular(50),
+                ),
+              ),
+              child: Container(
+                  padding: const EdgeInsets.all(10.0), child: content()),
+            ))));
   }
 }

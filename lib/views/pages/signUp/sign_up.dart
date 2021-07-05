@@ -32,13 +32,8 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
   Widget title() {
     return Transform(
         transform: Matrix4.translationValues(-30.0, 0.0, 0.0),
-        child: Image.asset(
-            'images/Logo.png',
-            width: 180,
-            height: 40,
-            fit: BoxFit.fill
-        )
-    );
+        child: Image.asset('images/Logo.png',
+            width: 180, height: 40, fit: BoxFit.fill));
   }
 
   @override
@@ -55,20 +50,24 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
             children: <Widget>[
               const Padding(
                 padding: EdgeInsets.fromLTRB(0, 9, 0, 4),
-                child: Text('Create\nAccount',
+                child: Text(
+                  'Create\nAccount',
                   style: TextStyle(
                       color: Color(0xFF414141),
                       fontSize: 42,
-                      fontWeight: FontWeight.w500
-                  ),
+                      fontWeight: FontWeight.w500),
                 ),
               ),
-              CustomTextField(hintText: 'Enter email address', label: 'Email',
+              CustomTextField(
+                hintText: 'Enter email address',
+                label: 'Email',
                 onChanged: (dynamic value) {
                   email = value;
                 },
               ),
-              CustomTextField(hintText: 'Enter password', label: 'Password',
+              CustomTextField(
+                hintText: 'Enter password',
+                label: 'Password',
                 obscureText: true,
                 onChanged: (dynamic value) {
                   password = value;
@@ -82,14 +81,15 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
                     });
                     try {
                       await _auth.createUserWithEmailAndPassword(
-                          email: email,
-                          password: password
-                      );
+                          email: email, password: password);
                       globals.isLoggedIn = true;
-                      Navigator.pushAndRemoveUntil(context, MyRoute<dynamic>(
-                        builder: (BuildContext context) => HomePage(), routeSettings:
-                        const RouteSettings(name: '/home'),
-                      ), (Route<dynamic> route) => false);
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MyRoute<dynamic>(
+                            builder: (BuildContext context) => HomePage(),
+                            routeSettings: const RouteSettings(name: '/home'),
+                          ),
+                          (Route<dynamic> route) => false);
                       setState(() {
                         showSpinner = false;
                       });
@@ -99,27 +99,22 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
                       });
                       print(e);
                     }
-                  }
-              ),
+                  }),
               const Align(
                 alignment: Alignment.center,
-                child: Text('or',
-                  style: TextStyle(
-                      color: Color(0xFF414141),
-                      fontSize: 14
-                  ),
+                child: Text(
+                  'or',
+                  style: TextStyle(color: Color(0xFF414141), fontSize: 14),
                 ),
               ),
-              CustomButton(text:
-              'Sign up with Google',
+              CustomButton(
+                  text: 'Sign up with Google',
                   onPressed: () {},
-                  backgroundColor: ColorConstants.blue
-              ),
-              CustomButton(text:
-              'Sign up with Apple',
+                  backgroundColor: ColorConstants.blue),
+              CustomButton(
+                  text: 'Sign up with Apple',
                   onPressed: () {},
-                  backgroundColor: Colors.black
-              ),
+                  backgroundColor: Colors.black),
               Row(
                 children: <Widget>[
                   Expanded(
@@ -127,70 +122,60 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {},
-                        child: const Text(
-                          'Sign in as guest',
-                          style: TextStyle(
-                            color: ColorConstants.grey6,
-                            decoration: TextDecoration.underline,
-                            fontSize: 14
-                          )
-                        ),
+                        child: const Text('Sign in as guest',
+                            style: TextStyle(
+                                color: ColorConstants.grey6,
+                                decoration: TextDecoration.underline,
+                                fontSize: 14)),
                       ),
                     ),
                   )
                 ],
               ),
-            ]
-        ),
+            ]),
       );
     }
 
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: Scaffold(
-        resizeToAvoidBottomInset:false,
-        backgroundColor: ColorConstants.cyan,
-        appBar: headerNav(
-          title: title(),
-          leading: leading(),
-          titleSpacing: 0.0,
-          centerTitle: false
-        ),
-        body: CustomBody(
-          child: Column(
-          children: <Widget>[
-            Container(
-                padding: const EdgeInsets.fromLTRB(30, 30, 20, 30),
-                child: content()
-            ),
-            const Expanded(
-              child: Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                    child: Divider(
-                      height: 1,
-                      thickness: 1,
-                    ),
-                  )
+          resizeToAvoidBottomInset: false,
+          backgroundColor: ColorConstants.cyan,
+          appBar: headerNav(
+              title: title(),
+              leading: leading(),
+              titleSpacing: 0.0,
+              centerTitle: false),
+          body: CustomBody(
+              child: Column(
+            children: <Widget>[
+              Container(
+                  padding: const EdgeInsets.fromLTRB(30, 30, 20, 30),
+                  child: content()),
+              const Expanded(
+                child: Align(
+                    alignment: FractionalOffset.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                      child: Divider(
+                        height: 1,
+                        thickness: 1,
+                      ),
+                    )),
               ),
-            ),
-            Expanded(
-              child: Align(
+              Expanded(
+                  child: Align(
                 alignment: FractionalOffset.bottomCenter,
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                   child: RichText(
-                    text: TextSpan(
-                      children: <TextSpan>[
-                        const TextSpan(
+                      text: TextSpan(
+                    children: <TextSpan>[
+                      const TextSpan(
                           text: 'Already have an account?',
                           style: TextStyle(
-                              color: ColorConstants.black,
-                              fontSize: 14
-                          )
-                        ),
-                        TextSpan(
+                              color: ColorConstants.black, fontSize: 14)),
+                      TextSpan(
                           text: ' Sign In',
                           style: const TextStyle(
                             color: ColorConstants.cyan,
@@ -199,24 +184,21 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.push(context,
-                                MyRoute<dynamic>(
+                              Navigator.push(
+                                  context,
+                                  MyRoute<dynamic>(
                                     builder: (BuildContext context) =>
-                                      SignInPage(), routeSettings:
-                                const RouteSettings(name: '/signIn'),
-                                )
-                              );
-                            }
-                        ),
-                      ],
-                    )
-                  ),
+                                        SignInPage(),
+                                    routeSettings:
+                                        const RouteSettings(name: '/signIn'),
+                                  ));
+                            }),
+                    ],
+                  )),
                 ),
-              )
-            ),
-          ],
-        ))
-      ),
+              )),
+            ],
+          ))),
     );
   }
 }

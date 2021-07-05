@@ -18,26 +18,24 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: MaterialButton(
           height: 55,
-          shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           onPressed: onPressed,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              if (leadingIconPath.isNotEmpty) Padding(
-                padding: const EdgeInsets.only(right: 12),
-                child: Image.asset(
-                    leadingIconPath,
-                    width: 20,
-                    height: 20,
-                    fit:BoxFit.fill
-                ),
-              ) else const SizedBox(),
+              if (leadingIconPath.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: Image.asset(leadingIconPath,
+                      width: 20, height: 20, fit: BoxFit.fill),
+                )
+              else
+                const SizedBox(),
               Text(
                 text,
                 style: TextStyle(
@@ -48,7 +46,6 @@ class CustomButton extends StatelessWidget {
             ],
           ),
           color: backgroundColor,
-        )
-    );
+        ));
   }
 }

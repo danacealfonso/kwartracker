@@ -16,15 +16,15 @@ class _ProfilePageState extends State<ProfilePage> {
   String text = '...';
 
   static const MethodChannel platform =
-  MethodChannel('com.danace.kwartracker/pltChannel');
+      MethodChannel('com.danace.kwartracker/pltChannel');
 
   Future<void> klikBtn() async {
     String? textResult;
 
-    try{
+    try {
       final String result = await platform.invokeMethod('helloWorld');
       textResult = result;
-    }on PlatformException catch(e){
+    } on PlatformException catch (e) {
       print(e);
     }
 
@@ -38,20 +38,16 @@ class _ProfilePageState extends State<ProfilePage> {
     final List<Widget> actionButtons = <Widget>[
       TextButton(
           onPressed: null,
-          child: Image.asset(
-              'images/users/profile_pic.png',
-              width: 70,
-              height: 85,
-              fit:BoxFit.fill
-          )
-      )
+          child: Image.asset('images/users/profile_pic.png',
+              width: 70, height: 85, fit: BoxFit.fill))
     ];
 
     Widget title() {
       return const Text(
-          'My Profile',
-        );
+        'My Profile',
+      );
     }
+
     Widget content() {
       return Container(
           decoration: const BoxDecoration(
@@ -64,30 +60,29 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Container(
             padding: const EdgeInsets.all(10.0),
             child: Center(
-              child: Column(
-                children: <Widget>[
-                  Text(text, style: const TextStyle(fontSize: 20),),
-                  CustomButton(text: 'check', onPressed: () {
+                child: Column(
+              children: <Widget>[
+                Text(
+                  text,
+                  style: const TextStyle(fontSize: 20),
+                ),
+                CustomButton(
+                  text: 'check',
+                  onPressed: () {
                     klikBtn();
                   },
-                  ),
-                ],
-              )
-            ),
-          )
-      );
+                ),
+              ],
+            )),
+          ));
     }
 
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Scaffold(
           backgroundColor: const Color(0xFF03BED6),
-          appBar: headerNav(
-              title: title(),
-              action: actionButtons
-          ),
-          body: CustomBody(child: content())
-      ),
+          appBar: headerNav(title: title(), action: actionButtons),
+          body: CustomBody(child: content())),
     );
   }
 }

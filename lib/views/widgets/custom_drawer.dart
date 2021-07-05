@@ -19,7 +19,7 @@ import 'drawer_list_item.dart';
 
 class CustomDrawer extends StatelessWidget {
   CustomDrawer({Key? key, required this.drawerState, this.drawerStateChange})
-    : super(key: key);
+      : super(key: key);
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final DrawerState drawerState;
@@ -31,15 +31,13 @@ class CustomDrawer extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.fromLTRB(0,58,0,0),
+          padding: const EdgeInsets.fromLTRB(0, 58, 0, 0),
           child: Row(
             children: <Widget>[
               IconButton(
                 padding: const EdgeInsets.all(0.0),
                 iconSize: 80,
-                icon: Image.asset(
-                    'images/users/profile_pic.png'
-                ),
+                icon: Image.asset('images/users/profile_pic.png'),
                 onPressed: () {},
               ),
               const Text(
@@ -47,8 +45,7 @@ class CustomDrawer extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
-                    fontWeight: FontWeight.w500
-                ),
+                    fontWeight: FontWeight.w500),
               ),
             ],
           ),
@@ -68,11 +65,7 @@ class CustomDrawer extends StatelessWidget {
                     textStyle: TextStyle(
                         color: ColorConstants.cyan,
                         fontSize: 16,
-                        fontWeight: FontWeight.w500
-                    )
-                )
-            )
-        ),
+                        fontWeight: FontWeight.w500)))),
         GestureDetector(
           onTap: () {
             drawerStateChange!(DrawerState.close);
@@ -116,7 +109,7 @@ class CustomDrawer extends StatelessWidget {
         GestureDetector(
           onTap: () {
             drawerStateChange!(DrawerState.close);
-            cWidgets.navPush(SettingsPage(),'/settings');
+            cWidgets.navPush(SettingsPage(), '/settings');
           },
           child: const DrawerListItem(
             title: 'Settings',
@@ -127,23 +120,24 @@ class CustomDrawer extends StatelessWidget {
           child: Align(
               alignment: FractionalOffset.bottomCenter,
               child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0,0,0,40),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
                   child: GestureDetector(
                     onTap: () {
                       _auth.signOut();
                       globals.isLoggedIn = false;
-                      Navigator.pushAndRemoveUntil(context, MyRoute<dynamic>(
-                        builder: (BuildContext context) => SignInPage(), routeSettings:
-                        const RouteSettings(name: '/signIn'),
-                      ), (Route<dynamic> route) => false);
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MyRoute<dynamic>(
+                            builder: (BuildContext context) => SignInPage(),
+                            routeSettings: const RouteSettings(name: '/signIn'),
+                          ),
+                          (Route<dynamic> route) => false);
                     },
                     child: const DrawerListItem(
                       title: 'Logout',
                       leadingIconPath: 'images/icons/ic_logout.png',
                     ),
-                  )
-              )
-          ),
+                  ))),
         ),
       ],
     );
@@ -152,15 +146,14 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      width: (DrawerState.open == drawerState) ? 300: 0,
+      width: (DrawerState.open == drawerState) ? 300 : 0,
       duration: const Duration(seconds: 1),
       curve: Curves.fastOutSlowIn,
       child: Drawer(
         child: Container(
             color: ColorConstants.cyan,
             padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-            child: drawerList(context)
-        ),
+            child: drawerList(context)),
       ),
     );
   }
@@ -169,18 +162,22 @@ class CustomDrawer extends StatelessWidget {
 abstract class CustomWidgets {
   void navPush(dynamic page, String name);
 }
-enum DrawerState { open, close, }
+
+enum DrawerState {
+  open,
+  close,
+}
+
 class CWidgets extends CustomWidgets {
   CWidgets(this.context);
   final BuildContext context;
 
   @override
   void navPush(dynamic page, String name) {
-    Navigator.push(context,
-      MyRoute<dynamic>(
-        builder: (BuildContext context) => page,
-        routeSettings:  RouteSettings(name: name)
-      )
-    );
+    Navigator.push(
+        context,
+        MyRoute<dynamic>(
+            builder: (BuildContext context) => page,
+            routeSettings: RouteSettings(name: name)));
   }
 }

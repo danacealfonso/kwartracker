@@ -20,16 +20,16 @@ class TransactionChooseWalletPage extends StatefulWidget {
       _TransactionChooseWalletPagePageState();
 }
 
-class _TransactionChooseWalletPagePageState extends
-  State<TransactionChooseWalletPage> {
+class _TransactionChooseWalletPagePageState
+    extends State<TransactionChooseWalletPage> {
   String fWallet = '';
   String fWalletID = '';
   List<PopupMenuEntry<dynamic>> walletsList = <PopupMenuEntry<dynamic>>[];
 
   List<Widget> actionButtons = <Widget>[
     TextButton(
-        onPressed: () {  },
-        child: const Text(''),
+      onPressed: () {},
+      child: const Text(''),
     ),
   ];
 
@@ -47,66 +47,59 @@ class _TransactionChooseWalletPagePageState extends
     }
 
     walletsList = Provider.of<FirestoreData>(context)
-        .walletsList.map((Map<String, dynamic> item) {
+        .walletsList
+        .map((Map<String, dynamic> item) {
       return PopupMenuItem<dynamic>(
           child: Text(item['name']),
-          value: <dynamic>[item['id'], item['name']]
-      );
+          value: <dynamic>[item['id'], item['name']]);
     }).toList();
 
     Widget content() {
       return Container(
-        padding: const EdgeInsets.fromLTRB(30,0,30,30),
+        padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            CustomDropdown(
-                label: 'Which wallet do you want it to add?',
-                hintText: 'Select wallet to add',
-                text: fWallet,
-                onChanged: (dynamic value) {
-                  if(value!=null) {
-                    setState(() {
-                    fWallet = value[1];
-                    fWalletID = value[0];
-                  });
-                  }
-                },
-                items: walletsList
-            ),
-            Container(
-              width: double.infinity,
-              child: CustomButton(
-                  text: 'Next',
-                  backgroundColor: ColorConstants.cyan,
-                  onPressed: () {
-                    Navigator.push(context,
-                      MyRoute<dynamic>(
-                        builder: (BuildContext context) =>
-                            TransactionAddDetailsPage(fWalletID),
-                        routeSettings: const RouteSettings(name:
-                        '/transactionAddDetailsPage'),
-                      )
-                    );
-                  }
+            children: <Widget>[
+              CustomDropdown(
+                  label: 'Which wallet do you want it to add?',
+                  hintText: 'Select wallet to add',
+                  text: fWallet,
+                  onChanged: (dynamic value) {
+                    if (value != null) {
+                      setState(() {
+                        fWallet = value[1];
+                        fWalletID = value[0];
+                      });
+                    }
+                  },
+                  items: walletsList),
+              Container(
+                width: double.infinity,
+                child: CustomButton(
+                    text: 'Next',
+                    backgroundColor: ColorConstants.cyan,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MyRoute<dynamic>(
+                            builder: (BuildContext context) =>
+                                TransactionAddDetailsPage(fWalletID),
+                            routeSettings: const RouteSettings(
+                                name: '/transactionAddDetailsPage'),
+                          ));
+                    }),
               ),
-            ),
-          ]
-        ),
-        );
+            ]),
+      );
     }
 
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Scaffold(
-        backgroundColor: const Color(0xFF03BED6),
-        appBar: headerNav(
-          title: title(),
-          action: actionButtons
-        ),
-        body: CustomBody(child: content())
-      ),
+          backgroundColor: const Color(0xFF03BED6),
+          appBar: headerNav(title: title(), action: actionButtons),
+          body: CustomBody(child: content())),
     );
   }
 }

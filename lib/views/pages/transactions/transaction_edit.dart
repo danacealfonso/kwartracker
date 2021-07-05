@@ -24,7 +24,7 @@ import '../../widgets/header_nav.dart';
 class TransactionEditPage extends StatefulWidget {
   const TransactionEditPage(this.transactionID);
   final String? transactionID;
-  
+
   @override
   _TransactionEditPageState createState() => _TransactionEditPageState();
 }
@@ -48,17 +48,21 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
   TextEditingController conAmount = TextEditingController();
   TextEditingController conPersonName = TextEditingController();
 
-  bool validateFields () {
+  bool validateFields() {
     bool validate = true;
-    if(fWallet.isEmpty==true) {
+    if (fWallet.isEmpty == true) {
       validate = false;
-    }if(conAmount.text.isEmpty==true) {
+    }
+    if (conAmount.text.isEmpty == true) {
       validate = false;
-    }if(fType.isEmpty==true) {
+    }
+    if (fType.isEmpty == true) {
       validate = false;
-    }if(fCategory.isEmpty==true) {
+    }
+    if (fCategory.isEmpty == true) {
       validate = false;
-    }if(widget.transactionID == null) {
+    }
+    if (widget.transactionID == null) {
       validate = false;
     }
 
@@ -87,8 +91,7 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
   }
 
   Future<void> selectFile() async {
-    final FilePickerResult? result = await FilePicker
-        .platform.pickFiles(
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
       type: FileType.image,
     );
@@ -114,13 +117,13 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
         fPhoto: fPhoto,
         amount: double.parse(conAmount.text),
       );
-
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar( const SnackBar(
-        content: Text('Please fill up all the fields.'),
-        duration: Duration(milliseconds: 2000),
-      ), );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please fill up all the fields.'),
+          duration: Duration(milliseconds: 2000),
+        ),
+      );
     }
   }
 
@@ -128,11 +131,11 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
   void initState() {
     super.initState();
 
-    Provider.of<FirestoreData>(context,listen: false)
-        .getTransaction(widget.transactionID!).then((
-        Map<String, dynamic> value) {
-      fWallet = (value['walletName']!=null)? value['walletName']: '';
-      fWalletID = (value['wallet']!=null)? value['wallet']: '';
+    Provider.of<FirestoreData>(context, listen: false)
+        .getTransaction(widget.transactionID!)
+        .then((Map<String, dynamic> value) {
+      fWallet = (value['walletName'] != null) ? value['walletName'] : '';
+      fWalletID = (value['wallet'] != null) ? value['wallet'] : '';
       conAmount.text = value['amount'].toString();
       fType = value['type'];
       fName = value['name'];
@@ -140,17 +143,16 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
       fCategory = value['categoryName'];
       fPhoto = value['photo'];
       conPersonName.text = value['spentPerson'];
-      if(value['fDate'] != null) {
+      if (value['fDate'] != null) {
         final Timestamp t = value['fDate'];
         _date = t.toDate();
       }
 
       if (mounted) {
         setState(() {
-        transaction = value;
-      });
+          transaction = value;
+        });
       }
-
     });
   }
 
@@ -162,12 +164,10 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
       TextButton(
         onPressed: () {
           if (enableSaveButton == true) {
-            confirmationDialog(context,
-              'Are you sure you want to update this?',
+            confirmationDialog(context, 'Are you sure you want to update this?',
                 () {
-                saveAndUpload();
-              }
-            );
+              saveAndUpload();
+            });
           }
         },
         child: Padding(
@@ -175,172 +175,160 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
           child: Text('Save',
               style: TextStyle(
                   fontSize: 16,
-                  color: (enableSaveButton == true)? Colors.white
-                      : ColorConstants.grey2
-              )
-          ),
+                  color: (enableSaveButton == true)
+                      ? Colors.white
+                      : ColorConstants.grey2)),
         ),
       ),
     ];
 
     Widget title() {
       return const Text(
-          'Edit Transaction',
-        );
+        'Edit Transaction',
+      );
     }
 
     Widget content() {
-      return Consumer<FirestoreData>(
-          builder: (BuildContext context, FirestoreData firestoreData, Widget? child) {
-            categoryList = firestoreData.categoriesList.map((dynamic item) {
-              return PopupMenuItem<dynamic>(
-                  child: Container(width: 500, child: Text(item['name'])),
-                  value: <dynamic>[item['id'], item['name']]
-              );
-            }).toList();
+      return Consumer<FirestoreData>(builder:
+          (BuildContext context, FirestoreData firestoreData, Widget? child) {
+        categoryList = firestoreData.categoriesList.map((dynamic item) {
+          return PopupMenuItem<dynamic>(
+              child: Container(width: 500, child: Text(item['name'])),
+              value: <dynamic>[item['id'], item['name']]);
+        }).toList();
 
-            walletsList = firestoreData.walletsList.map((dynamic item) {
-              return PopupMenuItem<dynamic>(
-                child: Text(item['name']),
-                value: <dynamic>[item['id'], item['name']]
-              );
-            }).toList();
+        walletsList = firestoreData.walletsList.map((dynamic item) {
+          return PopupMenuItem<dynamic>(
+              child: Text(item['name']),
+              value: <dynamic>[item['id'], item['name']]);
+        }).toList();
 
-            return Container(
-              margin: const EdgeInsets.only(top: 30),
-              child: ListView(
-                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
-                  children: <Widget>[
-                    CustomDropdown(
-                        label: 'Which wallet do you want it to add?',
-                        hintText: 'Select wallet to add',
-                        text: fWallet,
-                        onChanged: (dynamic value) {
-                          if(value != null) {
-                            setState(() {
-                            fWallet = value[1];
-                            fWalletID = value[0];
-                          });
-                          }
-                        },
-                        items: walletsList
-                    ),
-                    CustomTextField(
-                      hintText: 'Enter transaction amount',
-                      label: 'Transaction amount',
-                      controller: conAmount,
+        return Container(
+          margin: const EdgeInsets.only(top: 30),
+          child: ListView(
+              padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
+              children: <Widget>[
+                CustomDropdown(
+                    label: 'Which wallet do you want it to add?',
+                    hintText: 'Select wallet to add',
+                    text: fWallet,
+                    onChanged: (dynamic value) {
+                      if (value != null) {
+                        setState(() {
+                          fWallet = value[1];
+                          fWalletID = value[0];
+                        });
+                      }
+                    },
+                    items: walletsList),
+                CustomTextField(
+                  hintText: 'Enter transaction amount',
+                  label: 'Transaction amount',
+                  controller: conAmount,
+                  onChanged: (dynamic value) {
+                    fAmount = value;
+                  },
+                ),
+                CustomDropdown(
+                    label: 'Transaction type',
+                    hintText: 'Select transaction type',
+                    text: fType,
+                    onChanged: (dynamic value) {
+                      if (value != null) {
+                        setState(() {
+                          fType = value[1];
+                        });
+                      }
+                    },
+                    items: const <PopupMenuEntry<dynamic>>[
+                      PopupMenuItem<dynamic>(
+                          child: Text('Income'),
+                          value: <String>['Income', 'Income']),
+                      PopupMenuItem<dynamic>(
+                          child: Text('Expense'),
+                          value: <String>['Expense', 'Expense']),
+                    ]),
+                CustomDropdown(
+                    label: 'Category',
+                    hintText: 'Select Category',
+                    text: fCategory.toString(),
+                    onChanged: (dynamic value) {
+                      if (value != null) {
+                        setState(() {
+                          fCategory = value[1];
+                          fCategoryID = value[0];
+                        });
+                      }
+                    },
+                    items: categoryList),
+                GestureDetector(
+                  onTapDown: (TapDownDetails details) {
+                    _selectDate.call();
+                  },
+                  child: DatePickerTextField(
+                      hintText: 'Select Date',
+                      label: 'Select date',
+                      text: _date.toString(),
                       onChanged: (dynamic value) {
-                        fAmount = value;
+                        _date = value;
                       },
-                    ),
-                    CustomDropdown(
-                        label: 'Transaction type',
-                        hintText: 'Select transaction type',
-                        text: fType,
-                        onChanged: (dynamic value) {
-                          if (value != null ) {
-                            setState(() {
-                              fType = value[1];
-                            });
-                          }
-                        },
-                        items: const <PopupMenuEntry<dynamic>>[
-                          PopupMenuItem<dynamic>(
-                            child: Text('Income'),
-                            value: <String>['Income','Income']),
-                          PopupMenuItem<dynamic>(
-                            child:  Text('Expense'),
-                            value: <String>['Expense','Expense']),
-                        ]
-                    ),
-                    CustomDropdown(
-                        label: 'Category',
-                        hintText: 'Select Category',
-                        text: fCategory.toString(),
-                        onChanged: (dynamic value) {
-                          if (value != null ) {
-                            setState(() {
-                              fCategory = value[1];
-                              fCategoryID = value[0];
-                            });
-                          }
-                        },
-                        items: categoryList
-                    ),
-                    GestureDetector(
-                      onTapDown: (TapDownDetails details) {
-                        _selectDate.call();
-                      },
-                      child: DatePickerTextField(
-                          hintText: 'Select Date',
-                          label: 'Select date',
-                          text: _date.toString(),
-                          onChanged: (dynamic value) {
-                            _date = value;
-                          },
-                          items: const
-                          <PopupMenuEntry<PopupMenuItem<dynamic>>>[]
-                      ),
-                    ),
-                    CustomTextField(
-                      label: 'Spent with this person',
-                      hintText: 'Enter name of person',
-                      controller: conPersonName,
-                      onChanged: (dynamic value) {
-                        fPersonName = value;
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            child: const Text(
-                              'Upload photo',
-                              style: TextStyle(
-                                  color: Color(0xFFBBC3C9),
-                                  fontSize: 12
-                              ),
-                            ),
-                          )
-                      ),
-                    ),
-                    if (transaction['photoURL'] != null) Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 190,
-                        decoration: BoxDecoration(
-                          color: ColorConstants.grey,
-                          borderRadius: BorderRadius.circular(16),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(transaction['photoURL']!),
-                          ),
-                        )
-                    ),
-                    Align(
+                      items: const <PopupMenuEntry<PopupMenuItem<dynamic>>>[]),
+                ),
+                CustomTextField(
+                  label: 'Spent with this person',
+                  hintText: 'Enter name of person',
+                  controller: conPersonName,
+                  onChanged: (dynamic value) {
+                    fPersonName = value;
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  child: Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
-                        width: 100,
-                        child: CustomButton(
-                            text: 'Replace',
-                            backgroundColor: ColorConstants.grey3,
-                            onPressed: () { selectFile(); }
+                        child: const Text(
+                          'Upload photo',
+                          style:
+                              TextStyle(color: Color(0xFFBBC3C9), fontSize: 12),
                         ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(fileName, style:
-                      const TextStyle(fontSize: 12,
+                      )),
+                ),
+                if (transaction['photoURL'] != null)
+                  Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 190,
+                      decoration: BoxDecoration(
+                        color: ColorConstants.grey,
+                        borderRadius: BorderRadius.circular(16),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(transaction['photoURL']!),
+                        ),
+                      )),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    width: 100,
+                    child: CustomButton(
+                        text: 'Replace',
+                        backgroundColor: ColorConstants.grey3,
+                        onPressed: () {
+                          selectFile();
+                        }),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(fileName,
+                      style: const TextStyle(
+                          fontSize: 12,
                           fontStyle: FontStyle.italic,
-                          color: ColorConstants.grey3)
-                      ),
-                    ),
-                  ]
-              ),
-            );
-          }
-      );
+                          color: ColorConstants.grey3)),
+                ),
+              ]),
+        );
+      });
     }
 
     return Container(
@@ -348,24 +336,20 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
       child: ModalProgressHUD(
         inAsyncCall: Provider.of<FirestoreData>(context).showSpinner,
         child: Scaffold(
-          backgroundColor: const Color(0xFF03BED6),
-          appBar: headerNav(
-              title: title(),
-              action: actionButtons
-          ),
-          body: CustomBody(child: Container(
-            decoration: const BoxDecoration(
-              color: Color(0xFFF1F3F6),
-              borderRadius: BorderRadius.only(
-              topRight: Radius.circular(50),
-              topLeft: Radius.circular(50),
-              ),
-            ),
-            child: content()
-            ),
-            hasScrollBody: true,
-          )
-        ),
+            backgroundColor: const Color(0xFF03BED6),
+            appBar: headerNav(title: title(), action: actionButtons),
+            body: CustomBody(
+              child: Container(
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFF1F3F6),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(50),
+                      topLeft: Radius.circular(50),
+                    ),
+                  ),
+                  child: content()),
+              hasScrollBody: true,
+            )),
       ),
     );
   }

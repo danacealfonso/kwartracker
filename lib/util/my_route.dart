@@ -8,10 +8,10 @@ class MyRoute<T> extends MaterialPageRoute<T> {
     bool maintainState = false,
     bool fullscreenDialog = false,
   }) : super(
-      builder: builder,
-      maintainState: maintainState,
-      settings: routeSettings,
-      fullscreenDialog: fullscreenDialog);
+            builder: builder,
+            maintainState: maintainState,
+            settings: routeSettings,
+            fullscreenDialog: fullscreenDialog);
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 0);

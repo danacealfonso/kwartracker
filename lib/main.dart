@@ -35,28 +35,27 @@ class KwartrackerApp extends StatelessWidget {
       create: (_) => FirestoreData(),
       child: MaterialApp(
         title: 'Kwartracker App',
-        initialRoute: (globals.isLoggedIn) ? '/': '/signIn',
+        initialRoute: (globals.isLoggedIn) ? '/' : '/signIn',
         routes: <String, Widget Function(BuildContext)>{
           '/': (BuildContext context) => HomePage(),
           '/signIn': (BuildContext context) => SignInPage(),
           '/signUp': (BuildContext context) => SignUpPage(),
           '/transactions': (BuildContext context) => TransactionsPage(),
-          '/transactionChooseWallet': (BuildContext context) => TransactionChooseWalletPage(),
-          '/transactionAddDetails': (BuildContext context) => const TransactionAddDetailsPage(null),
+          '/transactionChooseWallet': (BuildContext context) =>
+              TransactionChooseWalletPage(),
+          '/transactionAddDetails': (BuildContext context) =>
+              const TransactionAddDetailsPage(null),
           '/wallets': (BuildContext context) => const WalletsPage(),
           '/walletSave': (BuildContext context) => const WalletSavePage(),
-          '/transactionDetailsPage': (BuildContext context) => const TransactionDetailsPage(null),
+          '/transactionDetailsPage': (BuildContext context) =>
+              const TransactionDetailsPage(null),
         },
         debugShowCheckedModeBanner: false,
-
         theme: ThemeData(
           primaryColor: ColorConstants.cyan,
           accentColor: const Color(0xFF03BED6),
-          primaryTextTheme: const TextTheme(
-              headline6: TextStyle(
-                  color: Colors.white
-              )
-          ),
+          primaryTextTheme:
+              const TextTheme(headline6: TextStyle(color: Colors.white)),
         ),
       ),
     );
