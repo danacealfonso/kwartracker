@@ -1,8 +1,11 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/util/colorConstants.dart';
 
-class CProgressBar extends StatelessWidget {
-  CProgressBar({
+// Project imports:
+import 'package:kwartracker/util/color_constants.dart';
+
+class CustomProgressBar extends StatelessWidget {
+  const CustomProgressBar({
     required this.max,
     required this.current,
     this.backgroundColor = ColorConstants.red,
@@ -16,11 +19,11 @@ class CProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      builder: (_, boxConstraints) {
-        var x = boxConstraints.maxWidth;
-        var percent = (current / max) * x;
+      builder: (_, BoxConstraints boxConstraints) {
+        final double x = boxConstraints.maxWidth;
+        final double percent = (current / max) * x;
         return Stack(
-          children: [
+          children: <Widget>[
             Container(
               width: x,
               height: 10,
@@ -30,7 +33,7 @@ class CProgressBar extends StatelessWidget {
               ),
             ),
             AnimatedContainer(
-              duration: Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 500),
               width: percent,
               height: 10,
               decoration: BoxDecoration(

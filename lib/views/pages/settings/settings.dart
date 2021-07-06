@@ -1,10 +1,12 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:kwartracker/util/colorConstants.dart';
-import 'package:kwartracker/util/myRoute.dart';
-import 'package:kwartracker/views/pages/transactions/transactionChooseWallet.dart';
-import 'package:kwartracker/views/widgets/cBody.dart';
 
-import '../../widgets/headerNav.dart';
+// Project imports:
+import 'package:kwartracker/util/color_constants.dart';
+import 'package:kwartracker/util/my_route.dart';
+import 'package:kwartracker/views/pages/transactions/transaction_choose_wallet.dart';
+import 'package:kwartracker/views/widgets/custom_body.dart';
+import '../../widgets/header_nav.dart';
 import 'category/categories.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -15,51 +17,48 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    List<Widget> actionButtons = [];
+    final List<Widget> actionButtons = <Widget>[];
 
     Widget title() {
-      return Text(
-          "Settings",
-        );
+      return const Text('Settings');
     }
+
     Widget content() {
       return Container(
         padding: const EdgeInsets.all(10.0),
         child: Column(
-          children: [
+          children: <Widget>[
             MaterialButton(
-              padding: EdgeInsets.only(left: 20,right: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               height: 55,
               shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(15)),
-              onPressed: (){
-                Navigator.push(context,
-                  MyRoute(
-                    builder: (context) => TransactionChooseWalletPage(),
-                    routeSettings:
-                    RouteSettings(name: "/transactionAddWallet"),
-                  )
-                );
+                  borderRadius: BorderRadius.circular(15)),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MyRoute<dynamic>(
+                      builder: (BuildContext context) =>
+                          TransactionChooseWalletPage(),
+                      routeSettings:
+                          const RouteSettings(name: '/transactionAddWallet'),
+                    ));
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
+                children: <Widget>[
+                  const Expanded(
                     child: Text(
-                      "Login and Security",
+                      'Login and Security',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.white,
                       ),
                     ),
-                  ),RotatedBox(
+                  ),
+                  RotatedBox(
                     quarterTurns: 1,
-                    child: Image.asset(
-                        'images/icons/ic_arrow_up.png',
-                        width: 15,
-                        height: 10,
-                        fit:BoxFit.fill
-                    ),
+                    child: Image.asset('images/icons/ic_arrow_up.png',
+                        width: 15, height: 10, fit: BoxFit.fill),
                   )
                 ],
               ),
@@ -68,38 +67,35 @@ class _SettingsPageState extends State<SettingsPage> {
             Padding(
               padding: const EdgeInsets.only(top: 14),
               child: MaterialButton(
-                padding: EdgeInsets.only(left: 20,right: 20),
+                padding: const EdgeInsets.only(left: 20, right: 20),
                 height: 55,
                 shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(15)),
-                onPressed: (){
-                  Navigator.push(context,
-                    MyRoute(
-                      builder: (context) => CategoriesPage(),
-                      routeSettings:
-                      RouteSettings(name: "/transactionAddWallet"),
-                    )
-                  );
+                    borderRadius: BorderRadius.circular(15)),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MyRoute<dynamic>(
+                        builder: (BuildContext context) => CategoriesPage(),
+                        routeSettings:
+                            const RouteSettings(name: '/transactionAddWallet'),
+                      ));
                 },
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
+                  children: <Widget>[
+                    const Expanded(
                       child: Text(
-                        "Categories",
+                        'Categories',
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.white,
                         ),
                       ),
-                    ),RotatedBox(
+                    ),
+                    RotatedBox(
                       quarterTurns: 1,
-                      child: Image.asset(
-                          'images/icons/ic_arrow_up.png',
-                          width: 15,
-                          height: 10,
-                          fit:BoxFit.fill
-                      ),
+                      child: Image.asset('images/icons/ic_arrow_up.png',
+                          width: 15, height: 10, fit: BoxFit.fill),
                     )
                   ],
                 ),
@@ -114,27 +110,21 @@ class _SettingsPageState extends State<SettingsPage> {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Scaffold(
-          backgroundColor: Color(0xFF03BED6),
-          appBar: headerNav(
-              title: title(),
-              action: actionButtons
-          ),
-          body: CBody(child: Container(
-              decoration: BoxDecoration(
-                color: Color(0xFFF1F3F6),
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(50),
-                  topLeft: Radius.circular(50),
-                ),
-              ),
+          backgroundColor: const Color(0xFF03BED6),
+          appBar: headerNav(title: title(), action: actionButtons),
+          body: CustomBody(
               child: Container(
-                padding: const EdgeInsets.all(10.0),
-                child: Center(
-                    child:content()
-                ),
-              )
-          ))
-      ),
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFF1F3F6),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(50),
+                      topLeft: Radius.circular(50),
+                    ),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Center(child: content()),
+                  )))),
     );
   }
 }

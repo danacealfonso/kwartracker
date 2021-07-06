@@ -1,4 +1,7 @@
+// Dart imports:
 import 'dart:ui';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -41,7 +44,9 @@ class _RenderInnerShadow extends RenderProxyBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    if (child == null) return;
+    if (child == null) {
+      return;
+    }
 
     final Rect rectOuter = offset & size;
 
