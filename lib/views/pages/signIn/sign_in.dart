@@ -44,12 +44,12 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
 
     Widget content() {
       final TextEditingController controller = TextEditingController();
-      controller.text = 'test1234@gmail.com';
-      email = 'test1234@gmail.com';
+      controller.text = '';
+      email = '';
 
       final TextEditingController controllerPass = TextEditingController();
-      controllerPass.text = 'test123';
-      password = 'test123';
+      controllerPass.text = '';
+      password = '';
 
       return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -75,7 +75,6 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
             CustomTextField(
               hintText: 'Enter password',
               label: 'Password',
-              initialValue: 'test123',
               controller: controllerPass,
               obscureText: true,
               onChanged: (dynamic value) {
