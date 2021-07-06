@@ -100,38 +100,6 @@ class _LoginPageState extends State<SignUpPage> with TickerProviderStateMixin {
                       print(e);
                     }
                   }),
-              const Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'or',
-                  style: TextStyle(color: Color(0xFF414141), fontSize: 14),
-                ),
-              ),
-              CustomButton(
-                  text: 'Sign up with Google',
-                  onPressed: () {},
-                  backgroundColor: ColorConstants.blue),
-              CustomButton(
-                  text: 'Sign up with Apple',
-                  onPressed: () {},
-                  backgroundColor: Colors.black),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: const Text('Sign in as guest',
-                            style: TextStyle(
-                                color: ColorConstants.grey6,
-                                decoration: TextDecoration.underline,
-                                fontSize: 14)),
-                      ),
-                    ),
-                  )
-                ],
-              ),
             ]),
       );
     }
