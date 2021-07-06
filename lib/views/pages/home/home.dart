@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -35,6 +36,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   DrawerState drawerState = DrawerState.close;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  List<Widget> imageSliders = <Widget>[];
   String fDate = '';
   String fDateID = '';
 
@@ -67,7 +69,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       ),
     ]);
   }
-
   Widget button(String iconPath, VoidCallback onPressed) {
     return Container(
       padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -86,7 +87,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       ),
     );
   }
-
   Widget leading() {
     return IconButton(
       padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -102,7 +102,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
     );
   }
-
   List<Widget> actionButtons(BuildContext context) => <Widget>[
         TextButton(
             onPressed: () {
@@ -116,7 +115,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             child: Image.asset('images/users/profile_pic.png',
                 width: 70, height: 85, fit: BoxFit.fill))
       ];
-
   Widget pageDefault(BuildContext context, StateSetter setState) {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
@@ -185,36 +183,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               ))),
     );
   }
-
   Widget content() {
     return Consumer<FirestoreData>(builder:
-        (BuildContext context, FirestoreData firestoreData, Widget? child) {
-      final List<Widget> imageSliders =
-          firestoreData.walletsList.map((Map<String, dynamic> item) {
-        final int index = firestoreData.walletsList.indexOf(item);
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context,
-                MyRoute<dynamic>(
-                    builder: (BuildContext context) => WalletsPage(
-                          cardIndex: index,
-                        ),
-                    routeSettings: const RouteSettings(name: '/wallets')));
-          },
-          child: Container(
-            child: CardWallets(
-              txtTypeWallet: item['type'],
-              txtWallet: item['name'],
-              availableBalance: item['amount'],
-              cardSize: CardSize.small,
-              cardColor: item['color'],
-              currencyID: item['currencyID'],
-            ),
-          ),
-        );
-      }).toList();
-
+      (BuildContext context, FirestoreData firestoreData, Widget? child) {
       return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <
           Widget>[
         Container(
@@ -348,7 +319,33 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(25, 8, 25, 10),
             scrollDirection: Axis.horizontal,
-            children: imageSliders,
+            children: firestoreData.walletsList.map((Map<String, dynamic> item) {
+              final int index = firestoreData.walletsList.indexOf(item);
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MyRoute<dynamic>(
+                          builder: (BuildContext context) => WalletsPage(
+                            cardIndex: index,
+                          ),
+                          routeSettings: const RouteSettings(name: '/wallets')));
+                },
+                child: ModalProgressHUD(
+                  inAsyncCall: firestoreData.showSpinner,
+                  child: Container(
+                    child: CardWallets(
+                      txtTypeWallet: item['type'],
+                      txtWallet: item['name'],
+                      availableBalance: item['amount'],
+                      cardSize: CardSize.small,
+                      cardColor: item['color'],
+                      currencyID: item['currencyID'],
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
           ),
         ),
         Container(
@@ -393,6 +390,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ),
       ]);
     });
+  }
+
+  @override
+  void initState() {
+    getCurrentUser();
+    super.initState();
   }
 
   @override

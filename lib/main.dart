@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -35,7 +36,8 @@ class KwartrackerApp extends StatelessWidget {
       create: (_) => FirestoreData(),
       child: MaterialApp(
         title: 'Kwartracker App',
-        initialRoute: (globals.isLoggedIn) ? '/' : '/signIn',
+        initialRoute:
+            (FirebaseAuth.instance.currentUser != null) ? '/' : '/signIn',
         routes: <String, Widget Function(BuildContext)>{
           '/': (BuildContext context) => HomePage(),
           '/signIn': (BuildContext context) => SignInPage(),

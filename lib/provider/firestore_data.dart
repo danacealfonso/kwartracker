@@ -186,11 +186,28 @@ class FirestoreData extends ChangeNotifier {
   }
 
   Future<List<Map<String, dynamic>>> getWallets() async {
+    isLoading = true;
+    if (categoriesList.isEmpty) {
+      await getCurrencies();
+    }
+    if (walletTypeData.isEmpty) {
+      await getWalletType();
+    }
+
+    colorData.clear();
+    for (final CardColor cColor in CardColor.values) {
+      final String cColorLast = cColor.toString().split('.').last;
+      colorData.add(<String, dynamic>{
+        'color': cColorLast,
+        'cardColor': cColor,
+      });
+    }
+
     await _fireStore
         .collection('wallets')
         .where('uID', isEqualTo: _auth.currentUser!.uid)
         .get()
-        .then((QuerySnapshot<Map<String, dynamic>> snapshot) {
+        .then((QuerySnapshot<Map<String, dynamic>> snapshot) async {
       walletsList.clear();
       walletIDs.clear();
       overallBalance.clear();
@@ -242,12 +259,55 @@ class FirestoreData extends ChangeNotifier {
         }
       }
     });
-
+    await loadWalletAmount();
+    isLoading = false;
+    notifyListeners();
     return walletsList;
+  }
+
+  Future<void> loadWalletAmount() async {
+    await _fireStore
+        .collection('transactions')
+        .where('uID', isEqualTo: uID)
+        .get()
+        .then((QuerySnapshot<Map<String, dynamic>> documentSnapshot) {
+      if (documentSnapshot.docs.isNotEmpty) {
+        for (final QueryDocumentSnapshot<Map<String, dynamic>> transaction
+            in documentSnapshot.docs) {
+          final String walletTransactionID = transaction.data()['wallet'];
+          final String transactionType = transaction.data()['type'];
+          final double amount =
+              double.parse(transaction.data()['amount'].toString());
+
+          final int walletsListIndex = walletsList.indexWhere(
+              (Map<String, dynamic> element) =>
+                  element['id'] == walletTransactionID);
+
+          if (transactionType.toLowerCase() == 'income') {
+            walletsList[walletsListIndex]['amount'] += amount;
+          } else {
+            walletsList[walletsListIndex]['amount'] -= amount;
+          }
+        }
+      }
+    });
   }
 
   Future<List<Map<String, dynamic>>?> getTransactionList(
       {String walletID = '', required BuildContext context}) async {
+    isLoading = true;
+    await getWallets();
+    if (transactionList.isEmpty) {
+      _lastVisible = null;
+    }
+    uID ??= _auth.currentUser!.uid;
+    if (categoriesList.isEmpty) {
+      await getCategories();
+    }
+    if (walletsList.isEmpty) {
+      await getWallets();
+    }
+
     Query<Map<String, dynamic>> query;
     if (_lastVisible == null) {
       query = (walletID.isEmpty)
@@ -336,7 +396,6 @@ class FirestoreData extends ChangeNotifier {
     });
     isLoading = false;
     notifyListeners();
-
     return transactionList;
   }
 
@@ -347,46 +406,8 @@ class FirestoreData extends ChangeNotifier {
       if (transactionList.isEmpty) {
         _lastVisible = null;
       }
-
-      for (final CardColor cColor in CardColor.values) {
-        final String cColorLast = cColor.toString().split('.').last;
-        colorData.add(<String, dynamic>{
-          'color': cColorLast,
-          'cardColor': cColor,
-        });
-      }
-
-      await getCategories();
-      await getWalletType();
-      await getCurrencies();
-      await getWallets();
       await getTransactionList(walletID: '', context: context);
-
-      await _fireStore
-          .collection('transactions')
-          .where('uID', isEqualTo: uID)
-          .get()
-          .then((QuerySnapshot<Map<String, dynamic>> documentSnapshot) {
-        if (documentSnapshot.docs.isNotEmpty) {
-          for (final QueryDocumentSnapshot<Map<String, dynamic>> transaction
-              in documentSnapshot.docs) {
-            final String walletTransactionID = transaction.data()['wallet'];
-            final String transactionType = transaction.data()['type'];
-            final double amount =
-                double.parse(transaction.data()['amount'].toString());
-
-            final int walletsListIndex = walletsList.indexWhere(
-                (Map<String, dynamic> element) =>
-                    element['id'] == walletTransactionID);
-
-            if (transactionType.toLowerCase() == 'income') {
-              walletsList[walletsListIndex]['amount'] += amount;
-            } else {
-              walletsList[walletsListIndex]['amount'] -= amount;
-            }
-          }
-        }
-      });
+      notifyListeners();
     }
   }
 

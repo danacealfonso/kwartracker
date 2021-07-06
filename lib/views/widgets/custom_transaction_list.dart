@@ -30,6 +30,7 @@ class CustomTransactionList extends StatefulWidget {
 class _CustomTransactionListState extends State<CustomTransactionList> {
   ScrollController? _scrollController;
   bool goToTopButton = false;
+
   @override
   void initState() {
     Provider.of<FirestoreData>(context, listen: false).transactionList.clear();
@@ -56,13 +57,13 @@ class _CustomTransactionListState extends State<CustomTransactionList> {
                       });
                     }
                   } else {
+                    firestoreData.getTransactionList(
+                        walletID: widget.walletID, context: context);
                     if (mounted) {
                       setState(() {
                         firestoreData.isLoading = true;
                       });
                     }
-                    firestoreData.getTransactionList(
-                        walletID: widget.walletID, context: context);
                   }
                 }
                 if (metrics.pixels >= 10) {
