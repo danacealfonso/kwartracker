@@ -28,42 +28,6 @@ class _SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: <Widget>[
-            MaterialButton(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              height: 55,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MyRoute<dynamic>(
-                      builder: (BuildContext context) =>
-                          TransactionChooseWalletPage(),
-                      routeSettings:
-                          const RouteSettings(name: '/transactionAddWallet'),
-                    ));
-              },
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const Expanded(
-                    child: Text(
-                      'Login and Security',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  RotatedBox(
-                    quarterTurns: 1,
-                    child: Image.asset('images/icons/ic_arrow_up.png',
-                        width: 15, height: 10, fit: BoxFit.fill),
-                  )
-                ],
-              ),
-              color: ColorConstants.cyan,
-            ),
             Padding(
               padding: const EdgeInsets.only(top: 14),
               child: MaterialButton(
