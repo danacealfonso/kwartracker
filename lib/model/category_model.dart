@@ -21,9 +21,4 @@ class CategoryModel {
       'address': parentID,
     };
   }
-
-  factory CategoryModel.fromDocument(DocumentSnapshot document) {
-    return CategoryModel(document['id'], document['name'], document['icon'],
-        document['parentID']);
-  }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 
 // Package imports:
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -34,24 +35,9 @@ class KwartrackerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<FirestoreData>(
       create: (_) => FirestoreData(),
-      child: MaterialApp(
+      child: GetMaterialApp(
         title: 'Kwartracker App',
-        initialRoute:
-            (FirebaseAuth.instance.currentUser != null) ? '/' : '/signIn',
-        routes: <String, Widget Function(BuildContext)>{
-          '/': (BuildContext context) => HomePage(),
-          '/signIn': (BuildContext context) => SignInPage(),
-          '/signUp': (BuildContext context) => SignUpPage(),
-          '/transactions': (BuildContext context) => TransactionsPage(),
-          '/transactionChooseWallet': (BuildContext context) =>
-              TransactionChooseWalletPage(),
-          '/transactionAddDetails': (BuildContext context) =>
-              const TransactionAddDetailsPage(null),
-          '/wallets': (BuildContext context) => const WalletsPage(),
-          '/walletSave': (BuildContext context) => const WalletSavePage(),
-          '/transactionDetailsPage': (BuildContext context) =>
-              const TransactionDetailsPage(null),
-        },
+        home: HomePage(),
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: ColorConstants.cyan,

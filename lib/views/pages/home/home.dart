@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 // Project imports:
 import 'package:kwartracker/provider/firestore_data.dart';
@@ -46,13 +47,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       if (user != null) {
         globals.isLoggedIn = true;
       } else {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MyRoute<dynamic>(
-              builder: (BuildContext context) => SignInPage(),
-              routeSettings: const RouteSettings(name: '/signIn'),
-            ),
-            (Route<dynamic> route) => false);
+        Get.off(SignInPage());
       }
     } catch (e) {
       print(e);
@@ -105,12 +100,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   List<Widget> actionButtons(BuildContext context) => <Widget>[
         TextButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MyRoute<dynamic>(
-                    builder: (BuildContext context) => ProfilePage(),
-                    routeSettings: const RouteSettings(name: '/profile'),
-                  ));
+              Get.to(ProfilePage());
             },
             child: Image.asset('images/users/profile_pic.png',
                 width: 70, height: 85, fit: BoxFit.fill))
@@ -147,7 +137,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                               child: FloatingActionButton(
                                   backgroundColor: ColorConstants.grey,
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    Get.back();
                                   },
                                   child: Image.asset(
                                       'images/icons/ic_close.png',
@@ -294,11 +284,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MyRoute<dynamic>(
-                        builder: (BuildContext context) => const WalletsPage(),
-                        routeSettings: const RouteSettings(name: '/wallets')));
+                Get.to(const WalletsPage());
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -323,13 +309,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               final int index = firestoreData.walletsList.indexOf(item);
               return GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MyRoute<dynamic>(
-                          builder: (BuildContext context) => WalletsPage(
-                            cardIndex: index,
-                          ),
-                          routeSettings: const RouteSettings(name: '/wallets')));
+                  Get.to(WalletsPage(cardIndex: index));
                 },
                 child: ModalProgressHUD(
                   inAsyncCall: firestoreData.showSpinner,
@@ -361,12 +341,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MyRoute<dynamic>(
-                        builder: (BuildContext context) => TransactionsPage(),
-                        routeSettings:
-                            const RouteSettings(name: '/transactions')));
+                Get.to(TransactionsPage());
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -451,14 +426,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 floatingActionButton: FloatingActionButton(
                   heroTag: null,
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MyRoute<dynamic>(
-                          builder: (BuildContext context) =>
-                              TransactionChooseWalletPage(),
-                          routeSettings: const RouteSettings(
-                              name: '/transactionAddWallet'),
-                        ));
+                    Get.to(TransactionChooseWalletPage());
                   },
                   child: const Icon(
                     Icons.add,

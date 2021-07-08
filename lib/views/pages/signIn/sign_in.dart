@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:kwartracker/application/auth/auth_controller.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 // Project imports:
@@ -24,7 +26,6 @@ class SignInPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   bool showSpinner = false;
   late String email;
   late String password;
@@ -38,6 +39,8 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final AuthController authC = Get.put(AuthController());
+
     Widget? leading() {
       return const Center();
     }
@@ -84,37 +87,8 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
             ),
             CustomButton(
                 text: 'Sign In',
-                onPressed: () async {
-                  setState(() {
-                    showSpinner = true;
-                  });
-                  try {
-                    await _auth.signInWithEmailAndPassword(
-                        email: email, password: password);
-                    globals.isLoggedIn = true;
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MyRoute<dynamic>(
-                          builder: (BuildContext context) => HomePage(),
-                          routeSettings: const RouteSettings(name: '/home'),
-                        ),
-                        (Route<dynamic> route) => false);
-                    setState(() {
-                      showSpinner = false;
-                    });
-                  } catch (e) {
-                    setState(() {
-                      showSpinner = false;
-                    });
-                    Fluttertoast.showToast(
-                        msg: e.toString(),
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                  }
+                onPressed: () {
+                  authC.signInWithEmailAndPassword(context, email, password);
                 }),
             const Align(
               alignment: Alignment.center,
@@ -214,14 +188,7 @@ class _LoginPageState extends State<SignInPage> with TickerProviderStateMixin {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  Navigator.push(
-                                      context,
-                                      MyRoute<dynamic>(
-                                        builder: (BuildContext context) =>
-                                            SignUpPage(),
-                                        routeSettings: const RouteSettings(
-                                            name: '/signUp'),
-                                      ));
+                                  Get.to(SignUpPage());
                                 }),
                         ],
                       )),

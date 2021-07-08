@@ -17,6 +17,7 @@ import 'package:path/path.dart' as p;
 import 'package:kwartracker/util/color_constants.dart';
 import 'package:kwartracker/views/widgets/card_wallets.dart';
 import 'package:kwartracker/views/widgets/custom_dialog.dart';
+import 'package:kwartracker/model/category_model.dart';
 
 class FirestoreData extends ChangeNotifier {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
@@ -155,7 +156,7 @@ class FirestoreData extends ChangeNotifier {
             categoriesChild.add(categoryC);
           }
 
-          categoriesList.add(<String, dynamic>{
+          categoriesList.add(<String,dynamic>{
             'id': categoryID,
             'name': categoryName,
             'icon': category.data()['icon']
