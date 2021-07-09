@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // Project imports:
-import 'package:kwartracker/views/widgets/custom_body.dart';
-import 'package:kwartracker/views/widgets/custom_button.dart';
+import 'package:kwartracker/presentation/widgets/custom_body.dart';
+import 'package:kwartracker/presentation/widgets/custom_button.dart';
 import '../../widgets/header_nav.dart';
 
 class ProfilePage extends StatefulWidget {

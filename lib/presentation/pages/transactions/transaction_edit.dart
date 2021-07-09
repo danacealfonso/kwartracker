@@ -13,12 +13,12 @@ import 'package:provider/provider.dart';
 // Project imports:
 import 'package:kwartracker/provider/firestore_data.dart';
 import 'package:kwartracker/util/color_constants.dart';
-import 'package:kwartracker/views/widgets/confirmation_dialog.dart';
-import 'package:kwartracker/views/widgets/custom_body.dart';
-import 'package:kwartracker/views/widgets/custom_button.dart';
-import 'package:kwartracker/views/widgets/custom_dropdown.dart';
-import 'package:kwartracker/views/widgets/custom_text_field.dart';
-import 'package:kwartracker/views/widgets/date_picker_text_field.dart';
+import 'package:kwartracker/presentation/widgets/confirmation_dialog.dart';
+import 'package:kwartracker/presentation/widgets/custom_body.dart';
+import 'package:kwartracker/presentation/widgets/custom_button.dart';
+import 'package:kwartracker/presentation/widgets/custom_dropdown.dart';
+import 'package:kwartracker/presentation/widgets/custom_text_field.dart';
+import 'package:kwartracker/presentation/widgets/date_picker_text_field.dart';
 import '../../widgets/header_nav.dart';
 
 class TransactionEditPage extends StatefulWidget {

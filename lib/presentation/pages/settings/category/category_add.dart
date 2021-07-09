@@ -9,11 +9,11 @@ import 'package:provider/provider.dart';
 // Project imports:
 import 'package:kwartracker/provider/firestore_data.dart';
 import 'package:kwartracker/util/color_constants.dart';
-import 'package:kwartracker/views/widgets/custom_body.dart';
-import 'package:kwartracker/views/widgets/custom_dropdown.dart';
-import 'package:kwartracker/views/widgets/custom_switch.dart';
-import 'package:kwartracker/views/widgets/custom_text_field.dart';
-import 'package:kwartracker/views/widgets/header_nav.dart';
+import 'package:kwartracker/presentation/widgets/custom_body.dart';
+import 'package:kwartracker/presentation/widgets/custom_dropdown.dart';
+import 'package:kwartracker/presentation/widgets/custom_switch.dart';
+import 'package:kwartracker/presentation/widgets/custom_text_field.dart';
+import 'package:kwartracker/presentation/widgets/header_nav.dart';
 
 class CategoryAddPage extends StatefulWidget {
   @override

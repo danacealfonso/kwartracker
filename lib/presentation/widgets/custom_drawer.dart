@@ -8,13 +8,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kwartracker/util/color_constants.dart';
 import 'package:kwartracker/util/globals.dart' as globals;
 import 'package:kwartracker/util/my_route.dart';
-import 'package:kwartracker/views/pages/profile/profile.dart';
-import 'package:kwartracker/views/pages/reports/reports.dart';
-import 'package:kwartracker/views/pages/settings/settings.dart';
-import 'package:kwartracker/views/pages/signIn/sign_in.dart';
-import 'package:kwartracker/views/pages/transactions/transactions.dart';
-import 'package:kwartracker/views/pages/wallets/wallets.dart';
-import 'package:kwartracker/views/widgets/drawer_list_item.dart';
+import 'package:kwartracker/presentation/pages/profile/profile.dart';
+import 'package:kwartracker/presentation/pages/reports/reports.dart';
+import 'package:kwartracker/presentation/pages/settings/settings.dart';
+import 'package:kwartracker/presentation/pages/signIn/sign_in.dart';
+import 'package:kwartracker/presentation/pages/transactions/transactions.dart';
+import 'package:kwartracker/presentation/pages/wallets/wallets.dart';
+import 'package:kwartracker/presentation/widgets/drawer_list_item.dart';
 import 'drawer_list_item.dart';
 
 class CustomDrawer extends StatelessWidget {

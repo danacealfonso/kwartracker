@@ -15,8 +15,8 @@ import 'package:path/path.dart' as p;
 
 // Project imports:
 import 'package:kwartracker/util/color_constants.dart';
-import 'package:kwartracker/views/widgets/card_wallets.dart';
-import 'package:kwartracker/views/widgets/custom_dialog.dart';
+import 'package:kwartracker/presentation/widgets/card_wallets.dart';
+import 'package:kwartracker/presentation/widgets/custom_dialog.dart';
 import 'package:kwartracker/model/category_model.dart';
 
 class FirestoreData extends ChangeNotifier {

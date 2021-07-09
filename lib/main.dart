@@ -10,16 +10,7 @@ import 'package:provider/provider.dart';
 
 // Project imports:
 import 'package:kwartracker/util/color_constants.dart';
-import 'package:kwartracker/util/globals.dart' as globals;
-import 'package:kwartracker/views/pages/home/home.dart';
-import 'package:kwartracker/views/pages/signIn/sign_in.dart';
-import 'package:kwartracker/views/pages/signUp/sign_up.dart';
-import 'package:kwartracker/views/pages/transactions/transaction_add_details.dart';
-import 'package:kwartracker/views/pages/transactions/transaction_choose_wallet.dart';
-import 'package:kwartracker/views/pages/transactions/transaction_details.dart';
-import 'package:kwartracker/views/pages/transactions/transactions.dart';
-import 'package:kwartracker/views/pages/wallets/wallet_save.dart';
-import 'package:kwartracker/views/pages/wallets/wallets.dart';
+import 'package:kwartracker/presentation/pages/home/home.dart';
 import 'provider/firestore_data.dart';
 
 GlobalKey<NavigatorState> homeNavigatorKey = GlobalKey<NavigatorState>();

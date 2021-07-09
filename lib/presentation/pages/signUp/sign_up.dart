@@ -10,11 +10,11 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:kwartracker/util/color_constants.dart';
 import 'package:kwartracker/util/globals.dart' as globals;
 import 'package:kwartracker/util/my_route.dart';
-import 'package:kwartracker/views/pages/home/home.dart';
-import 'package:kwartracker/views/pages/signIn/sign_in.dart';
-import 'package:kwartracker/views/widgets/custom_body.dart';
-import 'package:kwartracker/views/widgets/custom_button.dart';
-import 'package:kwartracker/views/widgets/custom_text_field.dart';
+import 'package:kwartracker/presentation/pages/home/home.dart';
+import 'package:kwartracker/presentation/pages/signIn/sign_in.dart';
+import 'package:kwartracker/presentation/widgets/custom_body.dart';
+import 'package:kwartracker/presentation/widgets/custom_button.dart';
+import 'package:kwartracker/presentation/widgets/custom_text_field.dart';
 import '../../widgets/header_nav.dart';
 
 class SignUpPage extends StatefulWidget {

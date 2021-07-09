@@ -14,10 +14,10 @@ import 'package:provider/provider.dart';
 import 'package:kwartracker/provider/firestore_data.dart';
 import 'package:kwartracker/util/color_constants.dart';
 import 'package:kwartracker/util/my_route.dart';
-import 'package:kwartracker/views/pages/transactions/transaction_edit.dart';
-import 'package:kwartracker/views/widgets/confirmation_dialog.dart';
-import 'package:kwartracker/views/widgets/custom_body.dart';
-import 'package:kwartracker/views/widgets/custom_dialog.dart';
+import 'package:kwartracker/presentation/pages/transactions/transaction_edit.dart';
+import 'package:kwartracker/presentation/widgets/confirmation_dialog.dart';
+import 'package:kwartracker/presentation/widgets/custom_body.dart';
+import 'package:kwartracker/presentation/widgets/custom_dialog.dart';
 import '../../widgets/header_nav.dart';
 
 class TransactionDetailsPage extends StatefulWidget {

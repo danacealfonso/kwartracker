@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 // Project imports:
 import 'package:kwartracker/util/color_constants.dart';
 import 'package:kwartracker/util/my_route.dart';
-import 'package:kwartracker/views/pages/transactions/transaction_details.dart';
+import 'package:kwartracker/presentation/pages/transactions/transaction_details.dart';
 
 class CustomTransactionListItem extends StatelessWidget {
   const CustomTransactionListItem(

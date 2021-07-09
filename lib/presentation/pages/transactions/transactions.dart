@@ -11,13 +11,13 @@ import 'package:provider/provider.dart';
 import 'package:kwartracker/provider/firestore_data.dart';
 import 'package:kwartracker/util/color_constants.dart';
 import 'package:kwartracker/util/my_route.dart';
-import 'package:kwartracker/views/pages/transactions/transaction_choose_wallet.dart';
-import 'package:kwartracker/views/widgets/custom_body.dart';
-import 'package:kwartracker/views/widgets/custom_button.dart';
-import 'package:kwartracker/views/widgets/custom_dropdown.dart';
-import 'package:kwartracker/views/widgets/custom_floating_button.dart';
-import 'package:kwartracker/views/widgets/custom_text_field.dart';
-import 'package:kwartracker/views/widgets/custom_transaction_list.dart';
+import 'package:kwartracker/presentation/pages/transactions/transaction_choose_wallet.dart';
+import 'package:kwartracker/presentation/widgets/custom_body.dart';
+import 'package:kwartracker/presentation/widgets/custom_button.dart';
+import 'package:kwartracker/presentation/widgets/custom_dropdown.dart';
+import 'package:kwartracker/presentation/widgets/custom_floating_button.dart';
+import 'package:kwartracker/presentation/widgets/custom_text_field.dart';
+import 'package:kwartracker/presentation/widgets/custom_transaction_list.dart';
 import '../../widgets/header_nav.dart';
 
 class TransactionsPage extends StatefulWidget {

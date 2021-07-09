@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:kwartracker/util/color_constants.dart';
 
 // Project imports:
-import 'package:kwartracker/views/widgets/custom_body.dart';
+import 'package:kwartracker/presentation/widgets/custom_body.dart';
 import '../../widgets/header_nav.dart';
 
 class ReportsPage extends StatefulWidget {

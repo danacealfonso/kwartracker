@@ -8,9 +8,9 @@ import 'package:kwartracker/provider/firestore_data.dart';
 // Project imports:
 import 'package:kwartracker/util/color_constants.dart';
 import 'package:kwartracker/util/my_route.dart';
-import 'package:kwartracker/views/widgets/custom_body.dart';
-import 'package:kwartracker/views/widgets/custom_floating_button.dart';
-import 'package:kwartracker/views/widgets/header_nav.dart';
+import 'package:kwartracker/presentation/widgets/custom_body.dart';
+import 'package:kwartracker/presentation/widgets/custom_floating_button.dart';
+import 'package:kwartracker/presentation/widgets/header_nav.dart';
 import 'package:provider/provider.dart';
 import 'category_add.dart';
 

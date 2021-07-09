@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 // Project imports:
 import 'package:kwartracker/util/color_constants.dart';
 import 'package:kwartracker/util/my_route.dart';
-import 'package:kwartracker/views/pages/transactions/transaction_choose_wallet.dart';
-import 'package:kwartracker/views/widgets/custom_body.dart';
+import 'package:kwartracker/presentation/pages/transactions/transaction_choose_wallet.dart';
+import 'package:kwartracker/presentation/widgets/custom_body.dart';
 import '../../widgets/header_nav.dart';
 import 'category/categories.dart';
 

@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 // Project imports:
 import 'package:kwartracker/provider/firestore_data.dart';
 import 'package:kwartracker/util/color_constants.dart';
-import 'package:kwartracker/views/widgets/custom_transaction_list_item.dart';
+import 'package:kwartracker/presentation/widgets/custom_transaction_list_item.dart';
 
 class CustomTransactionList extends StatefulWidget {
   const CustomTransactionList({
